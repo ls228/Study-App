@@ -9,24 +9,27 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import de.hdmstuttgart.meinprojekt.R;
 import de.hdmstuttgart.meinprojekt.databinding.FragmentTodoBinding;
 
 public class ToDoFragment extends Fragment {
 
     private FragmentTodoBinding binding;
+    private RecyclerView recyclerView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        ToDoViewModel dashboardViewModel =
-                new ViewModelProvider(this).get(ToDoViewModel.class);
+        View view = inflater.inflate(R.layout.fragment_todo, container, false);
 
-        binding = FragmentTodoBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        recyclerView = view.findViewById(R.id.view_todolist);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-        final TextView textView = binding.textDashboard;
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-        return root;
+        return view;
+
     }
 
     @Override
