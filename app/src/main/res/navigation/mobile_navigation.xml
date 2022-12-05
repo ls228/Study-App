@@ -12,8 +12,8 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="de.hdmstuttgart.meinprojekt.ui.dashboard.ToDoFragment"
+        android:id="@+id/navigation_todo"
+        android:name="de.hdmstuttgart.meinprojekt.ui.todo.ToDoFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_todo" />
 

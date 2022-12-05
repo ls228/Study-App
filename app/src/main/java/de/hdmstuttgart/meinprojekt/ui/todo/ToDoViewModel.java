@@ -1,4 +1,4 @@
-package de.hdmstuttgart.meinprojekt.ui.dashboard;
+package de.hdmstuttgart.meinprojekt.ui.todo;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
