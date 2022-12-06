@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdmstuttgart.meinprojekt.R;
-import de.hdmstuttgart.meinprojekt.model.ToDoItem;
+import de.hdmstuttgart.meinprojekt.model.todo.ToDoItem;
 
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder> {
 
@@ -62,4 +62,41 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
             actorTextView = itemView.findViewById(R.id.topic);
         }
     }
+/*
+    @Override
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        View view = convertView;
+        if (view == null) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            view = inflater.inflate(R.layout.CustomLayout, null);
+        }
+
+        //Handle TextView and display string from your list
+        TextView tvContact= (TextView)view.findViewById(R.id.title);
+        tvContact.setText(todoitem.get(position));
+
+        //Handle buttons and add onClickListeners
+    Button callbtn= (Button)view.findViewById(R.id.fab);
+
+    callbtn.setOnClickListener(new View.OnClickListener(){
+        @Override
+        public void onClick(View v) {
+            //do something
+
+        }
+    });
+
+    addBtn.setOnClickListener(new View.OnClickListener(){
+        @Override
+        public void onClick(View v) {
+            //do something
+            notifyDataSetChanged();
+            .
+        }
+    });
+
+    return view;
+    }*/
 }
+
+

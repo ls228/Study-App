@@ -1,4 +1,4 @@
-package de.hdmstuttgart.meinprojekt.model;
+package de.hdmstuttgart.meinprojekt.model.todo;
 
 import java.util.Date;
 
@@ -8,7 +8,7 @@ public class ToDoItem {
     private final Date date;
     private final String studyTopic;
 
-    public Date getYear() {
+    public Date getDate() {
         return date;
     }
 

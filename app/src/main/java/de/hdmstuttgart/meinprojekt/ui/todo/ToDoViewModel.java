@@ -12,6 +12,7 @@ public class ToDoViewModel extends ViewModel {
         mText = new MutableLiveData<>();
         mText.setValue("This is To Do fragment");
     }
+    //
 
     public LiveData<String> getText() {
         return mText;
