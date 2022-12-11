@@ -27,7 +27,7 @@ import de.hdmstuttgart.meinprojekt.model.todo.ToDoItem;
 
 public class ToDoFragment extends Fragment {
 
-    private FragmentTodoBinding binding;
+    //private FragmentTodoBinding binding;
     private RecyclerView recyclerView;
     List<ToDoItem> list = new ArrayList<>();
 
@@ -50,24 +50,29 @@ public class ToDoFragment extends Fragment {
         recyclerView.setAdapter(toDoAdapter);
 
         //fab button
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        FloatingActionButton fab = view.findViewById(R.id.fab);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(view.getRootView().getContext());
-                View dialogView= LayoutInflater.from(view.getRootView().getContext()).inflate(R.layout.addtodo_dialog,null);
+        fab.setOnClickListener(v -> {
 
-                TextView titleheading;
-                TextInputLayout titleinput;
-                TextView topicheading;
-                TextInputLayout textInputLayout;
-                Button button;
+            AlertDialog.Builder builder = new AlertDialog.Builder(v.getRootView().getContext());
+            View dialogView= LayoutInflater.from(v.getRootView().getContext()).inflate(R.layout.addtodo_dialog,null);
 
-                titleheading= dialogView.findViewById(R.id.titleheading);
-                titleinput = dialogView.findViewById(R.id.titleinput);
+            TextView titleheading;
+            TextInputLayout titleinput;
+            TextView topicheading;
+            TextInputLayout textInputLayout;
+            Button button;
 
-            }
+            titleheading = dialogView.findViewById(R.id.titleheading);
+            titleinput = dialogView.findViewById(R.id.titleinput);
+            topicheading = dialogView.findViewById(R.id.topicheading);
+
+            titleheading.setText("Title of your new To Do");
+            topicheading.setText("Description: ");
+
+            builder.setView(dialogView);
+            builder.setCancelable(true);
+            builder.show();
         });
 
         return view;
@@ -82,10 +87,10 @@ public class ToDoFragment extends Fragment {
         list.add(new ToDoItem("It-Security",currentTime,"Chapter 1, Chapter 2"));
 
     }
-
+/*
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
-    }
+    }*/
 }

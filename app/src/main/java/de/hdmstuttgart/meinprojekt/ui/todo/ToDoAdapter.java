@@ -46,7 +46,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
     @Override
     public void onBindViewHolder(@NonNull ToDoAdapter.ToDoViewHolder holder, int position) {
         ToDoItem toDoItem = todoitem.get(position);
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy");
 
         holder.titleTextView.setText(toDoItem.getTitle());
         holder.dateTextView.setText(dateFormat.format(toDoItem.getDate()));
