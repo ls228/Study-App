@@ -1,6 +1,7 @@
 package de.hdmstuttgart.meinprojekt.ui.todo;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -8,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,11 +21,14 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
 
     private final List<ToDoItem> todoitem;
     private Context context;
-    //item
-    public ToDoAdapter(List<ToDoItem> todoitem, Context context) {
+    private int size;
 
-        this.todoitem=todoitem;
+    //item
+    public ToDoAdapter(Context context, List<ToDoItem> todoitem, int size) {
         this.context = context;
+        this.todoitem=todoitem;
+        this.size=size;
+
     }
 
     public ToDoAdapter(){
@@ -32,12 +38,19 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
     @NonNull
     @Override
     public ToDoAdapter.ToDoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.todo_item_layout,parent,false);
 
-        return null;
+        return new ToDoViewHolder(rootView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ToDoAdapter.ToDoViewHolder holder, int position) {
+        ToDoItem toDoItem = todoitem.get(position);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+
+        holder.titleTextView.setText(toDoItem.getTitle());
+        holder.dateTextView.setText(dateFormat.format(toDoItem.getDate()));
+        holder.topicTextView.setText(toDoItem.getTopic());
 
     }
 
@@ -50,7 +63,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
     static class ToDoViewHolder extends RecyclerView.ViewHolder {
         TextView titleTextView;
         TextView dateTextView;
-        TextView actorTextView;
+        TextView topicTextView;
 
 
         public ToDoViewHolder(View itemView) {
@@ -59,44 +72,10 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
 
             titleTextView = itemView.findViewById(R.id.title);
             dateTextView = itemView.findViewById(R.id.date);
-            actorTextView = itemView.findViewById(R.id.topic);
+            topicTextView = itemView.findViewById(R.id.topic);
         }
     }
-/*
-    @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        View view = convertView;
-        if (view == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.CustomLayout, null);
-        }
 
-        //Handle TextView and display string from your list
-        TextView tvContact= (TextView)view.findViewById(R.id.title);
-        tvContact.setText(todoitem.get(position));
-
-        //Handle buttons and add onClickListeners
-    Button callbtn= (Button)view.findViewById(R.id.fab);
-
-    callbtn.setOnClickListener(new View.OnClickListener(){
-        @Override
-        public void onClick(View v) {
-            //do something
-
-        }
-    });
-
-    addBtn.setOnClickListener(new View.OnClickListener(){
-        @Override
-        public void onClick(View v) {
-            //do something
-            notifyDataSetChanged();
-            .
-        }
-    });
-
-    return view;
-    }*/
 }
 
 
