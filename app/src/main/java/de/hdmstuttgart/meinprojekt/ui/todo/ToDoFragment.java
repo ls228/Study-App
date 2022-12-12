@@ -1,14 +1,22 @@
 package de.hdmstuttgart.meinprojekt.ui.todo;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,21 +33,22 @@ import de.hdmstuttgart.meinprojekt.R;
 import de.hdmstuttgart.meinprojekt.databinding.FragmentTodoBinding;
 import de.hdmstuttgart.meinprojekt.model.todo.ToDoItem;
 
-public class ToDoFragment extends Fragment {
+public class ToDoFragment extends Fragment{
 
     //private FragmentTodoBinding binding;
     private RecyclerView recyclerView;
     List<ToDoItem> list = new ArrayList<>();
 
     private ToDoAdapter toDoAdapter;
-    private TextView title;
-    private TextView topic;
     private Date currentTime = Calendar.getInstance().getTime();
+
+    private String inputTitle ="";
+    private String inputTopic ="";
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_todo, container, false);
-        //View view = inflater.inflate(R.layout.fragment_todo, container, false);
         addToDo();
         // showing todos
         recyclerView = view.findViewById(R.id.view_todolist);
@@ -55,25 +64,46 @@ public class ToDoFragment extends Fragment {
         fab.setOnClickListener(v -> {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(v.getRootView().getContext());
-            View dialogView= LayoutInflater.from(v.getRootView().getContext()).inflate(R.layout.addtodo_dialog,null);
+            View dialogView = LayoutInflater.from(v.getRootView().getContext()).inflate(R.layout.addtodo_dialog,null);
+            TextView titleHeading;
+            TextView topicHeading;
 
-            TextView titleheading;
-            TextInputLayout titleinput;
-            TextView topicheading;
-            TextInputLayout textInputLayout;
-            Button button;
 
-            titleheading = dialogView.findViewById(R.id.titleheading);
-            titleinput = dialogView.findViewById(R.id.titleinput);
-            topicheading = dialogView.findViewById(R.id.topicheading);
+            Button btnCancel = dialogView.findViewById(R.id.btncancel);
+            Button btnAdd = dialogView.findViewById(R.id.btnadd);
 
-            titleheading.setText("Title of your new To Do");
-            topicheading.setText("Description: ");
+            EditText titleInput = dialogView.findViewById(R.id.titleinput);
+            EditText topicInput = dialogView.findViewById(R.id.textInputEditText);
+
+            titleHeading = dialogView.findViewById(R.id.titleheading);
+            topicHeading = dialogView.findViewById(R.id.topicheading);
+
+
+            titleHeading.setText("Title of your new To Do");
+            topicHeading.setText("Description: ");
 
             builder.setView(dialogView);
             builder.setCancelable(true);
-            builder.show();
-        });
+
+            AlertDialog test = builder.show();
+
+                    btnCancel.setOnClickListener(
+                            a -> {
+                                //Log.d(TAG, "onClick: closing dialog");
+                                test.dismiss();
+                            });
+
+            btnAdd.setOnClickListener(
+                            a -> {
+                                //Log.d(TAG, "onClick: capturing input");
+                                inputTitle = titleInput.getText().toString();
+                                inputTopic = topicInput.getText().toString();
+                                attach(inputTitle,currentTime,inputTopic);
+                                test.dismiss();
+                            });
+        }
+        );
+
 
         return view;
 
@@ -85,6 +115,16 @@ public class ToDoFragment extends Fragment {
         list.add(new ToDoItem("Mobile Application Development",currentTime,"Assignment 1, Chapter 2"));
         list.add(new ToDoItem("User interface design",currentTime,"Presentation wireframes"));
         list.add(new ToDoItem("It-Security",currentTime,"Chapter 1, Chapter 2"));
+
+    }
+
+    private void attach(String title,Date currentTime, String studyTopic){
+        try {
+            list.add(new ToDoItem(title,currentTime,studyTopic)); }
+        catch (ClassCastException e) {
+            Log.e(TAG, "onAttach: ClassCastException: "
+                    + e.getMessage());
+        }
 
     }
 /*
