@@ -64,15 +64,15 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 String input = mEditTextInput.getText().toString();
                 if (input.length() == 0) {
-                    //Toast.makeText(, "Please enter a Time", Toast.LENGTH_SHORT).show();
-                    System.out.println("Field can't be empty!");
+                   Toast toastMessage = Toast.makeText(requireContext(), "This Field can't be empty!", Toast.LENGTH_LONG);
+                    toastMessage.show();
                     return;
                 }
 
                 long millisInput = Long.parseLong(input) * 60000;
                 if (millisInput == 0) {
-                    //Toast.makeText(HomeFragment.this, "Please enter a positive number", Toast.LENGTH_SHORT).show();
-                    System.out.println("Please enter a positive number!");
+                    Toast toastMessage = Toast.makeText(requireContext(), "Please enter a positive number!", Toast.LENGTH_LONG);
+                    toastMessage.show();
                     return;
                 }
 
@@ -81,23 +81,15 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        mButtonStartPause.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mTimerRunning) {
-                    pauseTimer();
-                } else {
-                    startTimer();
-                }
+        mButtonStartPause.setOnClickListener(v -> {
+            if (mTimerRunning) {
+                pauseTimer();
+            } else {
+                startTimer();
             }
         });
 
-        mButtonReset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                resetTimer();
-            }
-        });
+        mButtonReset.setOnClickListener(v -> resetTimer());
         return view;
     }
 
