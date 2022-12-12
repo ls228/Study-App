@@ -3,7 +3,10 @@ package de.hdmstuttgart.meinprojekt.ui.home;
 import static android.content.Context.INPUT_METHOD_SERVICE;
 import static android.content.Context.MODE_PRIVATE;
 
+import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.LayoutInflater;
@@ -13,12 +16,14 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.util.Calendar;
 import java.util.Locale;
 
 import de.hdmstuttgart.meinprojekt.R;
@@ -26,6 +31,9 @@ import de.hdmstuttgart.meinprojekt.databinding.FragmentHomeBinding;
 
 public class HomeFragment extends Fragment {
 
+    private CountDownTimer mCountDownTimer;
+
+    TimePickerDialog timePickerDialog;
 
     private EditText mEditTextInput;
     private TextView mTextViewCountDown;
@@ -33,8 +41,6 @@ public class HomeFragment extends Fragment {
     private Button mButtonReset;
     private Button mButtonSet;
 
-
-    private CountDownTimer mCountDownTimer;
 
     private boolean mTimerRunning;
 
@@ -58,6 +64,45 @@ public class HomeFragment extends Fragment {
         mButtonSet = view.findViewById(R.id.button_set);
         mButtonStartPause = view.findViewById(R.id.button_start_pause);
         mButtonReset = view.findViewById(R.id.button_reset);
+
+        TimePicker picker;
+        Button btnGet;
+        TextView tvw;
+
+        tvw=(TextView)view.findViewById(R.id.text_view_countdown);
+        picker=(TimePicker)view.findViewById(R.id.datePicker1);
+        picker.setIs24HourView(true);
+        btnGet=(Button)view.findViewById(R.id.button_set);
+
+
+        btnGet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int hour, minute;
+                String am_pm;
+                if (Build.VERSION.SDK_INT >= 23 ){
+                    hour = picker.getHour();
+                    minute = picker.getMinute();
+                }
+                else{
+                    hour = picker.getCurrentHour();
+                    minute = picker.getCurrentMinute();
+                }
+                if(hour > 12) {
+                    am_pm = "PM";
+                    hour = hour - 12;
+                }
+                else
+                {
+                    am_pm="AM";
+                }
+                tvw.setText("Selected Date: "+ hour +":"+ minute+" "+am_pm);
+            }
+        });
+
+
+
+
 
         mButtonSet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +137,7 @@ public class HomeFragment extends Fragment {
         mButtonReset.setOnClickListener(v -> resetTimer());
         return view;
     }
+
 
     private void setTime(long milliseconds) {
         mStartTimeInMillis = milliseconds;
