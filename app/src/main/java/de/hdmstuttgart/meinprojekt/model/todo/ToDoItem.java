@@ -1,12 +1,13 @@
 package de.hdmstuttgart.meinprojekt.model.todo;
 
+
 import java.util.Date;
 
 public class ToDoItem {
 
     private final String title;
     private final Date date;
-    private final String studyTopic;
+    private final String topic;
 
     public Date getDate() {
         return date;
@@ -16,8 +17,8 @@ public class ToDoItem {
         return title;
     }
 
-    public String getActor() {
-        return studyTopic;
+    public String getTopic() {
+        return topic;
     }
 
 
@@ -28,7 +29,7 @@ public class ToDoItem {
     ) {
         this.title = title;
         this.date = date;
-        this.studyTopic = studyTopic;
+        this.topic = studyTopic;
     }
 
 
