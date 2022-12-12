@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +37,10 @@ public class ToDoFragment extends Fragment{
     private ToDoAdapter toDoAdapter;
     private Date currentTime = Calendar.getInstance().getTime();
 
+    private String inputTitle ="";
+    private String inputTopic ="";
+
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_todo, container, false);
@@ -57,14 +62,17 @@ public class ToDoFragment extends Fragment{
             View dialogView= LayoutInflater.from(v.getRootView().getContext()).inflate(R.layout.addtodo_dialog,null);
 
             TextView titleheading;
-            TextInputLayout titleinput;
             TextView topicheading;
-            TextInputLayout textInputLayout;
-            Button button;
+
+            Button btnCancel = dialogView.findViewById(R.id.btncancel);
+            Button btnAdd = dialogView.findViewById(R.id.btncancel);
+
+            EditText titleInput = dialogView.findViewById(R.id.titleinput);
+            EditText topicInput = dialogView.findViewById(R.id.textInputLayout);
 
             titleheading = dialogView.findViewById(R.id.titleheading);
-            titleinput = dialogView.findViewById(R.id.titleinput);
             topicheading = dialogView.findViewById(R.id.topicheading);
+
 
             titleheading.setText("Title of your new To Do");
             topicheading.setText("Description: ");
@@ -72,7 +80,23 @@ public class ToDoFragment extends Fragment{
             builder.setView(dialogView);
             builder.setCancelable(true);
 
-                    builder.show();
+            builder.show();
+
+            btnCancel.setOnClickListener(
+                            a -> {
+                                //Log.d(TAG, "onClick: closing dialog");
+                                //builder.dismiss();
+                            });
+
+            btnAdd.setOnClickListener(
+                            a -> {
+                                //Log.d(TAG, "onClick: capturing input");
+                                inputTitle = titleInput.toString();
+                                inputTopic = topicInput.toString();
+                                //dialogView.dismiss();
+                            });
+
+
 
         }
         );
