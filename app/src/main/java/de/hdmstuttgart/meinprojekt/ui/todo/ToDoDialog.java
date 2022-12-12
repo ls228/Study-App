@@ -2,6 +2,7 @@
 package de.hdmstuttgart.meinprojekt.ui.todo;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ public class ToDoDialog extends android.app.DialogFragment {
         private EditText titleInput;
         private EditText topicInput;
         private TextView mActionAdd, mActionCancel;
+
 
         @Override
         public View onCreateView(LayoutInflater inflater,

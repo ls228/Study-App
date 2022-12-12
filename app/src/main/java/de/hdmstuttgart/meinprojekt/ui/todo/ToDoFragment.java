@@ -1,7 +1,12 @@
 package de.hdmstuttgart.meinprojekt.ui.todo;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,45 +64,43 @@ public class ToDoFragment extends Fragment{
         fab.setOnClickListener(v -> {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(v.getRootView().getContext());
-            View dialogView= LayoutInflater.from(v.getRootView().getContext()).inflate(R.layout.addtodo_dialog,null);
+            View dialogView = LayoutInflater.from(v.getRootView().getContext()).inflate(R.layout.addtodo_dialog,null);
+            TextView titleHeading;
+            TextView topicHeading;
 
-            TextView titleheading;
-            TextView topicheading;
 
             Button btnCancel = dialogView.findViewById(R.id.btncancel);
-            Button btnAdd = dialogView.findViewById(R.id.btncancel);
+            Button btnAdd = dialogView.findViewById(R.id.btnadd);
 
             EditText titleInput = dialogView.findViewById(R.id.titleinput);
-            EditText topicInput = dialogView.findViewById(R.id.textInputLayout);
+            EditText topicInput = dialogView.findViewById(R.id.textInputEditText);
 
-            titleheading = dialogView.findViewById(R.id.titleheading);
-            topicheading = dialogView.findViewById(R.id.topicheading);
+            titleHeading = dialogView.findViewById(R.id.titleheading);
+            topicHeading = dialogView.findViewById(R.id.topicheading);
 
 
-            titleheading.setText("Title of your new To Do");
-            topicheading.setText("Description: ");
+            titleHeading.setText("Title of your new To Do");
+            topicHeading.setText("Description: ");
 
             builder.setView(dialogView);
             builder.setCancelable(true);
 
-            builder.show();
+            AlertDialog test = builder.show();
 
-            btnCancel.setOnClickListener(
+                    btnCancel.setOnClickListener(
                             a -> {
                                 //Log.d(TAG, "onClick: closing dialog");
-                                //builder.dismiss();
+                                test.dismiss();
                             });
 
             btnAdd.setOnClickListener(
                             a -> {
                                 //Log.d(TAG, "onClick: capturing input");
-                                inputTitle = titleInput.toString();
-                                inputTopic = topicInput.toString();
-                                //dialogView.dismiss();
+                                inputTitle = titleInput.getText().toString();
+                                inputTopic = topicInput.getText().toString();
+                                attach(inputTitle,currentTime,inputTopic);
+                                test.dismiss();
                             });
-
-
-
         }
         );
 
@@ -112,6 +115,16 @@ public class ToDoFragment extends Fragment{
         list.add(new ToDoItem("Mobile Application Development",currentTime,"Assignment 1, Chapter 2"));
         list.add(new ToDoItem("User interface design",currentTime,"Presentation wireframes"));
         list.add(new ToDoItem("It-Security",currentTime,"Chapter 1, Chapter 2"));
+
+    }
+
+    private void attach(String title,Date currentTime, String studyTopic){
+        try {
+            list.add(new ToDoItem(title,currentTime,studyTopic)); }
+        catch (ClassCastException e) {
+            Log.e(TAG, "onAttach: ClassCastException: "
+                    + e.getMessage());
+        }
 
     }
 /*
