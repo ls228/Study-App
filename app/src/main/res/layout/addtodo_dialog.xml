@@ -62,14 +62,25 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
             android:hint="description" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="112dp"
-            android:layout_height="wrap_content"
-            android:text="Add"
-            />
-
     </com.google.android.material.textfield.TextInputLayout>
+
+
+    <Button
+        android:id="@+id/btncancel"
+        android:layout_width="112dp"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <Button
+        android:id="@+id/btnadd"
+        android:layout_width="112dp"
+        android:layout_height="wrap_content"
+        android:text="Add"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

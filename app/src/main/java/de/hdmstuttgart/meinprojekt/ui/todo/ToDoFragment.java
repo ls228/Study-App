@@ -7,8 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,21 +27,18 @@ import de.hdmstuttgart.meinprojekt.R;
 import de.hdmstuttgart.meinprojekt.databinding.FragmentTodoBinding;
 import de.hdmstuttgart.meinprojekt.model.todo.ToDoItem;
 
-public class ToDoFragment extends Fragment {
+public class ToDoFragment extends Fragment{
 
     //private FragmentTodoBinding binding;
     private RecyclerView recyclerView;
     List<ToDoItem> list = new ArrayList<>();
 
     private ToDoAdapter toDoAdapter;
-    private TextView title;
-    private TextView topic;
     private Date currentTime = Calendar.getInstance().getTime();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_todo, container, false);
-        //View view = inflater.inflate(R.layout.fragment_todo, container, false);
         addToDo();
         // showing todos
         recyclerView = view.findViewById(R.id.view_todolist);
@@ -72,8 +71,12 @@ public class ToDoFragment extends Fragment {
 
             builder.setView(dialogView);
             builder.setCancelable(true);
-            builder.show();
-        });
+
+                    builder.show();
+
+        }
+        );
+
 
         return view;
 
