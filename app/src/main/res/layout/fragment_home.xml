@@ -8,7 +8,7 @@
 
 
     <TextView
-        android:id="@+id/text_home"
+        android:id="@+id/text_view_countdown"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -19,14 +19,10 @@
 
     <Button
         android:id="@+id/button_start_pause"
-        android:layout_width="118dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="72dp"
-        android:layout_marginTop="438dp"
-        android:layout_marginBottom="245dp"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/text_view_countdown"
+        android:layout_centerHorizontal="true"
         android:text="start" />
 
     <Button
@@ -34,10 +30,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/text_view_countdown"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="98dp"
-        android:layout_marginBottom="246dp"
+        android:layout_marginStart="11dp"
+        android:layout_toEndOf="@+id/button_start_pause"
         android:text="reset"
         android:visibility="invisible"
         tools:visibility="visible" />
