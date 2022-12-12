@@ -1,6 +1,10 @@
 package de.hdmstuttgart.meinprojekt;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -10,7 +14,11 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import de.hdmstuttgart.meinprojekt.databinding.ActivityMainBinding;
+import de.hdmstuttgart.meinprojekt.ui.todo.ToDoFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
-
     }
 
 }
