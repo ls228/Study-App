@@ -19,6 +19,7 @@ import java.util.TimerTask;
 
 import de.hdmstuttgart.meinprojekt.databinding.ActivityMainBinding;
 
+
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;

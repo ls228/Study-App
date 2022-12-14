@@ -3,6 +3,10 @@ package de.hdmstuttgart.meinprojekt.ui.home;
 import static android.content.Context.INPUT_METHOD_SERVICE;
 import static android.content.Context.MODE_PRIVATE;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
+import android.animation.TimeAnimator;
+import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -14,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -23,6 +28,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.time.OffsetTime;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -49,6 +55,10 @@ public class HomeFragment extends Fragment {
     private long mEndTime;
 
     private FragmentHomeBinding binding;
+
+
+
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -80,14 +90,9 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 int hour, minute;
                 String am_pm;
-                if (Build.VERSION.SDK_INT >= 23 ){
                     hour = picker.getHour();
                     minute = picker.getMinute();
-                }
-                else{
-                    hour = picker.getCurrentHour();
-                    minute = picker.getCurrentMinute();
-                }
+
                 if(hour > 12) {
                     am_pm = "PM";
                     hour = hour - 12;
@@ -107,6 +112,7 @@ public class HomeFragment extends Fragment {
         mButtonSet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //String timeInput = tvw.getText().toString();
                 String input = mEditTextInput.getText().toString();
                 if (input.length() == 0) {
                    Toast toastMessage = Toast.makeText(requireContext(), "This Field can't be empty!", Toast.LENGTH_LONG);
@@ -220,6 +226,7 @@ public class HomeFragment extends Fragment {
         }
     }
 
+
     /*private void closeKeyboard() {
         View view = this.getCurrentFocus();
         if (view != null) {
@@ -227,6 +234,7 @@ public class HomeFragment extends Fragment {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }*/
+
 
     @Override
     public void onStop() {
