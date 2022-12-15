@@ -43,7 +43,7 @@ public class HomeFragment extends Fragment {
     private TextView mTextViewCountDown;
     private Button mButtonStartPause;
     private Button mButtonReset;
-    private Button mButtonSet;
+    //private Button mButtonSet;
 
 
     private boolean mTimerRunning;
@@ -56,8 +56,12 @@ public class HomeFragment extends Fragment {
     NumberPicker numberMinutePicker;
 
     long millisInput;
-    boolean timeInput=false;
-    boolean hourInput = false;
+
+    long finalTime;
+    long hour;
+    long minute;
+   // boolean timeInput=false;
+   // boolean hourInput = false;
 
     //private FragmentHomeBinding binding;
 
@@ -71,7 +75,7 @@ public class HomeFragment extends Fragment {
 
         mTextViewCountDown = view.findViewById(R.id.text_view_countdown);
 
-        mButtonSet = view.findViewById(R.id.button_set);
+       // mButtonSet = view.findViewById(R.id.button_set);
         mButtonStartPause = view.findViewById(R.id.button_start_pause);
         mButtonReset = view.findViewById(R.id.button_reset);
 
@@ -82,41 +86,31 @@ public class HomeFragment extends Fragment {
         numberHourPicker.setMaxValue(12);
         numberHourPicker.setValue(0);
 
+        numberMinutePicker.setMinValue(0);
+        numberMinutePicker.setMaxValue(60);
+        numberMinutePicker.setValue(0);
+
+
         numberHourPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                long hour = Long.valueOf(newVal) * 3600000;
-                millisInput  += hour;
-                hourInput = true;
-                if(hourInput&&timeInput){
-                    setTime(millisInput);
-                }
+                hour = Long.valueOf(newVal) * 3600000;
+
+                    
                 // When the picker value changes, update the timer
 
             }
         });
 
 
-
-        numberMinutePicker.setMinValue(0);
-        numberMinutePicker.setMaxValue(60);
-        numberMinutePicker.setValue(0);
-
-
-
-
         numberMinutePicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
 
-                long minute = Long.valueOf(newVal) * 60000;
-                millisInput += minute;
-                timeInput = true;
+                minute = Long.valueOf(newVal) * 60000;
 
-                if(hourInput&&timeInput){
-                    setTime(millisInput);
-                }
-
+                    finalTime = hour ;
+                    setTime(finalTime);
                 // When the picker value changes, update the timer
 
             }
