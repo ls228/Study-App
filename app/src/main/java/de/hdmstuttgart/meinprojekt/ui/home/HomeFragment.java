@@ -43,8 +43,6 @@ public class HomeFragment extends Fragment {
     private TextView mTextViewCountDown;
     private Button mButtonStartPause;
     private Button mButtonReset;
-    //private Button mButtonSet;
-
 
     private boolean mTimerRunning;
 
@@ -55,15 +53,11 @@ public class HomeFragment extends Fragment {
     NumberPicker numberHourPicker;
     NumberPicker numberMinutePicker;
 
-    long millisInput;
-
-    long finalTime;
+    long selectedTimeInSeconds;
     long hour;
     long minute;
-   // boolean timeInput=false;
-   // boolean hourInput = false;
 
-    //private FragmentHomeBinding binding;
+    private FragmentHomeBinding binding;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -75,7 +69,6 @@ public class HomeFragment extends Fragment {
 
         mTextViewCountDown = view.findViewById(R.id.text_view_countdown);
 
-       // mButtonSet = view.findViewById(R.id.button_set);
         mButtonStartPause = view.findViewById(R.id.button_start_pause);
         mButtonReset = view.findViewById(R.id.button_reset);
 
@@ -95,10 +88,12 @@ public class HomeFragment extends Fragment {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                 hour = Long.valueOf(newVal) * 3600000;
-
-                    
+                calculateTotalTime();
                 // When the picker value changes, update the timer
 
+            }
+            private void calculateTotalTime() {
+                selectedTimeInSeconds = hour + minute;
             }
         });
 
@@ -108,70 +103,16 @@ public class HomeFragment extends Fragment {
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
 
                 minute = Long.valueOf(newVal) * 60000;
-
-                    finalTime = hour ;
-                    setTime(finalTime);
+               calculateTotalTime();
                 // When the picker value changes, update the timer
-
+            }
+            private void calculateTotalTime () {
+                selectedTimeInSeconds = hour + minute;
             }
         });
 
+        setTime(selectedTimeInSeconds);
 
-       /* mButtonSet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int hour, minute;
-                String am_pm;
-                    hour = picker.getHour();
-                System.out.println(hour);
-                    minute = picker.getMinute();
-                System.out.println(minute);
-
-                if(hour > 12) {
-                    am_pm = "PM";
-                    hour = hour - 12;
-                }
-                else
-                {
-                    am_pm="AM";
-                }
-                //tvw.setText("Selected Date: "+ hour +":"+ minute);
-                //mTextViewCountDown.setText(timeLeftFormatted);
-
-                long inMilli = minute * 60 * 1000;
-                inMilli += hour * 60 * 60 * 1000;
-                setTime(inMilli);
-
-            }
-        });
-
-
-*/
-
-
-        /*mButtonSet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //String timeInput = tvw.getText().toString();
-                String input = mEditTextInput.getText().toString();
-                if (input.length() == 0) {
-                   Toast toastMessage = Toast.makeText(requireContext(), "This Field can't be empty!", Toast.LENGTH_LONG);
-                    toastMessage.show();
-                    return;
-                }
-
-                long millisInput = Long.parseLong(input) * 60000;
-                if (millisInput == 0) {
-                    Toast toastMessage = Toast.makeText(requireContext(), "Please enter a positive number!", Toast.LENGTH_LONG);
-                    toastMessage.show();
-                    return;
-                }
-
-                setTime(millisInput);
-                mEditTextInput.setText("");
-            }
-        });
-*/
         mButtonStartPause.setOnClickListener(v -> {
 
             if (mTimerRunning) {
@@ -186,8 +127,8 @@ public class HomeFragment extends Fragment {
     }
 
 
-    private void setTime(long milliseconds) {
-        mStartTimeInMillis = milliseconds;
+    private void setTime(long timeInMillis) {
+        mStartTimeInMillis = timeInMillis;
         resetTimer();
     }
 
@@ -244,25 +185,20 @@ public class HomeFragment extends Fragment {
 
     private void updateWatchInterface() {
         if (mTimerRunning) {
-            //mEditTextInput.setVisibility(View.INVISIBLE);
-            //mButtonSet.setVisibility(View.INVISIBLE);
-            //mButtonReset.setVisibility(View.INVISIBLE);
             mButtonStartPause.setText("Pause");
             numberHourPicker.setVisibility(View.INVISIBLE);
             numberMinutePicker.setVisibility(View.INVISIBLE);
             mTextViewCountDown.setVisibility(View.VISIBLE);
         } else {
-           // mEditTextInput.setVisibility(View.VISIBLE);
-            //mButtonSet.setVisibility(View.VISIBLE);
             mButtonStartPause.setText("Start");
             mButtonReset.setVisibility(View.VISIBLE);
 
-            /*
+
             if (mTimeLeftInMillis < 1000) {
                 mButtonStartPause.setVisibility(View.INVISIBLE);
             } else {
                 mButtonStartPause.setVisibility(View.VISIBLE);
-            }*/
+            }
 
             if (mTimeLeftInMillis < mStartTimeInMillis) {
                 mButtonReset.setVisibility(View.VISIBLE);
@@ -282,16 +218,6 @@ public class HomeFragment extends Fragment {
             mButtonStartPause.setVisibility(View.VISIBLE);
 
     }
-
-
-    /*private void closeKeyboard() {
-        View view = this.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }*/
-
 
     @Override
     public void onStop() {
