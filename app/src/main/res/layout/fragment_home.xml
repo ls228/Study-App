@@ -38,14 +38,6 @@
         android:layout_marginTop="52dp"
         android:text="start" />
 
-    <!--
-    <TimePicker
-        android:id="@+id/datePicker1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:timePickerMode="spinner"/>
-       -->
-
     <Button
         android:id="@+id/button_reset"
         android:layout_width="wrap_content"
@@ -65,7 +57,7 @@
         android:layout_alignParentEnd="true"
         android:layout_centerInParent="true"
         android:layout_marginEnd="216dp"
-        android:visibility="visible"/>
+        />
 
     <NumberPicker
         android:id="@+id/number_picker_min"
@@ -74,7 +66,7 @@
         android:layout_alignParentEnd="true"
         android:layout_centerInParent="true"
         android:layout_marginEnd="143dp"
-        android:visibility="visible"/>
+      />
 
 
 </RelativeLayout>

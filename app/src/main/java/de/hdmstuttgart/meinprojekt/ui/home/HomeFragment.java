@@ -1,36 +1,22 @@
 package de.hdmstuttgart.meinprojekt.ui.home;
 
-import static android.content.Context.INPUT_METHOD_SERVICE;
 import static android.content.Context.MODE_PRIVATE;
 
-import android.animation.Animator;
-import android.animation.ObjectAnimator;
-import android.animation.TimeAnimator;
-import android.app.Activity;
-import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import java.time.OffsetTime;
-import java.util.Calendar;
 import java.util.Locale;
 
 import de.hdmstuttgart.meinprojekt.R;
@@ -40,9 +26,9 @@ public class HomeFragment extends Fragment {
 
     private CountDownTimer mCountDownTimer;
 
-    private TextView mTextViewCountDown;
-    private Button mButtonStartPause;
-    private Button mButtonReset;
+    private TextView mCountDownText;
+    private Button bButtonStartPause;
+    private Button bButtonReset;
 
     private boolean mTimerRunning;
 
@@ -50,14 +36,11 @@ public class HomeFragment extends Fragment {
     private long mTimeLeftInMillis;
     private long mEndTime;
 
-    NumberPicker numberHourPicker;
-    NumberPicker numberMinutePicker;
+    NumberPicker HourPicker;
+    NumberPicker MinutePicker;
 
-    long selectedTimeInSeconds;
-    long hour;
-    long minute;
-
-    private FragmentHomeBinding binding;
+    long hoursSet;
+    long minutesSet;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -67,65 +50,65 @@ public class HomeFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        mTextViewCountDown = view.findViewById(R.id.text_view_countdown);
+        mCountDownText = view.findViewById(R.id.text_view_countdown);
 
-        mButtonStartPause = view.findViewById(R.id.button_start_pause);
-        mButtonReset = view.findViewById(R.id.button_reset);
+        bButtonStartPause = view.findViewById(R.id.button_start_pause);
+        bButtonReset = view.findViewById(R.id.button_reset);
 
-        numberHourPicker = view.findViewById(R.id.number_picker_h);
-        numberMinutePicker = view.findViewById(R.id.number_picker_min);
+        HourPicker = view.findViewById(R.id.number_picker_h);
+        MinutePicker = view.findViewById(R.id.number_picker_min);
 
-        numberHourPicker.setMinValue(0);
-        numberHourPicker.setMaxValue(12);
-        numberHourPicker.setValue(0);
+        HourPicker.setMinValue(0);
+        HourPicker.setMaxValue(12);
+        HourPicker.setValue(0);
 
-        numberMinutePicker.setMinValue(0);
-        numberMinutePicker.setMaxValue(60);
-        numberMinutePicker.setValue(0);
+        MinutePicker.setMinValue(0);
+        MinutePicker.setMaxValue(60);
+        MinutePicker.setValue(0);
 
 
-        numberHourPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+        HourPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                hour = Long.valueOf(newVal) * 3600000;
+                hoursSet = Long.valueOf(newVal) * 3600000;
                 calculateTotalTime();
-                // When the picker value changes, update the timer
-
             }
             private void calculateTotalTime() {
-                selectedTimeInSeconds = hour + minute;
+                mTimeLeftInMillis = hoursSet + minutesSet;
             }
         });
 
-
-        numberMinutePicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+        MinutePicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
 
-                minute = Long.valueOf(newVal) * 60000;
+                minutesSet = Long.valueOf(newVal) * 60000;
                calculateTotalTime();
-                // When the picker value changes, update the timer
             }
             private void calculateTotalTime () {
-                selectedTimeInSeconds = hour + minute;
+                mTimeLeftInMillis = hoursSet + minutesSet;
             }
         });
 
-        setTime(selectedTimeInSeconds);
+        setTime(mTimeLeftInMillis);
 
-        mButtonStartPause.setOnClickListener(v -> {
+        bButtonStartPause.setOnClickListener(v -> {
 
             if (mTimerRunning) {
                 pauseTimer();
             } else {
+                if (mTimeLeftInMillis == 0) {
+                    Toast toastMessage = Toast.makeText(requireContext(), "Please enter a positive number!", Toast.LENGTH_LONG);
+                    toastMessage.show();
+                }else
                 startTimer();
             }
         });
 
-        mButtonReset.setOnClickListener(v -> resetTimer());
+        bButtonReset.setOnClickListener(v -> resetTimer());
+
         return view;
     }
-
 
     private void setTime(long timeInMillis) {
         mStartTimeInMillis = timeInMillis;
@@ -156,14 +139,18 @@ public class HomeFragment extends Fragment {
     private void pauseTimer() {
         mCountDownTimer.cancel();
         mTimerRunning = false;
-        updateWatchInterface();
+        updateWatchInterfacePause();
     }
 
     private void resetTimer() {
-        mTimeLeftInMillis = mStartTimeInMillis;
+        mTimeLeftInMillis = 0;
+        hoursSet = 0;
+        minutesSet = 0;
         mTimerRunning = false;
+        HourPicker.setValue(0);
+        MinutePicker.setValue(0);
         updateCountDownText();
-        resetWatchInterface();
+        updateWatchInterface();
     }
 
     private void updateCountDownText() {
@@ -180,45 +167,40 @@ public class HomeFragment extends Fragment {
                     "%02d:%02d", minutes, seconds);
         }
 
-        mTextViewCountDown.setText(timeLeftFormatted);
+        mCountDownText.setText(timeLeftFormatted);
     }
 
+    /**
+     * in this method the visibility of the buttons is set
+     */
     private void updateWatchInterface() {
         if (mTimerRunning) {
-            mButtonStartPause.setText("Pause");
-            numberHourPicker.setVisibility(View.INVISIBLE);
-            numberMinutePicker.setVisibility(View.INVISIBLE);
-            mTextViewCountDown.setVisibility(View.VISIBLE);
+            bButtonStartPause.setText("Pause");
+            HourPicker.setVisibility(View.INVISIBLE);
+            MinutePicker.setVisibility(View.INVISIBLE);
+            bButtonReset.setVisibility(View.INVISIBLE);
+            mCountDownText.setVisibility(View.VISIBLE);
         } else {
-            mButtonStartPause.setText("Start");
-            mButtonReset.setVisibility(View.VISIBLE);
-
-
-            if (mTimeLeftInMillis < 1000) {
-                mButtonStartPause.setVisibility(View.INVISIBLE);
-            } else {
-                mButtonStartPause.setVisibility(View.VISIBLE);
-            }
-
-            if (mTimeLeftInMillis < mStartTimeInMillis) {
-                mButtonReset.setVisibility(View.VISIBLE);
-            } else {
-                mButtonReset.setVisibility(View.INVISIBLE);
-            }
+            bButtonReset.setVisibility(View.INVISIBLE);
+            HourPicker.setVisibility(View.VISIBLE);
+            MinutePicker.setVisibility(View.VISIBLE);
+            mCountDownText.setVisibility(View.INVISIBLE);
+            bButtonStartPause.setText("Start");
+            bButtonStartPause.setVisibility(View.VISIBLE);
         }
     }
 
-    private void resetWatchInterface() {
-
-            mButtonReset.setVisibility(View.INVISIBLE);
-            numberHourPicker.setVisibility(View.VISIBLE);
-            numberMinutePicker.setVisibility(View.VISIBLE);
-            mTextViewCountDown.setVisibility(View.INVISIBLE);
-            mButtonStartPause.setText("Start");
-            mButtonStartPause.setVisibility(View.VISIBLE);
-
+    private void updateWatchInterfacePause() {
+        bButtonStartPause.setText("Start");
+        bButtonReset.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * this method is called when the app is closed, it saves the current state of the timer
+     * this allows the app to restore the timer's state  when the app is restarted, so that the
+     * user can continue using the timer where they left off;
+     * it cancels the CountDownTimer
+     */
     @Override
     public void onStop() {
         super.onStop();
@@ -237,6 +219,13 @@ public class HomeFragment extends Fragment {
             mCountDownTimer.cancel();
         }
     }
+
+    /**
+     * this method is called when the app is opened; it retrieves the saved state of the timer,
+     * if the imer was running when the app was last used it calculates the remaining time and
+     * starts the timer again so that it continues counting down,
+     * it is responsible for restoring the state of the CountDownTimer
+     */
 
     @Override
     public void onStart() {
