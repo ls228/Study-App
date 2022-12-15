@@ -2,5 +2,6 @@
     <string name="app_name">StudyApp</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">To Do</string>
+    <string name="Addtodo">ADD TO DO</string>
 
 </resources>

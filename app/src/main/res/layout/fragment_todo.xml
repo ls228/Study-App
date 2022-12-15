@@ -14,12 +14,12 @@
         android:layout_marginStart="69dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:gravity="left"
+        android:layout_marginBottom="20dp"
+        android:gravity="center_horizontal"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:text="Add a to do for you to learn this week: "
+        android:text="@string/Addtodo"
         android:fontFamily="sans-serif"
-        android:textSize="15sp" />
+        android:textSize="16sp" />
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -37,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
-        android:src="@drawable/ic_baseline_playlist_add_24"
+        android:src="@drawable/ic_baseline_add_24"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="70dp"

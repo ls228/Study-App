@@ -3,8 +3,6 @@ package de.hdmstuttgart.meinprojekt.ui.todo;
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,24 +11,25 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.textfield.TextInputLayout;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import de.hdmstuttgart.meinprojekt.R;
-import de.hdmstuttgart.meinprojekt.databinding.FragmentTodoBinding;
+import de.hdmstuttgart.meinprojekt.database.Converter;
 import de.hdmstuttgart.meinprojekt.model.todo.ToDoItem;
 
 public class ToDoFragment extends Fragment{
@@ -38,9 +37,11 @@ public class ToDoFragment extends Fragment{
     //private FragmentTodoBinding binding;
     private RecyclerView recyclerView;
     List<ToDoItem> list = new ArrayList<>();
+    int i=0;
 
     private ToDoAdapter toDoAdapter;
-    private Date currentTime = Calendar.getInstance().getTime();
+    private String currentTime;
+    private ToDoViewModel viewModel;
 
     private String inputTitle ="";
     private String inputTopic ="";
@@ -49,13 +50,25 @@ public class ToDoFragment extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_todo, container, false);
-        addToDo();
+
+        //addToDo();
         // showing todos
         recyclerView = view.findViewById(R.id.view_todolist);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
         toDoAdapter = new ToDoAdapter(getContext(),list,list.size());
+
+        viewModel = new ViewModelProvider(this).get(ToDoViewModel.class);
+
+        viewModel.getSavedToDos().observe((LifecycleOwner) getContext(), list -> {
+            if (list == null) return;
+            toDoAdapter = new ToDoAdapter(getContext(), list, list.size());
+
+            recyclerView.setAdapter(toDoAdapter);
+
+        });
+
         recyclerView.setAdapter(toDoAdapter);
 
         //fab button
@@ -89,16 +102,22 @@ public class ToDoFragment extends Fragment{
 
                     btnCancel.setOnClickListener(
                             a -> {
-                                //Log.d(TAG, "onClick: closing dialog");
+                                Log.d(TAG, "onClick: closing dialog");
                                 test.dismiss();
                             });
 
             btnAdd.setOnClickListener(
                             a -> {
-                                //Log.d(TAG, "onClick: capturing input");
+                                Date time = Calendar.getInstance().getTime();
+                                currentTime = Converter.dateToTimestamp(time);
+
+                                Log.d(TAG, "onClick: capturing input");
+
                                 inputTitle = titleInput.getText().toString();
                                 inputTopic = topicInput.getText().toString();
+
                                 attach(inputTitle,currentTime,inputTopic);
+
                                 test.dismiss();
                             });
         }
@@ -109,6 +128,7 @@ public class ToDoFragment extends Fragment{
 
     }
 
+    /*
     private void addToDo(){
         list.add(new ToDoItem("It-Security",currentTime,"Chapter 1, Chapter 2"));
         list.add(new ToDoItem("Math",currentTime,"Chapter 1, new Assignment"));
@@ -116,11 +136,14 @@ public class ToDoFragment extends Fragment{
         list.add(new ToDoItem("User interface design",currentTime,"Presentation wireframes"));
         list.add(new ToDoItem("It-Security",currentTime,"Chapter 1, Chapter 2"));
 
-    }
+    }*/
 
-    private void attach(String title,Date currentTime, String studyTopic){
+    private void attach(String title,String currentTime, String studyTopic){
         try {
-            list.add(new ToDoItem(title,currentTime,studyTopic)); }
+            list.add(new ToDoItem(title,currentTime,studyTopic));
+            viewModel.saveToDo(list.get(i));
+            i++;
+        }
         catch (ClassCastException e) {
             Log.e(TAG, "onAttach: ClassCastException: "
                     + e.getMessage());
