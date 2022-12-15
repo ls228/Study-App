@@ -20,6 +20,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -39,9 +40,6 @@ public class HomeFragment extends Fragment {
 
     private CountDownTimer mCountDownTimer;
 
-    TimePickerDialog timePickerDialog;
-
-    private EditText mEditTextInput;
     private TextView mTextViewCountDown;
     private Button mButtonStartPause;
     private Button mButtonReset;
@@ -54,10 +52,14 @@ public class HomeFragment extends Fragment {
     private long mTimeLeftInMillis;
     private long mEndTime;
 
-    private FragmentHomeBinding binding;
+    NumberPicker numberHourPicker;
+    NumberPicker numberMinutePicker;
 
+    long millisInput;
+    boolean timeInput=false;
+    boolean hourInput = false;
 
-
+    //private FragmentHomeBinding binding;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -67,31 +69,69 @@ public class HomeFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-
-        mEditTextInput = view.findViewById(R.id.edit_text_input);
         mTextViewCountDown = view.findViewById(R.id.text_view_countdown);
 
         mButtonSet = view.findViewById(R.id.button_set);
         mButtonStartPause = view.findViewById(R.id.button_start_pause);
         mButtonReset = view.findViewById(R.id.button_reset);
 
-        TimePicker picker;
-        Button btnGet;
-        TextView tvw;
+        numberHourPicker = view.findViewById(R.id.number_picker_h);
+        numberMinutePicker = view.findViewById(R.id.number_picker_min);
 
-        tvw=(TextView)view.findViewById(R.id.text_view_countdown);
-        picker=(TimePicker)view.findViewById(R.id.datePicker1);
-        picker.setIs24HourView(true);
-        btnGet=(Button)view.findViewById(R.id.button_set);
+        numberHourPicker.setMinValue(0);
+        numberHourPicker.setMaxValue(12);
+        numberHourPicker.setValue(0);
+
+        numberHourPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                long hour = Long.valueOf(newVal) * 3600000;
+                millisInput  += hour;
+                hourInput = true;
+                if(hourInput&&timeInput){
+                    setTime(millisInput);
+                }
+                // When the picker value changes, update the timer
+
+            }
+        });
 
 
-        btnGet.setOnClickListener(new View.OnClickListener() {
+
+        numberMinutePicker.setMinValue(0);
+        numberMinutePicker.setMaxValue(60);
+        numberMinutePicker.setValue(0);
+
+
+
+
+        numberMinutePicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+
+                long minute = Long.valueOf(newVal) * 60000;
+                millisInput += minute;
+                timeInput = true;
+
+                if(hourInput&&timeInput){
+                    setTime(millisInput);
+                }
+
+                // When the picker value changes, update the timer
+
+            }
+        });
+
+
+       /* mButtonSet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int hour, minute;
                 String am_pm;
                     hour = picker.getHour();
+                System.out.println(hour);
                     minute = picker.getMinute();
+                System.out.println(minute);
 
                 if(hour > 12) {
                     am_pm = "PM";
@@ -101,15 +141,21 @@ public class HomeFragment extends Fragment {
                 {
                     am_pm="AM";
                 }
-                tvw.setText("Selected Date: "+ hour +":"+ minute+" "+am_pm);
+                //tvw.setText("Selected Date: "+ hour +":"+ minute);
+                //mTextViewCountDown.setText(timeLeftFormatted);
+
+                long inMilli = minute * 60 * 1000;
+                inMilli += hour * 60 * 60 * 1000;
+                setTime(inMilli);
+
             }
         });
 
 
+*/
 
 
-
-        mButtonSet.setOnClickListener(new View.OnClickListener() {
+        /*mButtonSet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //String timeInput = tvw.getText().toString();
@@ -131,8 +177,9 @@ public class HomeFragment extends Fragment {
                 mEditTextInput.setText("");
             }
         });
-
+*/
         mButtonStartPause.setOnClickListener(v -> {
+
             if (mTimerRunning) {
                 pauseTimer();
             } else {
@@ -148,7 +195,6 @@ public class HomeFragment extends Fragment {
     private void setTime(long milliseconds) {
         mStartTimeInMillis = milliseconds;
         resetTimer();
-        //closeKeyboard();
     }
 
     private void startTimer() {
@@ -180,8 +226,9 @@ public class HomeFragment extends Fragment {
 
     private void resetTimer() {
         mTimeLeftInMillis = mStartTimeInMillis;
+        mTimerRunning = false;
         updateCountDownText();
-        updateWatchInterface();
+        resetWatchInterface();
     }
 
     private void updateCountDownText() {
@@ -203,20 +250,25 @@ public class HomeFragment extends Fragment {
 
     private void updateWatchInterface() {
         if (mTimerRunning) {
-            mEditTextInput.setVisibility(View.INVISIBLE);
-            mButtonSet.setVisibility(View.INVISIBLE);
-            mButtonReset.setVisibility(View.INVISIBLE);
+            //mEditTextInput.setVisibility(View.INVISIBLE);
+            //mButtonSet.setVisibility(View.INVISIBLE);
+            //mButtonReset.setVisibility(View.INVISIBLE);
             mButtonStartPause.setText("Pause");
+            numberHourPicker.setVisibility(View.INVISIBLE);
+            numberMinutePicker.setVisibility(View.INVISIBLE);
+            mTextViewCountDown.setVisibility(View.VISIBLE);
         } else {
-            mEditTextInput.setVisibility(View.VISIBLE);
-            mButtonSet.setVisibility(View.VISIBLE);
+           // mEditTextInput.setVisibility(View.VISIBLE);
+            //mButtonSet.setVisibility(View.VISIBLE);
             mButtonStartPause.setText("Start");
+            mButtonReset.setVisibility(View.VISIBLE);
 
+            /*
             if (mTimeLeftInMillis < 1000) {
                 mButtonStartPause.setVisibility(View.INVISIBLE);
             } else {
                 mButtonStartPause.setVisibility(View.VISIBLE);
-            }
+            }*/
 
             if (mTimeLeftInMillis < mStartTimeInMillis) {
                 mButtonReset.setVisibility(View.VISIBLE);
@@ -224,6 +276,17 @@ public class HomeFragment extends Fragment {
                 mButtonReset.setVisibility(View.INVISIBLE);
             }
         }
+    }
+
+    private void resetWatchInterface() {
+
+            mButtonReset.setVisibility(View.INVISIBLE);
+            numberHourPicker.setVisibility(View.VISIBLE);
+            numberMinutePicker.setVisibility(View.VISIBLE);
+            mTextViewCountDown.setVisibility(View.INVISIBLE);
+            mButtonStartPause.setText("Start");
+            mButtonStartPause.setVisibility(View.VISIBLE);
+
     }
 
 

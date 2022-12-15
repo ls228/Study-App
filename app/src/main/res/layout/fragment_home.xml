@@ -7,23 +7,16 @@
     tools:context=".ui.home.HomeFragment">
 
 
-    <EditText
-        android:id="@+id/edit_text_input"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/text_view_countdown"
-        android:layout_centerHorizontal="true"
-        android:hint="Minutes"
-        android:inputType="number"
-        android:maxLength="4" />
-
     <Button
         android:id="@+id/button_set"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/edit_text_input"
-        android:layout_toEndOf="@+id/edit_text_input"
-        android:text="Set" />
+        android:layout_alignTop="@+id/text_view_countdown"
+        android:layout_marginStart="-2dp"
+        android:layout_marginTop="22dp"
+        android:layout_toEndOf="@+id/text_view_countdown"
+        android:text="Set"
+        android:visibility="invisible"/>
 
     <TextView
         android:id="@+id/text_view_countdown"
@@ -33,7 +26,8 @@
         android:layout_centerVertical="true"
         android:text="00:00"
         android:textColor="@android:color/black"
-        android:textSize="60sp" />
+        android:textSize="60sp"
+        android:visibility="invisible"/>
 
     <Button
         android:id="@+id/button_start_pause"
@@ -41,25 +35,46 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/text_view_countdown"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="52dp"
         android:text="start" />
+
+    <!--
+    <TimePicker
+        android:id="@+id/datePicker1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:timePickerMode="spinner"/>
+       -->
 
     <Button
         android:id="@+id/button_reset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/text_view_countdown"
-        android:layout_marginStart="11dp"
+        android:layout_marginStart="-89dp"
+        android:layout_marginTop="105dp"
         android:layout_toEndOf="@+id/button_start_pause"
         android:text="reset"
         android:visibility="invisible"
         tools:visibility="visible" />
 
-    <TimePicker
-        android:id="@+id/datePicker1"
+    <NumberPicker
+        android:id="@+id/number_picker_h"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:timePickerMode="spinner"/>
+        android:layout_alignParentEnd="true"
+        android:layout_centerInParent="true"
+        android:layout_marginEnd="216dp"
+        android:visibility="visible"/>
 
+    <NumberPicker
+        android:id="@+id/number_picker_min"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerInParent="true"
+        android:layout_marginEnd="143dp"
+        android:visibility="visible"/>
 
 
 </RelativeLayout>
