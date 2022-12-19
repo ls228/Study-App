@@ -47,6 +47,7 @@ public class HomeFragment extends Fragment {
     ProgressBar mProgressBar;
 
 
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         HomeViewModel homeViewModel =
