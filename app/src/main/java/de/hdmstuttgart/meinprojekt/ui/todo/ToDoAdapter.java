@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CheckedTextView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -33,8 +34,6 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
         this.size = size;
         this.listener = listener;
     }
-
-
 
     public ToDoAdapter(){
         this.todoitem = new ArrayList<>();
@@ -65,12 +64,40 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
         return todoitem.size();
     }
 
-    public void OnCheckboxClicked(View view){
+    public int OnCheckboxClicked(View view, int count, int position){
 
         boolean checked = ((CheckBox) view).isChecked();
 
+        return count++;
     }
+/*
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
 
+        // Check if an existing view is being reused, otherwise inflate the view
+        ViewHolder viewHolder; // view lookup cache stored in tag
+
+        if (convertView == null) {
+
+            viewHolder = new ViewHolder();
+
+            viewHolder.checkedTextView = convertView.findViewById(R.id.checkbox);
+            viewHolder.checkedTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    viewHolder.checkedTextView.setChecked(!viewHolder.checkedTextView.isChecked());
+                }
+            });
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
+
+        //viewHolder.checkedTextView.set(todoitem.get(position));
+
+        return convertView;
+}
+*/
     static class ToDoViewHolder extends RecyclerView.ViewHolder {
         TextView titleTextView;
         TextView dateTextView;
@@ -87,7 +114,9 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
         }
     }
 
-
+    private static class ViewHolder {
+        CheckedTextView checkedTextView;
+    }
 
 
 }

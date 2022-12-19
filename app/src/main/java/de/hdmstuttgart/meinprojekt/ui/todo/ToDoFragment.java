@@ -7,6 +7,8 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.media.Image;
 import android.os.Bundle;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +46,7 @@ public class ToDoFragment extends Fragment{
     private RecyclerView recyclerView;
     List<ToDoItem> list = new ArrayList<>();
     int i=0;
+    int count=0;
 
     private ToDoAdapter toDoAdapter;
     private String currentTime;
@@ -66,7 +69,16 @@ public class ToDoFragment extends Fragment{
 
         viewModel = new ViewModelProvider(this).get(ToDoViewModel.class);
 
-        //CheckBox check = recyclerView.findViewById(R.id.checkbox);
+
+
+        // CheckBox check = recyclerView.findViewById(R.id.checkbox);
+
+        //check.isChecked();
+        // check.toggle();
+
+
+        //toDoAdapter.OnCheckboxClicked(view, count);
+
 
         viewModel.getSavedToDos().observe((LifecycleOwner) getContext(), list -> {
             Log.d(TAG, "onClick: opening Edit dialog");
@@ -80,8 +92,8 @@ public class ToDoFragment extends Fragment{
                         }
 
                         /*
-                        CheckBox check = recyclerView.findViewById(R.id.checkbox);
-                        toDoAdapter.OnCheckboxClicked(view);
+
+                        toDoAdapter.OnCheckboxClicked(view, count);
 
                         check.onClick(view) {
                             @Override
@@ -130,9 +142,7 @@ public class ToDoFragment extends Fragment{
                     });
             recyclerView.setAdapter(toDoAdapter);
         });
-
-
-
+        
         recyclerView.setAdapter(toDoAdapter);
 
         //fab button
