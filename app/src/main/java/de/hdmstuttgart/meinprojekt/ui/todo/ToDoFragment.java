@@ -71,14 +71,16 @@ public class ToDoFragment extends Fragment{
 
 
 
-        // CheckBox check = recyclerView.findViewById(R.id.checkbox);
-
-        //check.isChecked();
-        // check.toggle();
+        //CheckBox check = recyclerView.findViewById(R.id.checkbox);
+        //final CheckBox check = (CheckBox) recyclerView.findViewById(R.id.checkbox);
 
 
-        //toDoAdapter.OnCheckboxClicked(view, count);
+       /* if(check.isChecked()){
 
+            check.setChecked(true);
+            count++;
+        }*/
+            //toDoAdapter.OnCheckboxClicked(view, count);
 
         viewModel.getSavedToDos().observe((LifecycleOwner) getContext(), list -> {
             Log.d(TAG, "onClick: opening Edit dialog");
@@ -91,23 +93,15 @@ public class ToDoFragment extends Fragment{
                             return;
                         }
 
-                        /*
+                        CheckBox check = recyclerView.findViewById(R.id.checkbox);
 
-                        toDoAdapter.OnCheckboxClicked(view, count);
+                        if(check.isChecked()){
+                            toDoAdapter.OnCheckboxClicked(view,count);
+                            check.setChecked(true);
+                            System.out.println(count);
+                            Log.d(TAG, "checked");
+                        }
 
-                        check.onClick(view) {
-                            @Override
-                            public void onClick(View v) {
-                                boolean checked = ((CheckBox) v).isChecked();
-                                // Check which checkbox was clicked
-                                if (checked){
-                                    Log.d(TAG, "checked");
-                                }
-                                else{
-                                    Log.d(TAG, "checkbox not checked");
-                                }
-                            }
-                        });*/
 
 
                         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());

@@ -1,6 +1,9 @@
 package de.hdmstuttgart.meinprojekt.ui.todo;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,11 +67,10 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
         return todoitem.size();
     }
 
-    public int OnCheckboxClicked(View view, int count, int position){
-
-        boolean checked = ((CheckBox) view).isChecked();
+    public int OnCheckboxClicked(View view, int count){
 
         return count++;
+
     }
 /*
     @Override
