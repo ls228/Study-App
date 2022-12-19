@@ -3,16 +3,22 @@ package de.hdmstuttgart.meinprojekt.ui.todo;
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
@@ -51,23 +57,81 @@ public class ToDoFragment extends Fragment{
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_todo, container, false);
 
-        //addToDo();
         // showing todos
         recyclerView = view.findViewById(R.id.view_todolist);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-        toDoAdapter = new ToDoAdapter(getContext(),list,list.size());
+        toDoAdapter = new ToDoAdapter(getContext(),list,list.size(),(toDoItemPos,position) -> {});
 
         viewModel = new ViewModelProvider(this).get(ToDoViewModel.class);
 
+        //CheckBox check = recyclerView.findViewById(R.id.checkbox);
+
         viewModel.getSavedToDos().observe((LifecycleOwner) getContext(), list -> {
-            if (list == null) return;
-            toDoAdapter = new ToDoAdapter(getContext(), list, list.size());
+            Log.d(TAG, "onClick: opening Edit dialog");
+            if(list == null) return;
+            toDoAdapter = new ToDoAdapter(getContext(),
+                    list, list.size(),
+                    (toDoItemPos, position) ->{
+                        ToDoAdapter adapter = (ToDoAdapter) recyclerView.getAdapter();
+                        if (adapter == null) {
+                            return;
+                        }
 
+                        /*
+                        CheckBox check = recyclerView.findViewById(R.id.checkbox);
+                        toDoAdapter.OnCheckboxClicked(view);
+
+                        check.onClick(view) {
+                            @Override
+                            public void onClick(View v) {
+                                boolean checked = ((CheckBox) v).isChecked();
+                                // Check which checkbox was clicked
+                                if (checked){
+                                    Log.d(TAG, "checked");
+                                }
+                                else{
+                                    Log.d(TAG, "checkbox not checked");
+                                }
+                            }
+                        });*/
+
+
+                        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
+                        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.edittodo_dialog, null);
+
+                        dialogBuilder.setView(dialogView);
+
+                        dialogBuilder.setCancelable(true);
+
+                        AlertDialog dialogEdit = dialogBuilder.show();
+
+                        Log.d(TAG, "onClick: opening Edit dialog success");
+
+                        Button btnDone = dialogView.findViewById(R.id.btndone);
+                        Button btnDelete = dialogView.findViewById(R.id.btndelete);
+
+
+                        btnDone.setOnClickListener(v -> {
+                                dialogEdit.dismiss();}
+                        );
+
+
+                        btnDelete.setOnClickListener(v -> {
+
+                                    viewModel.removeToDo(list.get(position));
+                                    toDoAdapter.notifyItemRemoved(position);
+                                    toDoAdapter.notifyItemRangeChanged(position, 1);
+                                    dialogEdit.dismiss();
+
+                        });
+
+                    });
             recyclerView.setAdapter(toDoAdapter);
-
         });
+
+
 
         recyclerView.setAdapter(toDoAdapter);
 
@@ -78,6 +142,7 @@ public class ToDoFragment extends Fragment{
 
             AlertDialog.Builder builder = new AlertDialog.Builder(v.getRootView().getContext());
             View dialogView = LayoutInflater.from(v.getRootView().getContext()).inflate(R.layout.addtodo_dialog,null);
+
             TextView titleHeading;
             TextView topicHeading;
 
@@ -98,12 +163,12 @@ public class ToDoFragment extends Fragment{
             builder.setView(dialogView);
             builder.setCancelable(true);
 
-            AlertDialog test = builder.show();
+            AlertDialog dialog = builder.show();
 
-                    btnCancel.setOnClickListener(
+            btnCancel.setOnClickListener(
                             a -> {
                                 Log.d(TAG, "onClick: closing dialog");
-                                test.dismiss();
+                                dialog.dismiss();
                             });
 
             btnAdd.setOnClickListener(
@@ -116,41 +181,37 @@ public class ToDoFragment extends Fragment{
                                 inputTitle = titleInput.getText().toString();
                                 inputTopic = topicInput.getText().toString();
 
-                                attach(inputTitle,currentTime,inputTopic);
+                                if(inputTopic!=""&&inputTitle!="")
+                                    attach(inputTitle,currentTime,inputTopic);
 
-                                test.dismiss();
+                                dialog.dismiss();
                             });
         }
         );
-
-
         return view;
-
     }
 
-    /*
-    private void addToDo(){
-        list.add(new ToDoItem("It-Security",currentTime,"Chapter 1, Chapter 2"));
-        list.add(new ToDoItem("Math",currentTime,"Chapter 1, new Assignment"));
-        list.add(new ToDoItem("Mobile Application Development",currentTime,"Assignment 1, Chapter 2"));
-        list.add(new ToDoItem("User interface design",currentTime,"Presentation wireframes"));
-        list.add(new ToDoItem("It-Security",currentTime,"Chapter 1, Chapter 2"));
 
-    }*/
 
     private void attach(String title,String currentTime, String studyTopic){
         try {
-            list.add(new ToDoItem(title,currentTime,studyTopic));
-            viewModel.saveToDo(list.get(i));
-            i++;
+            if(title!="") {
+                list.add(new ToDoItem(title, currentTime, studyTopic));
+                viewModel.saveToDo(list.get(i));
+                i++;
+            }
         }
         catch (ClassCastException e) {
             Log.e(TAG, "onAttach: ClassCastException: "
                     + e.getMessage());
         }
-
     }
 /*
+ public void onResume(){
+            super.onResume();
+            toDoAdapter.notifyDataSetChanged();
+        }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
