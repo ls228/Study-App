@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -65,9 +66,7 @@ public class ToDoFragment extends Fragment{
 
         viewModel = new ViewModelProvider(this).get(ToDoViewModel.class);
 
-
-        ImageView check = recyclerView.findViewById(R.id.check);
-        ImageView checked = recyclerView.findViewById(R.id.checked);
+        //CheckBox check = recyclerView.findViewById(R.id.checkbox);
 
         viewModel.getSavedToDos().observe((LifecycleOwner) getContext(), list -> {
             Log.d(TAG, "onClick: opening Edit dialog");
@@ -79,6 +78,25 @@ public class ToDoFragment extends Fragment{
                         if (adapter == null) {
                             return;
                         }
+
+                        /*
+                        CheckBox check = recyclerView.findViewById(R.id.checkbox);
+                        toDoAdapter.OnCheckboxClicked(view);
+
+                        check.onClick(view) {
+                            @Override
+                            public void onClick(View v) {
+                                boolean checked = ((CheckBox) v).isChecked();
+                                // Check which checkbox was clicked
+                                if (checked){
+                                    Log.d(TAG, "checked");
+                                }
+                                else{
+                                    Log.d(TAG, "checkbox not checked");
+                                }
+                            }
+                        });*/
+
 
                         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
                         View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.edittodo_dialog, null);
@@ -96,8 +114,6 @@ public class ToDoFragment extends Fragment{
 
 
                         btnDone.setOnClickListener(v -> {
-                                //check.setVisibility(View.INVISIBLE);
-                                //checked.setVisibility(View.VISIBLE);
                                 dialogEdit.dismiss();}
                         );
 
@@ -114,6 +130,7 @@ public class ToDoFragment extends Fragment{
                     });
             recyclerView.setAdapter(toDoAdapter);
         });
+
 
 
         recyclerView.setAdapter(toDoAdapter);
@@ -173,6 +190,7 @@ public class ToDoFragment extends Fragment{
         );
         return view;
     }
+
 
 
     private void attach(String title,String currentTime, String studyTopic){

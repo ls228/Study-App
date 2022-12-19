@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -64,6 +65,11 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
         return todoitem.size();
     }
 
+    public void OnCheckboxClicked(View view){
+
+        boolean checked = ((CheckBox) view).isChecked();
+
+    }
 
     static class ToDoViewHolder extends RecyclerView.ViewHolder {
         TextView titleTextView;
@@ -80,6 +86,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
             topicTextView = itemView.findViewById(R.id.topic);
         }
     }
+
 
 
 
