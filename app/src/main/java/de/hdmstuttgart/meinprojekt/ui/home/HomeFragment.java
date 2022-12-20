@@ -74,7 +74,9 @@ public class HomeFragment extends Fragment {
         MinutePicker.setMaxValue(60);
         MinutePicker.setValue(0);
 
-
+        /**
+         * set hours with number picker and calculate total time
+         */
         HourPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
@@ -87,6 +89,9 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        /**
+         * set minutes with number picker and calculate total time
+         */
         MinutePicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
@@ -126,6 +131,7 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+
     private void setTime(long timeInMillis) {
         mStartTimeInMillis = timeInMillis;
         resetTimer();
@@ -142,7 +148,6 @@ public class HomeFragment extends Fragment {
                 mProgressBar.setProgress(progress);
                 updateCountDownText();
             }
-
 
             @Override
             public void onFinish() {
