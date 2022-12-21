@@ -71,15 +71,7 @@ public class ToDoFragment extends Fragment{
 
 
 
-        //CheckBox check = recyclerView.findViewById(R.id.checkbox);
-        //final CheckBox check = (CheckBox) recyclerView.findViewById(R.id.checkbox);
 
-
-       /* if(check.isChecked()){
-
-            check.setChecked(true);
-            count++;
-        }*/
             //toDoAdapter.OnCheckboxClicked(view, count);
 
         viewModel.getSavedToDos().observe((LifecycleOwner) getContext(), list -> {
@@ -92,7 +84,7 @@ public class ToDoFragment extends Fragment{
                         if (adapter == null) {
                             return;
                         }
-
+/*
                         CheckBox check = recyclerView.findViewById(R.id.checkbox);
 
                         if(check.isChecked()){
@@ -100,7 +92,7 @@ public class ToDoFragment extends Fragment{
                             check.setChecked(true);
                             System.out.println(count);
                             Log.d(TAG, "checked");
-                        }
+                        }*/
 
                         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
                         View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.edittodo_dialog, null);

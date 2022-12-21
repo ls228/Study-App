@@ -72,6 +72,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
         return count++;
 
     }
+
 /*
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
