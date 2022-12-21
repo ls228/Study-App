@@ -25,7 +25,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
     private Context context;
     private int size;
     OnItemClickListener listener;
-    int countToDos = 0;
+    public int countToDosChecked = 0;
 
     public interface OnItemClickListener{
         void onToDoCLickListener(ToDoItem toDoItem, int position);
@@ -67,15 +67,15 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
                 // The toggle is enabled
                 Log.d(TAG, "onCheckedChanged: checked");
                 OnCheckboxClicked();
-                countToDos++;
-                System.out.println("Number of To Dos: " + countToDos);
+                countToDosChecked++;
+                System.out.println("Number of To Dos: " + countToDosChecked);
 
             } else {
                 // The toggle is disabled
                 Log.d(TAG, "onCheckedChanged: unchecked");
                 OnCheckboxClicked();
-                countToDos--;
-                System.out.println("Number of To Dos: " + countToDos);
+                countToDosChecked--;
+                System.out.println("Number of To Dos: " + countToDosChecked);
             }
         });
 

@@ -45,6 +45,8 @@ public class ToDoFragment extends Fragment{
     private String inputTitle ="";
     private String inputTopic ="";
 
+    public int countToDos = 0;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -100,13 +102,13 @@ public class ToDoFragment extends Fragment{
                                     toDoAdapter.notifyItemRemoved(position);
                                     toDoAdapter.notifyItemRangeChanged(position, 1);
                                     dialogEdit.dismiss();
-
+                                    countToDos--;
+                            System.out.println("countToDos: " + countToDos);
                         });
 
                     });
             recyclerView.setAdapter(toDoAdapter);
         });
-
 
 
         recyclerView.setAdapter(toDoAdapter);
@@ -159,7 +161,8 @@ public class ToDoFragment extends Fragment{
 
                                 if(inputTopic!=""&&inputTitle!="")
                                     attach(inputTitle,currentTime,inputTopic);
-
+                                    countToDos++;
+                                System.out.println("countToDos: " + countToDos);
                                 dialog.dismiss();
                             });
         }
@@ -182,7 +185,13 @@ public class ToDoFragment extends Fragment{
                     + e.getMessage());
         }
     }
-/*
+
+    public int getCountToDos() {
+        return countToDos;
+    }
+
+
+    /*
  public void onResume(){
             super.onResume();
             toDoAdapter.notifyDataSetChanged();

@@ -22,6 +22,7 @@ import java.util.Locale;
 
 import de.hdmstuttgart.meinprojekt.R;
 import de.hdmstuttgart.meinprojekt.databinding.FragmentHomeBinding;
+import de.hdmstuttgart.meinprojekt.ui.todo.ToDoFragment;
 
 public class HomeFragment extends Fragment {
 
@@ -45,6 +46,7 @@ public class HomeFragment extends Fragment {
     long minutesSet;
 
     ProgressBar mProgressBar;
+    public ProgressBar mProgressBarToDo;
 
 
 
@@ -65,6 +67,7 @@ public class HomeFragment extends Fragment {
         MinutePicker = view.findViewById(R.id.number_picker_min);
 
         mProgressBar = view.findViewById(R.id.progress_bar);
+        mProgressBarToDo = view.findViewById(R.id.progress_bar_count_todo);
 
         HourPicker.setMinValue(0);
         HourPicker.setMaxValue(12);
@@ -116,6 +119,15 @@ public class HomeFragment extends Fragment {
         });
 
         bButtonReset.setOnClickListener(v -> resetTimer());
+
+        bButtonSetTime.setOnClickListener(v -> setTime(mTimeLeftInMillis));
+
+        ToDoFragment toDoFragment = new ToDoFragment();
+        int countToDos = toDoFragment.getCountToDos();
+
+        mProgressBarToDo.setMax(countToDos);
+
+        mProgressBarToDo.setProgress(countToDos);
 
 
         bButtonSetTime.setOnClickListener(v ->{
