@@ -59,7 +59,6 @@ public class ToDoFragment extends Fragment{
 
         viewModel = new ViewModelProvider(this).get(ToDoViewModel.class);
 
-        //CheckBox check = recyclerView.findViewById(R.id.checkbox);
 
         viewModel.getSavedToDos().observe((LifecycleOwner) getContext(), list -> {
             Log.d(TAG, "onClick: opening Edit dialog");

@@ -67,14 +67,12 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
             if (isChecked) {
                 // The toggle is enabled
                 Log.d(TAG, "onCheckedChanged: checked");
-                OnCheckboxClicked();
                 countToDos++;
                 System.out.println("Number of To Dos: " + countToDos);
 
             } else {
                 // The toggle is disabled
                 Log.d(TAG, "onCheckedChanged: unchecked");
-                OnCheckboxClicked();
                 countToDos--;
                 System.out.println("Number of To Dos: " + countToDos);
             }
@@ -87,11 +85,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
         return todoitem.size();
     }
 
-    public void OnCheckboxClicked(){
 
- //       boolean checked = ((CheckBox) view).isChecked();
-
-    }
 
     static class ToDoViewHolder extends RecyclerView.ViewHolder {
         TextView titleTextView;

@@ -23,14 +23,16 @@ public class ToDoItem {
     private final String date;
 /*
     @TypeConverters({Converter.class})
-    public Date date;
-
-    @ColumnInfo(name = "count_checked")
-    private String countChecked;*/
-
+    public Date date;*/
 
     @ColumnInfo(name = "topic")
     private final String topic;
+/*
+    @ColumnInfo(name = "count_checked")
+    private int countChecked;
+
+    @ColumnInfo(name = "count_todos")
+    private int countToDos; */
 
     public String getDate() {
         return date;
@@ -43,7 +45,15 @@ public class ToDoItem {
     public String getTopic() {
         return topic;
     }
+/*
+    public int getCountChecked() {
+        return countChecked;
+    }
 
+    public int getCountToDos() {
+        return countToDos;
+    }
+*/
 
     public ToDoItem(
             String title,
@@ -54,5 +64,14 @@ public class ToDoItem {
         this.date = date;
         this.topic = topic;
     }
+
+    /*
+    public ToDoItem(
+            int countChecked,
+            int countToDos
+    ){
+        this.countChecked=countChecked;
+        this.countToDos=countToDos;
+    }*/
 
 }
