@@ -1,6 +1,9 @@
 package de.hdmstuttgart.meinprojekt.ui.todo;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +25,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
     private Context context;
     private int size;
     OnItemClickListener listener;
+    int countToDos = 0;
 
     public interface OnItemClickListener{
         void onToDoCLickListener(ToDoItem toDoItem, int position);
@@ -58,6 +62,23 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
 
         holder.itemView.setOnClickListener(v -> listener.onToDoCLickListener(toDoItemPos, position)) ;
 
+        holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                // The toggle is enabled
+                Log.d(TAG, "onCheckedChanged: checked");
+                OnCheckboxClicked();
+                countToDos++;
+                System.out.println("Number of To Dos: " + countToDos);
+
+            } else {
+                // The toggle is disabled
+                Log.d(TAG, "onCheckedChanged: unchecked");
+                OnCheckboxClicked();
+                countToDos--;
+                System.out.println("Number of To Dos: " + countToDos);
+            }
+        });
+
     }
 
     @Override
@@ -65,9 +86,9 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
         return todoitem.size();
     }
 
-    public void OnCheckboxClicked(View view){
+    public void OnCheckboxClicked(){
 
-        boolean checked = ((CheckBox) view).isChecked();
+ //       boolean checked = ((CheckBox) view).isChecked();
 
     }
 
@@ -75,6 +96,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
         TextView titleTextView;
         TextView dateTextView;
         TextView topicTextView;
+        CheckBox checkBox;
 
 
         public ToDoViewHolder(View itemView) {
@@ -84,6 +106,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
             titleTextView = itemView.findViewById(R.id.title);
             dateTextView = itemView.findViewById(R.id.date);
             topicTextView = itemView.findViewById(R.id.topic);
+            checkBox = itemView.findViewById(R.id.checkbox);
         }
     }
 
