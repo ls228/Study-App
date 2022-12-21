@@ -30,6 +30,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
     public interface OnItemClickListener{
         void onToDoCLickListener(ToDoItem toDoItem, int position);
     }
+
     //item
     public ToDoAdapter(Context context, List<ToDoItem> todoitem, int size, OnItemClickListener listener) {
         this.context = context;

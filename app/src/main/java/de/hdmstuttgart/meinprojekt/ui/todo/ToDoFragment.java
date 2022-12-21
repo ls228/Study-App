@@ -72,8 +72,6 @@ public class ToDoFragment extends Fragment{
                             return;
                         }
 
-
-
                         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
                         View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.edittodo_dialog, null);
 

@@ -25,6 +25,9 @@ public class ToDoItem {
     @TypeConverters({Converter.class})
     public Date date;*/
 
+    @ColumnInfo(name = "count_checked")
+    private String countChecked;
+
 
     @ColumnInfo(name = "topic")
     private final String topic;
