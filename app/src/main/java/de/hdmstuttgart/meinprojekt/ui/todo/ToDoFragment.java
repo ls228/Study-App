@@ -3,12 +3,7 @@ package de.hdmstuttgart.meinprojekt.ui.todo;
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.media.Image;
 import android.os.Bundle;
-import android.transition.Transition;
-import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +11,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.VisibleForTesting;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
@@ -29,8 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -46,7 +37,6 @@ public class ToDoFragment extends Fragment{
     private RecyclerView recyclerView;
     List<ToDoItem> list = new ArrayList<>();
     int i=0;
-    int count=0;
 
     private ToDoAdapter toDoAdapter;
     private String currentTime;
@@ -69,10 +59,7 @@ public class ToDoFragment extends Fragment{
 
         viewModel = new ViewModelProvider(this).get(ToDoViewModel.class);
 
-
-
-
-            //toDoAdapter.OnCheckboxClicked(view, count);
+        //CheckBox check = recyclerView.findViewById(R.id.checkbox);
 
         viewModel.getSavedToDos().observe((LifecycleOwner) getContext(), list -> {
             Log.d(TAG, "onClick: opening Edit dialog");
@@ -84,15 +71,6 @@ public class ToDoFragment extends Fragment{
                         if (adapter == null) {
                             return;
                         }
-/*
-                        CheckBox check = recyclerView.findViewById(R.id.checkbox);
-
-                        if(check.isChecked()){
-                            toDoAdapter.OnCheckboxClicked(view,count);
-                            check.setChecked(true);
-                            System.out.println(count);
-                            Log.d(TAG, "checked");
-                        }*/
 
                         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
                         View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.edittodo_dialog, null);
@@ -126,7 +104,9 @@ public class ToDoFragment extends Fragment{
                     });
             recyclerView.setAdapter(toDoAdapter);
         });
-        
+
+
+
         recyclerView.setAdapter(toDoAdapter);
 
         //fab button

@@ -23,7 +23,10 @@ public class ToDoItem {
     private final String date;
 /*
     @TypeConverters({Converter.class})
-    public Date date;*/
+    public Date date;
+
+    @ColumnInfo(name = "count_checked")
+    private String countChecked;*/
 
 
     @ColumnInfo(name = "topic")

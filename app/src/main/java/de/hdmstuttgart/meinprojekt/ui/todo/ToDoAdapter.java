@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CheckedTextView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -26,10 +25,12 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
     private Context context;
     private int size;
     OnItemClickListener listener;
+    int countToDos = 0;
 
     public interface OnItemClickListener{
         void onToDoCLickListener(ToDoItem toDoItem, int position);
     }
+
     //item
     public ToDoAdapter(Context context, List<ToDoItem> todoitem, int size, OnItemClickListener listener) {
         this.context = context;
@@ -37,6 +38,8 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
         this.size = size;
         this.listener = listener;
     }
+
+
 
     public ToDoAdapter(){
         this.todoitem = new ArrayList<>();
@@ -60,6 +63,23 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
 
         holder.itemView.setOnClickListener(v -> listener.onToDoCLickListener(toDoItemPos, position)) ;
 
+        holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                // The toggle is enabled
+                Log.d(TAG, "onCheckedChanged: checked");
+                OnCheckboxClicked();
+                countToDos++;
+                System.out.println("Number of To Dos: " + countToDos);
+
+            } else {
+                // The toggle is disabled
+                Log.d(TAG, "onCheckedChanged: unchecked");
+                OnCheckboxClicked();
+                countToDos--;
+                System.out.println("Number of To Dos: " + countToDos);
+            }
+        });
+
     }
 
     @Override
@@ -67,44 +87,17 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
         return todoitem.size();
     }
 
-    public int OnCheckboxClicked(View view, int count){
+    public void OnCheckboxClicked(){
 
-        return count++;
+ //       boolean checked = ((CheckBox) view).isChecked();
 
     }
 
-/*
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-        // Check if an existing view is being reused, otherwise inflate the view
-        ViewHolder viewHolder; // view lookup cache stored in tag
-
-        if (convertView == null) {
-
-            viewHolder = new ViewHolder();
-
-            viewHolder.checkedTextView = convertView.findViewById(R.id.checkbox);
-            viewHolder.checkedTextView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    viewHolder.checkedTextView.setChecked(!viewHolder.checkedTextView.isChecked());
-                }
-            });
-            convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
-        }
-
-        //viewHolder.checkedTextView.set(todoitem.get(position));
-
-        return convertView;
-}
-*/
     static class ToDoViewHolder extends RecyclerView.ViewHolder {
         TextView titleTextView;
         TextView dateTextView;
         TextView topicTextView;
+        CheckBox checkBox;
 
 
         public ToDoViewHolder(View itemView) {
@@ -114,12 +107,11 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
             titleTextView = itemView.findViewById(R.id.title);
             dateTextView = itemView.findViewById(R.id.date);
             topicTextView = itemView.findViewById(R.id.topic);
+            checkBox = itemView.findViewById(R.id.checkbox);
         }
     }
 
-    private static class ViewHolder {
-        CheckedTextView checkedTextView;
-    }
+
 
 
 }
