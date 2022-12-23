@@ -237,6 +237,7 @@ public class HomeFragment extends Fragment {
         bButtonReset.setVisibility(View.INVISIBLE);
         HourPicker.setVisibility(View.INVISIBLE);
         MinutePicker.setVisibility(View.INVISIBLE);
+        //mProgressBar.setVisibility(View.INVISIBLE);
     }
 
 
