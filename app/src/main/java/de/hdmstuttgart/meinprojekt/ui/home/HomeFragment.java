@@ -86,7 +86,7 @@ public class HomeFragment extends Fragment {
             }
             private void calculateTotalTime() {
                 mTimeLeftInMillis = hoursSet + minutesSet;
-                mProgressBar.setMax((int) mTimeLeftInMillis);
+                mProgressBar.setProgress((int) mTimeLeftInMillis);
             }
         });
 
@@ -99,7 +99,7 @@ public class HomeFragment extends Fragment {
             }
             private void calculateTotalTime () {
                 mTimeLeftInMillis = hoursSet + minutesSet;
-                mProgressBar.setMax((int) mTimeLeftInMillis);
+                mProgressBar.setProgress((int) mTimeLeftInMillis);
             }
         });
 
@@ -151,7 +151,7 @@ public class HomeFragment extends Fragment {
             public void onTick(long millisUntilFinished) {
                 mTimeLeftInMillis = millisUntilFinished;
                 int progress = (int) (millisUntilFinished);
-                mProgressBar.setProgress(progress);
+                mProgressBar.setMax(progress);
                 updateCountDownText();
             }
 
