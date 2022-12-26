@@ -1,14 +1,30 @@
 package de.hdmstuttgart.meinprojekt.model.todo;
 
-import java.util.Date;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+
+@Entity
 public class ToDoItem {
 
-    private final String title;
-    private final Date date;
-    private final String studyTopic;
+    @PrimaryKey(autoGenerate = true)
+    public int uid;
 
-    public Date getDate() {
+    @ColumnInfo(name = "title")
+    private final String title;
+
+    @ColumnInfo(name = "date")
+    private final String date;
+
+    @ColumnInfo(name = "topic")
+    private final String topic;
+
+    @ColumnInfo(name = "status")
+    private final Integer status;
+
+
+    public String getDate() {
         return date;
     }
 
@@ -16,19 +32,25 @@ public class ToDoItem {
         return title;
     }
 
-    public String getActor() {
-        return studyTopic;
+    public String getTopic() {
+        return topic;
     }
+
+    public Integer getStatus(){ return status; }
+
+    public Integer getId(){ return uid;}
 
 
     public ToDoItem(
             String title,
-            Date date,
-            String studyTopic
+            String date,
+            String topic,
+            Integer status
     ) {
         this.title = title;
         this.date = date;
-        this.studyTopic = studyTopic;
+        this.topic = topic;
+        this.status = status;
     }
 
 

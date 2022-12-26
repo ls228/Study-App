@@ -1,11 +1,17 @@
 package de.hdmstuttgart.meinprojekt.ui.todo;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.content.Context;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -17,27 +23,80 @@ import de.hdmstuttgart.meinprojekt.model.todo.ToDoItem;
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder> {
 
     private final List<ToDoItem> todoitem;
-    private Context context;
+    private ToDoViewModel viewModel;
+    OnItemClickListener listener;
+
+
+    private ToDoViewModel getToDoViewModel()
+    {
+        if(viewModel==null)
+        {
+            throw new IllegalArgumentException();
+        }
+
+        return viewModel;
+    }
+
+    public interface OnItemClickListener{
+        void onToDoCLickListener(ToDoItem toDoItem, int position);
+    }
+
     //item
-    public ToDoAdapter(List<ToDoItem> todoitem, Context context) {
-
-        this.todoitem=todoitem;
-        this.context = context;
+    public ToDoAdapter(ToDoViewModel viewModel, Context context, List<ToDoItem> todoitem, OnItemClickListener listener) {
+        this.viewModel = viewModel;
+       // this.context = context;
+        this.todoitem = todoitem;
+        this.listener = listener;
     }
 
-    public ToDoAdapter(){
-        this.todoitem = new ArrayList<>();
-    }
 
     @NonNull
     @Override
-    public ToDoAdapter.ToDoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ToDoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.todo_item_layout,parent,false);
 
-        return null;
+        return new ToDoViewHolder(rootView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ToDoAdapter.ToDoViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ToDoViewHolder holder, int position) {
+        ToDoItem toDoItemPos = todoitem.get(position);
+        int id = toDoItemPos.getId();
+
+        holder.titleTextView.setText(toDoItemPos.getTitle());
+        holder.dateTextView.setText(toDoItemPos.getDate());
+        holder.topicTextView.setText(toDoItemPos.getTopic());
+
+        holder.itemView.setOnClickListener(v -> listener.onToDoCLickListener(toDoItemPos, position)) ;
+
+        if(toDoItemPos.getStatus()==1)
+        {
+            holder.checkBox.setChecked(true);
+        }
+        else {
+            holder.checkBox.setChecked(false);
+        }
+
+        holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+
+            LiveData<Integer> countStatus = this.getToDoViewModel().getCountStatusLD();
+            LiveData<Integer> countStatusUnchecked = this.getToDoViewModel().getCountStatusUnchecked();
+
+            if (isChecked) {
+                // The toggle is enabled
+                Log.d(TAG, "onCheckedChanged: checked");
+
+                this.getToDoViewModel().updateStatus(1, id);
+
+                System.out.println("Number of checked To Dos: " + countStatus);
+
+            } else {
+                // The toggle is disabled
+                Log.d(TAG, "onCheckedChanged: unchecked");
+                this.getToDoViewModel().updateStatus(0, id);
+                System.out.println("Number of unchecked To Dos: " + countStatusUnchecked);
+            }
+        });
 
     }
 
@@ -50,7 +109,8 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
     static class ToDoViewHolder extends RecyclerView.ViewHolder {
         TextView titleTextView;
         TextView dateTextView;
-        TextView actorTextView;
+        TextView topicTextView;
+        CheckBox checkBox;
 
 
         public ToDoViewHolder(View itemView) {
@@ -59,44 +119,12 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
 
             titleTextView = itemView.findViewById(R.id.title);
             dateTextView = itemView.findViewById(R.id.date);
-            actorTextView = itemView.findViewById(R.id.topic);
+            topicTextView = itemView.findViewById(R.id.topic);
+            checkBox = itemView.findViewById(R.id.checkbox);
         }
     }
-/*
-    @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        View view = convertView;
-        if (view == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.CustomLayout, null);
-        }
 
-        //Handle TextView and display string from your list
-        TextView tvContact= (TextView)view.findViewById(R.id.title);
-        tvContact.setText(todoitem.get(position));
 
-        //Handle buttons and add onClickListeners
-    Button callbtn= (Button)view.findViewById(R.id.fab);
-
-    callbtn.setOnClickListener(new View.OnClickListener(){
-        @Override
-        public void onClick(View v) {
-            //do something
-
-        }
-    });
-
-    addBtn.setOnClickListener(new View.OnClickListener(){
-        @Override
-        public void onClick(View v) {
-            //do something
-            notifyDataSetChanged();
-            .
-        }
-    });
-
-    return view;
-    }*/
 }
 
 

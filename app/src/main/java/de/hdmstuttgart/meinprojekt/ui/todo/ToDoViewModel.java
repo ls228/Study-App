@@ -1,20 +1,60 @@
 package de.hdmstuttgart.meinprojekt.ui.todo;
 
+import android.app.Application;
+import android.database.Cursor;
+
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
-public class ToDoViewModel extends ViewModel {
+import java.util.List;
 
-    private final MutableLiveData<String> mText;
+import de.hdmstuttgart.meinprojekt.database.ToDoDao;
+import de.hdmstuttgart.meinprojekt.database.ToDoRepository;
 
-    public ToDoViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is To Do fragment");
+import de.hdmstuttgart.meinprojekt.model.todo.ToDoItem;
+
+public class ToDoViewModel extends AndroidViewModel {
+
+    //informiert bei Veränderungen
+    private final LiveData<List<ToDoItem>> toDoLiveData;
+    private final LiveData<Integer> statusUnchecked;
+    private final LiveData<Integer> countStatusLD;
+
+    private final ToDoRepository repository;
+
+    public ToDoViewModel(@NonNull Application application) {
+        super(application);
+        //repository Schnittstelle zur Datenbank
+        repository = new ToDoRepository(application);
+        toDoLiveData = repository.getSavedToDos();
+        statusUnchecked = repository.getCountStatusUnchecked();
+        countStatusLD = repository.getCountStatusLD();
     }
-    //
 
-    public LiveData<String> getText() {
-        return mText;
+    public LiveData<List<ToDoItem>> getSavedToDos() {
+        return toDoLiveData;
     }
+
+    public void removeToDo(ToDoItem toDoItem) {
+        repository.delete(toDoItem);
+    }
+
+    public void saveToDo(ToDoItem toDoItem){
+        repository.insert(toDoItem);
+    }
+
+    public void updateStatus(Integer status, Integer id){repository.updateStatus(status,id);}
+
+    public LiveData<Integer> getCountStatusLD() {
+        return countStatusLD;
+    }
+
+    public LiveData<Integer> getCountStatusUnchecked() {
+        return statusUnchecked;
+    }
+
+
 }

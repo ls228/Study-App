@@ -9,20 +9,29 @@ import android.widget.TextView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import de.hdmstuttgart.meinprojekt.databinding.ActivityMainBinding;
-
+import de.hdmstuttgart.meinprojekt.model.todo.ToDoItem;
+import de.hdmstuttgart.meinprojekt.ui.todo.ToDoAdapter;
+import de.hdmstuttgart.meinprojekt.ui.todo.ToDoFragment;
+import de.hdmstuttgart.meinprojekt.ui.todo.ToDoViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+    private ToDoViewModel viewModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        //viewModel = new ViewModelProvider(this).get(ToDoViewModel.class);
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
