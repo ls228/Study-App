@@ -1,14 +1,9 @@
 package de.hdmstuttgart.meinprojekt.model.todo;
 
-
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverters;
 
-import java.util.Date;
-
-import de.hdmstuttgart.meinprojekt.database.Converter;
 
 @Entity
 public class ToDoItem {
@@ -21,13 +16,13 @@ public class ToDoItem {
 
     @ColumnInfo(name = "date")
     private final String date;
-/*
-    @TypeConverters({Converter.class})
-    public Date date;*/
-
 
     @ColumnInfo(name = "topic")
     private final String topic;
+
+    @ColumnInfo(name = "status")
+    private final Integer status;
+
 
     public String getDate() {
         return date;
@@ -41,15 +36,22 @@ public class ToDoItem {
         return topic;
     }
 
+    public Integer getStatus(){ return status; }
+
+    public Integer getId(){ return uid;}
+
 
     public ToDoItem(
             String title,
             String date,
-            String topic
+            String topic,
+            Integer status
     ) {
         this.title = title;
         this.date = date;
         this.topic = topic;
+        this.status = status;
     }
+
 
 }
