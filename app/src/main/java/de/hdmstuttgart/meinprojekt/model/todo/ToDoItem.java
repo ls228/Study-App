@@ -1,14 +1,9 @@
 package de.hdmstuttgart.meinprojekt.model.todo;
 
-
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverters;
 
-import java.util.Date;
-
-import de.hdmstuttgart.meinprojekt.database.Converter;
 
 @Entity
 public class ToDoItem {
@@ -41,7 +36,7 @@ public class ToDoItem {
         return topic;
     }
 
-    public Integer getStatus(){ return status;}
+    public Integer getStatus(){ return status; }
 
     public Integer getId(){ return uid;}
 

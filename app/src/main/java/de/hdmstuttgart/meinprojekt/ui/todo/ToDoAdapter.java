@@ -24,8 +24,6 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
 
     private final List<ToDoItem> todoitem;
     private ToDoViewModel viewModel;
-    private Context context;
-    private int size;
     OnItemClickListener listener;
 
 
@@ -44,18 +42,13 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
     }
 
     //item
-    public ToDoAdapter(ToDoViewModel viewModel, Context context, List<ToDoItem> todoitem, int size, OnItemClickListener listener) {
+    public ToDoAdapter(ToDoViewModel viewModel, Context context, List<ToDoItem> todoitem, OnItemClickListener listener) {
         this.viewModel = viewModel;
-        this.context = context;
+       // this.context = context;
         this.todoitem = todoitem;
-        this.size = size;
         this.listener = listener;
     }
 
-
-    public ToDoAdapter(){
-        this.todoitem = new ArrayList<>();
-    }
 
     @NonNull
     @Override
@@ -95,7 +88,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
 
                 this.getToDoViewModel().updateStatus(1, id);
 
-                System.out.println("Number of checked To Dos: " + countStatus.getValue());
+                System.out.println("Number of checked To Dos: " + countStatus);
 
             } else {
                 // The toggle is disabled
@@ -105,14 +98,12 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
             }
         });
 
-
     }
 
     @Override
     public int getItemCount() {
         return todoitem.size();
     }
-
 
 
     static class ToDoViewHolder extends RecyclerView.ViewHolder {
@@ -132,8 +123,6 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
             checkBox = itemView.findViewById(R.id.checkbox);
         }
     }
-
-
 
 
 }
