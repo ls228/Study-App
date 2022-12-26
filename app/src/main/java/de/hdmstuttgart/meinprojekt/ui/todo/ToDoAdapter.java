@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -22,23 +23,34 @@ import de.hdmstuttgart.meinprojekt.model.todo.ToDoItem;
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder> {
 
     private final List<ToDoItem> todoitem;
+    private ToDoViewModel viewModel;
     private Context context;
     private int size;
     OnItemClickListener listener;
-    int countToDos = 0;
+
+
+    private ToDoViewModel getToDoViewModel()
+    {
+        if(viewModel==null)
+        {
+            throw new IllegalArgumentException();
+        }
+
+        return viewModel;
+    }
 
     public interface OnItemClickListener{
         void onToDoCLickListener(ToDoItem toDoItem, int position);
     }
 
     //item
-    public ToDoAdapter(Context context, List<ToDoItem> todoitem, int size, OnItemClickListener listener) {
+    public ToDoAdapter(ToDoViewModel viewModel, Context context, List<ToDoItem> todoitem, int size, OnItemClickListener listener) {
+        this.viewModel = viewModel;
         this.context = context;
         this.todoitem = todoitem;
         this.size = size;
         this.listener = listener;
     }
-
 
 
     public ToDoAdapter(){
@@ -56,6 +68,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
     @Override
     public void onBindViewHolder(@NonNull ToDoViewHolder holder, int position) {
         ToDoItem toDoItemPos = todoitem.get(position);
+        int id = toDoItemPos.getId();
 
         holder.titleTextView.setText(toDoItemPos.getTitle());
         holder.dateTextView.setText(toDoItemPos.getDate());
@@ -63,20 +76,35 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
 
         holder.itemView.setOnClickListener(v -> listener.onToDoCLickListener(toDoItemPos, position)) ;
 
+        if(toDoItemPos.getStatus()==1)
+        {
+            holder.checkBox.setChecked(true);
+        }
+        else {
+            holder.checkBox.setChecked(false);
+        }
+
         holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+
+            LiveData<Integer> countStatus = this.getToDoViewModel().getCountStatusLD();
+            LiveData<Integer> countStatusUnchecked = this.getToDoViewModel().getCountStatusUnchecked();
+
             if (isChecked) {
                 // The toggle is enabled
                 Log.d(TAG, "onCheckedChanged: checked");
-                countToDos++;
-                System.out.println("Number of To Dos: " + countToDos);
+
+                this.getToDoViewModel().updateStatus(1, id);
+
+                System.out.println("Number of checked To Dos: " + countStatus.getValue());
 
             } else {
                 // The toggle is disabled
                 Log.d(TAG, "onCheckedChanged: unchecked");
-                countToDos--;
-                System.out.println("Number of To Dos: " + countToDos);
+                this.getToDoViewModel().updateStatus(0, id);
+                System.out.println("Number of unchecked To Dos: " + countStatusUnchecked);
             }
         });
+
 
     }
 

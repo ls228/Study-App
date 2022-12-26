@@ -36,7 +36,6 @@ public class ToDoFragment extends Fragment{
     //private FragmentTodoBinding binding;
     private RecyclerView recyclerView;
     List<ToDoItem> list = new ArrayList<>();
-    int i=0;
 
     private ToDoAdapter toDoAdapter;
     private String currentTime;
@@ -48,6 +47,8 @@ public class ToDoFragment extends Fragment{
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        //try
+
         View view = inflater.inflate(R.layout.fragment_todo, container, false);
 
         // showing todos
@@ -55,18 +56,21 @@ public class ToDoFragment extends Fragment{
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-        toDoAdapter = new ToDoAdapter(getContext(),list,list.size(),(toDoItemPos,position) -> {});
-
         viewModel = new ViewModelProvider(this).get(ToDoViewModel.class);
+
+        toDoAdapter = new ToDoAdapter(viewModel, getContext(),list,list.size(),(toDoItemPos,position) -> {});
 
 
         viewModel.getSavedToDos().observe((LifecycleOwner) getContext(), list -> {
             Log.d(TAG, "onClick: opening Edit dialog");
             if(list == null) return;
-            toDoAdapter = new ToDoAdapter(getContext(),
+            toDoAdapter = new ToDoAdapter(viewModel, getContext(),
                     list, list.size(),
                     (toDoItemPos, position) ->{
                         ToDoAdapter adapter = (ToDoAdapter) recyclerView.getAdapter();
+
+                        //bei Verwendung von try/catch darf die Methode
+                        //zwischendrin nicht verlassen werden
                         if (adapter == null) {
                             return;
                         }
@@ -82,14 +86,7 @@ public class ToDoFragment extends Fragment{
 
                         Log.d(TAG, "onClick: opening Edit dialog success");
 
-                        Button btnDone = dialogView.findViewById(R.id.btndone);
                         Button btnDelete = dialogView.findViewById(R.id.btndelete);
-
-
-                        btnDone.setOnClickListener(v -> {
-                                dialogEdit.dismiss();}
-                        );
-
 
                         btnDelete.setOnClickListener(v -> {
 
@@ -103,7 +100,6 @@ public class ToDoFragment extends Fragment{
                     });
             recyclerView.setAdapter(toDoAdapter);
         });
-
 
 
         recyclerView.setAdapter(toDoAdapter);
@@ -154,24 +150,26 @@ public class ToDoFragment extends Fragment{
                                 inputTitle = titleInput.getText().toString();
                                 inputTopic = topicInput.getText().toString();
 
-                                if(inputTopic!=""&&inputTitle!="")
-                                    attach(inputTitle,currentTime,inputTopic);
+                                attach(inputTitle,currentTime,inputTopic,0);
 
                                 dialog.dismiss();
                             });
         }
         );
+
+        //catch IllegalArgumentException ..
+
+
         return view;
     }
 
 
 
-    private void attach(String title,String currentTime, String studyTopic){
+    private void attach(String title,String currentTime, String studyTopic, Integer status){
         try {
             if(title!="") {
-                list.add(new ToDoItem(title, currentTime, studyTopic));
-                viewModel.saveToDo(list.get(i));
-                i++;
+                ToDoItem toDoItem = new ToDoItem(title, currentTime, studyTopic, status);
+                viewModel.saveToDo(toDoItem);
             }
         }
         catch (ClassCastException e) {

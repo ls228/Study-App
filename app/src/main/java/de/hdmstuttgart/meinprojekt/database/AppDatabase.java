@@ -2,16 +2,19 @@ package de.hdmstuttgart.meinprojekt.database;
 
 import android.content.Context;
 
+import androidx.room.AutoMigration;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.room.TypeConverter;
 
-import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import de.hdmstuttgart.meinprojekt.model.todo.ToDoItem;
+/*
+@Database(entities = {ToDoItem.class}, version = 2, autoMigrations = {
+        @AutoMigration(from = 1, to = 2)
+})*/
 
 @Database(entities = {ToDoItem.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase{
@@ -30,12 +33,13 @@ public abstract class AppDatabase extends RoomDatabase{
             synchronized (AppDatabase.class){
                 if(INSTANCE == null){
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                                    AppDatabase.class,"moviesDb") //ziel unklar
+                                    AppDatabase.class,"todoDb")
                             .build();
                 }
             }
         }
         return INSTANCE;
     }
+
 }
 

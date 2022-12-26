@@ -21,18 +21,13 @@ public class ToDoItem {
 
     @ColumnInfo(name = "date")
     private final String date;
-/*
-    @TypeConverters({Converter.class})
-    public Date date;*/
 
     @ColumnInfo(name = "topic")
     private final String topic;
-/*
-    @ColumnInfo(name = "count_checked")
-    private int countChecked;
 
-    @ColumnInfo(name = "count_todos")
-    private int countToDos; */
+    @ColumnInfo(name = "status")
+    private final Integer status;
+
 
     public String getDate() {
         return date;
@@ -45,33 +40,23 @@ public class ToDoItem {
     public String getTopic() {
         return topic;
     }
-/*
-    public int getCountChecked() {
-        return countChecked;
-    }
 
-    public int getCountToDos() {
-        return countToDos;
-    }
-*/
+    public Integer getStatus(){ return status;}
+
+    public Integer getId(){ return uid;}
+
 
     public ToDoItem(
             String title,
             String date,
-            String topic
+            String topic,
+            Integer status
     ) {
         this.title = title;
         this.date = date;
         this.topic = topic;
+        this.status = status;
     }
 
-    /*
-    public ToDoItem(
-            int countChecked,
-            int countToDos
-    ){
-        this.countChecked=countChecked;
-        this.countToDos=countToDos;
-    }*/
 
 }
