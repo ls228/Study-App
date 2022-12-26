@@ -80,7 +80,8 @@
         android:layout_marginEnd="96dp"
         android:layout_marginBottom="-143dp"
         app:indicatorSize="200dp"
-        />
+        android:rotationX="180"
+        android:rotation="180"/>
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/progress_bar_count_todo"
@@ -91,7 +92,9 @@
         android:layout_centerHorizontal="true"
         android:layout_marginEnd="152dp"
         android:layout_marginBottom="118dp"
-        app:indicatorSize="100dp" />
+        app:indicatorSize="100dp"
+        android:rotationX="180"
+        android:rotation="180"/>
 
 
 </RelativeLayout>
