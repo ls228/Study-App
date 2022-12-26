@@ -124,13 +124,13 @@ public class HomeFragment extends Fragment {
         });
 
         bButtonSetTime.setOnClickListener(v -> setTime(mTimeLeftInMillis));
-
+/*
         ToDoFragment toDoFragment = new ToDoFragment();
         int countToDos = toDoFragment.getCountToDos();
 
         mProgressBarToDo.setMax(countToDos);
 
-        mProgressBarToDo.setProgress(countToDos);
+        mProgressBarToDo.setProgress(countToDos);*/
 
 
         bButtonSetTime.setOnClickListener(v ->{
