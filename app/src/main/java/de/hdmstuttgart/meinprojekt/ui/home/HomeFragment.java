@@ -86,7 +86,7 @@ public class HomeFragment extends Fragment {
             }
             private void calculateTotalTime() {
                 mTimeLeftInMillis = hoursSet + minutesSet;
-                mProgressBar.setProgress((int) mTimeLeftInMillis);
+                mProgressBar.setMax((int) mTimeLeftInMillis);
             }
         });
 
@@ -99,7 +99,7 @@ public class HomeFragment extends Fragment {
             }
             private void calculateTotalTime () {
                 mTimeLeftInMillis = hoursSet + minutesSet;
-                mProgressBar.setProgress((int) mTimeLeftInMillis);
+                mProgressBar.setMax((int) mTimeLeftInMillis);
             }
         });
 
@@ -118,7 +118,10 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        bButtonReset.setOnClickListener(v -> resetTimer());
+        bButtonReset.setOnClickListener(v -> {
+            resetTimer();
+            mProgressBar.setMax(0);
+        });
 
         bButtonSetTime.setOnClickListener(v -> setTime(mTimeLeftInMillis));
 
@@ -132,6 +135,7 @@ public class HomeFragment extends Fragment {
 
         bButtonSetTime.setOnClickListener(v ->{
             resetTimer();
+            mProgressBar.setMax(0);
             updateWatchInterface();
         });
 
@@ -151,7 +155,7 @@ public class HomeFragment extends Fragment {
             public void onTick(long millisUntilFinished) {
                 mTimeLeftInMillis = millisUntilFinished;
                 int progress = (int) (millisUntilFinished);
-                mProgressBar.setMax(progress);
+                mProgressBar.setProgress(progress);
                 updateCountDownText();
             }
 
@@ -229,7 +233,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void updateWatchInterfaceFinish() {
-        mCountDownText.setText("Done!\uD83E\uDDF8");
+        mCountDownText.setText("Done!☺");
         mCountDownText.setVisibility(View.VISIBLE);
         bButtonSetTime.setText("Set Timer");
         bButtonSetTime.setVisibility(View.VISIBLE);
