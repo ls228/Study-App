@@ -23,6 +23,7 @@ import java.util.Locale;
 import de.hdmstuttgart.meinprojekt.R;
 import de.hdmstuttgart.meinprojekt.databinding.FragmentHomeBinding;
 import de.hdmstuttgart.meinprojekt.ui.todo.ToDoFragment;
+import de.hdmstuttgart.meinprojekt.ui.todo.ToDoViewModel;
 
 public class HomeFragment extends Fragment {
 
@@ -77,6 +78,8 @@ public class HomeFragment extends Fragment {
         MinutePicker.setMaxValue(60);
         MinutePicker.setValue(0);
 
+        HomeViewModel viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+
         /**
          * set hours with number picker and calculate total time
          */
@@ -129,6 +132,10 @@ public class HomeFragment extends Fragment {
         });
 
         bButtonSetTime.setOnClickListener(v -> setTime(mTimeLeftInMillis));
+
+       viewModel.getCountStatusLD();
+
+
 /*
         ToDoFragment toDoFragment = new ToDoFragment();
         int countToDos = toDoFragment.getCountToDos();

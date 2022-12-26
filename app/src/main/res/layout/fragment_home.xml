@@ -79,7 +79,8 @@
         android:layout_centerVertical="true"
         android:layout_marginEnd="96dp"
         android:layout_marginBottom="-143dp"
-        app:indicatorSize="200dp" />
+        app:indicatorSize="200dp"
+        />
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/progress_bar_count_todo"
