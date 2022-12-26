@@ -16,13 +16,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.Locale;
 
 import de.hdmstuttgart.meinprojekt.R;
-import de.hdmstuttgart.meinprojekt.databinding.FragmentHomeBinding;
-import de.hdmstuttgart.meinprojekt.ui.todo.ToDoFragment;
 import de.hdmstuttgart.meinprojekt.ui.todo.ToDoViewModel;
 
 public class HomeFragment extends Fragment {
@@ -40,14 +40,18 @@ public class HomeFragment extends Fragment {
     private long mTimeLeftInMillis;
     private long mEndTime;
 
-    NumberPicker HourPicker;
-    NumberPicker MinutePicker;
+    private NumberPicker HourPicker;
+    private NumberPicker MinutePicker;
 
-    long hoursSet;
-    long minutesSet;
+    private long hoursSet;
+    private long minutesSet;
+    private int timeSet;
 
-    ProgressBar mProgressBar;
-    public ProgressBar mProgressBarToDo;
+    private ProgressBar mProgressBar;
+    private ProgressBar mProgressBarToDo;
+
+    //private HomeViewModel viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+    //LiveData<Integer> count = viewModel.getCountStatusLD();
 
 
 
@@ -78,7 +82,7 @@ public class HomeFragment extends Fragment {
         MinutePicker.setMaxValue(60);
         MinutePicker.setValue(0);
 
-        HomeViewModel viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        //mProgressBar.setProgress(0);
 
         /**
          * set hours with number picker and calculate total time
@@ -91,6 +95,7 @@ public class HomeFragment extends Fragment {
             }
             private void calculateTotalTime() {
                 mTimeLeftInMillis = hoursSet + minutesSet;
+                timeSet = (int) mTimeLeftInMillis;
                 mProgressBar.setMax((int) mTimeLeftInMillis);
             }
         });
@@ -107,6 +112,7 @@ public class HomeFragment extends Fragment {
             }
             private void calculateTotalTime () {
                 mTimeLeftInMillis = hoursSet + minutesSet;
+                timeSet = (int) mTimeLeftInMillis;
                 mProgressBar.setMax((int) mTimeLeftInMillis);
             }
         });
@@ -133,16 +139,23 @@ public class HomeFragment extends Fragment {
 
         bButtonSetTime.setOnClickListener(v -> setTime(mTimeLeftInMillis));
 
-       viewModel.getCountStatusLD();
+        /*if(count != null){
+            int countToDos = count.getValue();
+
+            mProgressBarToDo.setMax(countToDos);
+            mProgressBarToDo.setProgress(countToDos);
+        }*/
+
+        /*count.observe(getViewLifecycleOwner(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer value) {
+                int countToDos = count.getValue();
+                mProgressBarToDo.setMax(countToDos);
+                mProgressBarToDo.setProgress(countToDos);
+            }
+        });*/
 
 
-/*
-        ToDoFragment toDoFragment = new ToDoFragment();
-        int countToDos = toDoFragment.getCountToDos();
-
-        mProgressBarToDo.setMax(countToDos);
-
-        mProgressBarToDo.setProgress(countToDos);*/
 
 
         bButtonSetTime.setOnClickListener(v ->{
@@ -167,7 +180,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onTick(long millisUntilFinished) {
                 mTimeLeftInMillis = millisUntilFinished;
-                int progress = (int) (millisUntilFinished);
+                int progress = timeSet - (int) (millisUntilFinished);
                 mProgressBar.setProgress(progress);
                 updateCountDownText();
             }
@@ -272,7 +285,7 @@ public class HomeFragment extends Fragment {
 
         editor.putLong("startTimeInMillis", mStartTimeInMillis);
         editor.putLong("millisLeft", mTimeLeftInMillis);
-        editor.putBoolean("timerRunning", mTimerRunning);
+        editor.putBoolean("timerRunning", !mTimerRunning);
         editor.putLong("endTime", mEndTime);
 
         editor.apply();
