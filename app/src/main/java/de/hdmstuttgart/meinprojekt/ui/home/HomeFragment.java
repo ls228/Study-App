@@ -22,6 +22,7 @@ import java.util.Locale;
 
 import de.hdmstuttgart.meinprojekt.R;
 import de.hdmstuttgart.meinprojekt.databinding.FragmentHomeBinding;
+import de.hdmstuttgart.meinprojekt.ui.todo.ToDoFragment;
 
 public class HomeFragment extends Fragment {
 
@@ -45,6 +46,7 @@ public class HomeFragment extends Fragment {
     long minutesSet;
 
     ProgressBar mProgressBar;
+    public ProgressBar mProgressBarToDo;
 
 
 
@@ -65,6 +67,7 @@ public class HomeFragment extends Fragment {
         MinutePicker = view.findViewById(R.id.number_picker_min);
 
         mProgressBar = view.findViewById(R.id.progress_bar);
+        mProgressBarToDo = view.findViewById(R.id.progress_bar_count_todo);
 
         HourPicker.setMinValue(0);
         HourPicker.setMaxValue(12);
@@ -115,11 +118,24 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        bButtonReset.setOnClickListener(v -> resetTimer());
+        bButtonReset.setOnClickListener(v -> {
+            resetTimer();
+            mProgressBar.setMax(0);
+        });
+
+        bButtonSetTime.setOnClickListener(v -> setTime(mTimeLeftInMillis));
+
+        ToDoFragment toDoFragment = new ToDoFragment();
+        int countToDos = toDoFragment.getCountToDos();
+
+        mProgressBarToDo.setMax(countToDos);
+
+        mProgressBarToDo.setProgress(countToDos);
 
 
         bButtonSetTime.setOnClickListener(v ->{
             resetTimer();
+            mProgressBar.setMax(0);
             updateWatchInterface();
         });
 
@@ -217,7 +233,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void updateWatchInterfaceFinish() {
-        mCountDownText.setText("Done!\uD83E\uDDF8");
+        mCountDownText.setText("Done!☺");
         mCountDownText.setVisibility(View.VISIBLE);
         bButtonSetTime.setText("Set Timer");
         bButtonSetTime.setVisibility(View.VISIBLE);
@@ -225,6 +241,7 @@ public class HomeFragment extends Fragment {
         bButtonReset.setVisibility(View.INVISIBLE);
         HourPicker.setVisibility(View.INVISIBLE);
         MinutePicker.setVisibility(View.INVISIBLE);
+        //mProgressBar.setVisibility(View.INVISIBLE);
     }
 
 
