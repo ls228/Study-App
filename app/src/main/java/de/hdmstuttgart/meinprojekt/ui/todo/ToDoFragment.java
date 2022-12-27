@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -154,8 +155,12 @@ public class ToDoFragment extends Fragment{
                                     inputTitle = titleInput.getText().toString();
                                     inputTopic = topicInput.getText().toString();
 
-                                    attach(inputTitle, currentTime, inputTopic, 0);
-
+                                    if(inputTitle.equals("")) {
+                                        Toast toastMessage = Toast.makeText(requireContext(), "Please enter a positive number!", Toast.LENGTH_LONG);
+                                        toastMessage.show();
+                                    }else {
+                                        attach(inputTitle, currentTime, inputTopic, 0);
+                                    }
                                     dialog.dismiss();
                                 });
                     }
