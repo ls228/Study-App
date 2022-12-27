@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -141,8 +142,9 @@ public class ToDoFragment extends Fragment{
 
                         btnAdd.setOnClickListener(
                                 a -> {
-                                    Date time = Calendar.getInstance().getTime();
-                                    currentTime = Converter.dateToTimestamp(time);
+                                    Date date = Calendar.getInstance().getTime();
+                                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                                    currentTime = sdf.format(date);
 
                                     Log.d(TAG, "onClick: capturing input");
 
