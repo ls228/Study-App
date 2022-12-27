@@ -285,7 +285,7 @@ public class HomeFragment extends Fragment {
 
         editor.putLong("startTimeInMillis", mStartTimeInMillis);
         editor.putLong("millisLeft", mTimeLeftInMillis);
-        editor.putBoolean("timerRunning", !mTimerRunning);
+        editor.putBoolean("timerRunning", mTimerRunning);
         editor.putLong("endTime", mEndTime);
 
         editor.apply();
