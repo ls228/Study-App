@@ -56,14 +56,14 @@ public class ToDoFragment extends Fragment{
 
             viewModel = new ViewModelProvider(this).get(ToDoViewModel.class);
 
-            toDoAdapter = new ToDoAdapter(viewModel, getContext(), list, (toDoItemPos, position) -> {
+            toDoAdapter = new ToDoAdapter(viewModel, list, (toDoItemPos, position) -> {
             });
 
 
             viewModel.getSavedToDos().observe((LifecycleOwner) getContext(), list -> {
                 Log.d(TAG, "onClick: opening Edit dialog");
                 if (list == null) return;
-                toDoAdapter = new ToDoAdapter(viewModel, getContext(),
+                toDoAdapter = new ToDoAdapter(viewModel,
                         list,
                         (toDoItemPos, position) -> {
                             ToDoAdapter adapter = (ToDoAdapter) recyclerView.getAdapter();
@@ -86,6 +86,7 @@ public class ToDoFragment extends Fragment{
                             Log.d(TAG, "onClick: opening Edit dialog success");
 
                             Button btnDelete = dialogView.findViewById(R.id.btndelete);
+                            Button btnNo = dialogView.findViewById(R.id.btnNo);
 
                             btnDelete.setOnClickListener(v -> {
 
@@ -94,6 +95,10 @@ public class ToDoFragment extends Fragment{
                                 toDoAdapter.notifyItemRangeChanged(position, 1);
                                 dialogEdit.dismiss();
 
+                            });
+
+                            btnNo.setOnClickListener(v->{
+                                dialogEdit.dismiss();
                             });
 
                         });

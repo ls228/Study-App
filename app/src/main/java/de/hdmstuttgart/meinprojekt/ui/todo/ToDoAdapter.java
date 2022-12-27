@@ -3,6 +3,7 @@ package de.hdmstuttgart.meinprojekt.ui.todo;
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +34,6 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
         {
             throw new IllegalArgumentException();
         }
-
         return viewModel;
     }
 
@@ -42,9 +42,8 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
     }
 
     //item
-    public ToDoAdapter(ToDoViewModel viewModel, Context context, List<ToDoItem> todoitem, OnItemClickListener listener) {
+    public ToDoAdapter(ToDoViewModel viewModel, List<ToDoItem> todoitem, OnItemClickListener listener) {
         this.viewModel = viewModel;
-       // this.context = context;
         this.todoitem = todoitem;
         this.listener = listener;
     }
@@ -72,6 +71,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
         if(toDoItemPos.getStatus()==1)
         {
             holder.checkBox.setChecked(true);
+            holder.itemView.setBackgroundColor(Color.rgb(252, 236, 207));
         }
         else {
             holder.checkBox.setChecked(false);

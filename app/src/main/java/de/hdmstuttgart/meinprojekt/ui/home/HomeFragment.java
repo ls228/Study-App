@@ -2,6 +2,7 @@ package de.hdmstuttgart.meinprojekt.ui.home;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -50,6 +51,7 @@ public class HomeFragment extends Fragment {
 
 
 
+    @SuppressLint("SuspiciousIndentation")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         HomeViewModel homeViewModel =

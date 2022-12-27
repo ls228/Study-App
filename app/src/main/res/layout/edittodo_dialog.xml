@@ -2,22 +2,21 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="10dp">
-
+    android:layout_width="300dp"
+    android:layout_height="150dp"
+    android:layout_margin="50dp"
+    android:padding="10dp">
 
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="40dp"
         android:text="@string/edit"
-        android:textSize="20dp"
         android:textAlignment="center"
+        android:textSize="20dp"
         app:layout_constraintBottom_toTopOf="@id/btndelete"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="70dp"
-        />
+       />
 
 
     <Button
@@ -25,9 +24,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="@string/delete"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:layout_editor_absoluteX="0dp"
+        android:layout_marginEnd="288dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/beige"
+        android:text="Yes"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/btnNo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="No"
+        app:layout_constraintStart_toStartOf="parent"
         android:background="@color/beige"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
