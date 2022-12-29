@@ -1,6 +1,7 @@
 package de.hdmstuttgart.meinprojekt.database;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -17,7 +18,7 @@ public interface ToDoDao {
         LiveData<List<ToDoItem>> getAll();
 
         //get all entries with status 0
-        @Query("SELECT COUNT(*) FROM todoitem WHERE status = 0")
+        @Query("SELECT COUNT(status) FROM todoitem WHERE status = 0")
         LiveData<Integer> getStatusUnchecked();
 
         //Counting all entries with status 1
