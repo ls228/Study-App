@@ -19,13 +19,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.Locale;
 
 import de.hdmstuttgart.meinprojekt.R;
-import de.hdmstuttgart.meinprojekt.ui.todo.ToDoViewModel;
 
 public class HomeFragment extends Fragment {
 
@@ -44,8 +42,8 @@ public class HomeFragment extends Fragment {
     /**
      * select time
      */
-    private NumberPicker HourPicker;
-    private NumberPicker MinutePicker;
+    private NumberPicker hourPicker;
+    private NumberPicker minutePicker;
 
     private long hoursSet;
     private long minutesSet;
@@ -107,19 +105,19 @@ public class HomeFragment extends Fragment {
         bButtonReset = view.findViewById(R.id.button_reset);
         bButtonSetTime = view.findViewById(R.id.button_set_time);
 
-        HourPicker = view.findViewById(R.id.number_picker_h);
-        MinutePicker = view.findViewById(R.id.number_picker_min);
+        hourPicker = view.findViewById(R.id.number_picker_h);
+        minutePicker = view.findViewById(R.id.number_picker_min);
 
         mProgressBar = view.findViewById(R.id.progress_bar);
         mProgressBarToDo = view.findViewById(R.id.progress_bar_count_todo);
 
-        HourPicker.setMinValue(0);
-        HourPicker.setMaxValue(12);
-        HourPicker.setValue(0);
+        hourPicker.setMinValue(0);
+        hourPicker.setMaxValue(12);
+        hourPicker.setValue(0);
 
-        MinutePicker.setMinValue(0);
-        MinutePicker.setMaxValue(60);
-        MinutePicker.setValue(0);
+        minutePicker.setMinValue(0);
+        minutePicker.setMaxValue(60);
+        minutePicker.setValue(0);
 
 
         progressToDos();
@@ -127,7 +125,7 @@ public class HomeFragment extends Fragment {
         /**
          * set hours with number picker and calculate total time
          */
-        HourPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+        hourPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                 hoursSet = (long) newVal * 3600000;
@@ -143,7 +141,7 @@ public class HomeFragment extends Fragment {
         /**
          * set minutes with number picker and calculate total time
          */
-        MinutePicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+        minutePicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
 
@@ -242,8 +240,8 @@ public class HomeFragment extends Fragment {
     private void resetTimer() {
         mTimeLeftInMillis = 0;
         mTimerRunning = false;
-        HourPicker.setValue(0);
-        MinutePicker.setValue(0);
+        hourPicker.setValue(0);
+        minutePicker.setValue(0);
         updateCountDownText();
         updateWatchInterface();
     }
@@ -271,14 +269,14 @@ public class HomeFragment extends Fragment {
     private void updateWatchInterface() {
         if (mTimerRunning) {
             bButtonStartPause.setText("Pause");
-            HourPicker.setVisibility(View.INVISIBLE);
-            MinutePicker.setVisibility(View.INVISIBLE);
+            hourPicker.setVisibility(View.INVISIBLE);
+            minutePicker.setVisibility(View.INVISIBLE);
             bButtonReset.setVisibility(View.INVISIBLE);
             mCountDownText.setVisibility(View.VISIBLE);
         } else {
             bButtonStartPause.setText("Start");
-            HourPicker.setVisibility(View.VISIBLE);
-            MinutePicker.setVisibility(View.VISIBLE);
+            hourPicker.setVisibility(View.VISIBLE);
+            minutePicker.setVisibility(View.VISIBLE);
             mCountDownText.setVisibility(View.INVISIBLE);
             bButtonStartPause.setVisibility(View.VISIBLE);
             bButtonReset.setVisibility(View.INVISIBLE);
@@ -298,8 +296,8 @@ public class HomeFragment extends Fragment {
         bButtonSetTime.setVisibility(View.VISIBLE);
         bButtonStartPause.setVisibility(View.INVISIBLE);
         bButtonReset.setVisibility(View.INVISIBLE);
-        HourPicker.setVisibility(View.INVISIBLE);
-        MinutePicker.setVisibility(View.INVISIBLE);
+        hourPicker.setVisibility(View.INVISIBLE);
+        minutePicker.setVisibility(View.INVISIBLE);
     }
 
 
@@ -330,7 +328,7 @@ public class HomeFragment extends Fragment {
 
     /**
      * this method is called when the app is opened; it retrieves the saved state of the timer,
-     * if the imer was running when the app was last used it calculates the remaining time and
+     * if the timer was running when the app was last used it calculates the remaining time and
      * starts the timer again so that it continues counting down,
      * it is responsible for restoring the state of the CountDownTimer
      */
@@ -349,7 +347,16 @@ public class HomeFragment extends Fragment {
         mProgressBar.setProgress(progress);
 
         updateCountDownText();
-        updateWatchInterface();
+
+        if(!mTimerRunning && mTimeLeftInMillis > 0){
+            updateWatchInterfacePause();
+            mCountDownText.setVisibility(View.VISIBLE);
+            minutePicker.setVisibility(View.INVISIBLE);
+            hourPicker.setVisibility(View.INVISIBLE);
+        }else {
+            updateWatchInterface();
+        }
+
 
         if (mTimerRunning) {
             mEndTime = prefs.getLong("endTime", 0);
@@ -364,6 +371,7 @@ public class HomeFragment extends Fragment {
                 startTimer();
             }
         }
-    }
 
+    }
 }
+
