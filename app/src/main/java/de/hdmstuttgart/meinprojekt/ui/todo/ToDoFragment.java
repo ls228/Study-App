@@ -46,7 +46,8 @@ public class ToDoFragment extends Fragment{
     private String inputTopic ="";
 
 
-    //DialogAdd dialogAdd;
+    DialogAdd dialogAdd;
+
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -59,72 +60,68 @@ public class ToDoFragment extends Fragment{
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-            viewModel = new ViewModelProvider(this).get(ToDoViewModel.class);
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
 
-            toDoAdapter = new ToDoAdapter(viewModel, list, (toDoItemPos, position) -> {
-            });
+            try {
+
+                viewModel = new ViewModelProvider(this).get(ToDoViewModel.class);
+
+                toDoAdapter = new ToDoAdapter(viewModel, list, (toDoItemPos, position) -> {
+                });
 
 
-            viewModel.getSavedToDos().observe((LifecycleOwner) getContext(), list -> {
-                Log.d(TAG, "onClick: opening Edit dialog");
-                if (list == null) return;
-                toDoAdapter = new ToDoAdapter(viewModel,
-                        list,
-                        (toDoItemPos, position) -> {
-                            ToDoAdapter adapter = (ToDoAdapter) recyclerView.getAdapter();
+                viewModel.getSavedToDos().observe((LifecycleOwner) getContext(), list -> {
 
-                            //bei Verwendung von try/catch darf die Methode
-                            //zwischendrin nicht verlassen werden
-                            if (adapter == null) {
-                                return;
-                            }
+                    if (list == null) return;
+                    toDoAdapter = new ToDoAdapter(viewModel,
+                            list,
+                            (toDoItemPos, position) -> {
+                                ToDoAdapter adapter = (ToDoAdapter) recyclerView.getAdapter();
 
-                            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
-                            View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.edittodo_dialog, null);
 
-                            dialogBuilder.setView(dialogView);
+                                View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.edittodo_dialog, null);
 
-                            dialogBuilder.setCancelable(true);
+                                dialogBuilder.setView(dialogView);
 
-                            AlertDialog dialogEdit = dialogBuilder.show();
+                                dialogBuilder.setCancelable(true);
 
-                            Log.d(TAG, "onClick: opening Edit dialog success");
+                                AlertDialog dialogEdit = dialogBuilder.show();
 
-                            Button btnDelete = dialogView.findViewById(R.id.btndelete);
-                            Button btnNo = dialogView.findViewById(R.id.btnNo);
+                                Log.d(TAG, "onClick: opening Edit dialog success");
 
-                            btnDelete.setOnClickListener(v -> {
+                                Button btnDelete = dialogView.findViewById(R.id.btndelete);
+                                Button btnNo = dialogView.findViewById(R.id.btnNo);
 
-                                viewModel.removeToDo(list.get(position));
-                                toDoAdapter.notifyItemRemoved(position);
-                                toDoAdapter.notifyItemRangeChanged(position, 1);
-                                dialogEdit.dismiss();
+                                btnDelete.setOnClickListener(v -> {
+
+                                    viewModel.removeToDo(list.get(position));
+                                    toDoAdapter.notifyItemRemoved(position);
+                                    toDoAdapter.notifyItemRangeChanged(position, 1);
+                                    dialogEdit.dismiss();
+
+                                });
+
+                                btnNo.setOnClickListener(v -> {
+                                    dialogEdit.dismiss();
+                                });
 
                             });
+                    recyclerView.setAdapter(toDoAdapter);
+                });
 
-                            btnNo.setOnClickListener(v->{
-                                dialogEdit.dismiss();
-                            });
 
-                        });
                 recyclerView.setAdapter(toDoAdapter);
-            });
 
+                //fab button
+                FloatingActionButton fab = view.findViewById(R.id.fab);
 
-            recyclerView.setAdapter(toDoAdapter);
+                fab.setOnClickListener(v -> {
 
-            //fab button
-            FloatingActionButton fab = view.findViewById(R.id.fab);
+                        dialogAdd = new DialogAdd(v,dialogBuilder, viewModel);
+                        dialogAdd.dialog();
 
-            fab.setOnClickListener(v -> {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(v.getRootView().getContext());
 
                         /*
-                        dialogAdd = new DialogAdd(v,builder);
-                        ToDoItem newToDoItem = dialogAdd.dialog();
-                        System.out.println(newToDoItem);
-                        viewModel.saveToDo(newToDoItem);
-
                         if(toDoItem.getTitle().equals("")) {
                             Toast toastMessage = Toast.makeText(requireContext(), "Please enter a valid to do!", Toast.LENGTH_LONG);
                             toastMessage.show();
@@ -132,78 +129,69 @@ public class ToDoFragment extends Fragment{
                             viewModel.saveToDo(toDoItem);
                             //attach(inputTitle, currentTime, inputTopic, 0);
                         }*/
+/*
+
+                            View dialogView = LayoutInflater.from(v.getRootView().getContext()).inflate(R.layout.addtodo_dialog, null);
+
+                            TextView titleHeading;
+                            TextView topicHeading;
 
 
+                            Button btnCancel = dialogView.findViewById(R.id.btncancel);
+                            Button btnAdd = dialogView.findViewById(R.id.btnadd);
 
-                        View dialogView = LayoutInflater.from(v.getRootView().getContext()).inflate(R.layout.addtodo_dialog, null);
+                            EditText titleInput = dialogView.findViewById(R.id.titleinput);
+                            EditText topicInput = dialogView.findViewById(R.id.textInputEditText);
 
-                        TextView titleHeading;
-                        TextView topicHeading;
-
-
-                        Button btnCancel = dialogView.findViewById(R.id.btncancel);
-                        Button btnAdd = dialogView.findViewById(R.id.btnadd);
-
-                        EditText titleInput = dialogView.findViewById(R.id.titleinput);
-                        EditText topicInput = dialogView.findViewById(R.id.textInputEditText);
-
-                        titleHeading = dialogView.findViewById(R.id.titleheading);
-                        topicHeading = dialogView.findViewById(R.id.topicheading);
+                            titleHeading = dialogView.findViewById(R.id.titleheading);
+                            topicHeading = dialogView.findViewById(R.id.topicheading);
 
 
-                        titleHeading.setText("Title of your new To Do");
-                        topicHeading.setText("Description: ");
+                            titleHeading.setText("Title of your new To Do");
+                            topicHeading.setText("Description: ");
 
-                        builder.setView(dialogView);
-                        builder.setCancelable(true);
+                            dialogBuilder.setView(dialogView);
+                            dialogBuilder.setCancelable(true);
 
-                        AlertDialog dialog = builder.show();
+                            AlertDialog dialog = dialogBuilder.show();
 
-                        btnCancel.setOnClickListener(
-                                a -> {
-                                    Log.d(TAG, "onClick: closing dialog");
-                                    dialog.dismiss();
-                                });
+                            btnCancel.setOnClickListener(
+                                    a -> {
+                                        Log.d(TAG, "onClick: closing dialog");
+                                        dialog.dismiss();
+                                    });
 
-                        btnAdd.setOnClickListener(
-                                a -> {
-                                    Date time = Calendar.getInstance().getTime();
-                                    currentTime = Converter.dateToTimestamp(time);
+                            btnAdd.setOnClickListener(
+                                    a -> {
+                                        Date time = Calendar.getInstance().getTime();
+                                        currentTime = Converter.dateToTimestamp(time);
 
-                                    Log.d(TAG, "onClick: capturing input");
+                                        Log.d(TAG, "onClick: capturing input");
 
-                                    inputTitle = titleInput.getText().toString();
-                                    inputTopic = topicInput.getText().toString();
+                                        inputTitle = titleInput.getText().toString();
+                                        inputTopic = topicInput.getText().toString();
 
-                                    if(inputTitle.equals("")) {
-                                        Toast toastMessage = Toast.makeText(requireContext(), "Please enter a valid to do!", Toast.LENGTH_LONG);
-                                        toastMessage.show();
-                                    }else {
-                                        attach(inputTitle, currentTime, inputTopic, 0);
-                                    }
-                                    dialog.dismiss();
-                                });
-                    }
-            );
+                                        if (inputTitle.equals("")) {
+                                            Toast toastMessage = Toast.makeText(requireContext(), "Please enter a valid to do!", Toast.LENGTH_LONG);
+                                            toastMessage.show();
+                                        } else {
+                                            ToDoItem toDoItem = new ToDoItem(inputTitle, currentTime, inputTopic, 0);
+                                            viewModel.saveToDo(toDoItem);
+                                            dialog.dismiss();
+                                        }
 
-//catch IllegalArgumentException
+                                    });*/
+                        }
+                );
+            }catch (NullPointerException e) {
+            Log.e(TAG, "onAttach: NullPointerException: "
+                    + e.getMessage());
+        }
 
         return view;
     }
 
 
-    public void attach(String title,String currentTime, String studyTopic, Integer status){
-        try {
-            if(title!="") {
-                ToDoItem toDoItem = new ToDoItem(title, currentTime, studyTopic, status);
-                viewModel.saveToDo(toDoItem);
-            }
-        }
-        catch (ClassCastException e) {
-            Log.e(TAG, "onAttach: ClassCastException: "
-                    + e.getMessage());
-        }
-    }
 /*
  public void onResume(){
             super.onResume();

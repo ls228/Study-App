@@ -33,7 +33,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
     {
         if(viewModel==null)
         {
-            throw new IllegalArgumentException();
+            throw new NullPointerException();
         }
         return viewModel;
     }
@@ -67,7 +67,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
         holder.dateTextView.setText(toDoItemPos.getDate());
         holder.topicTextView.setText(toDoItemPos.getTopic());
 
-        holder.itemView.setOnClickListener(v -> listener.onToDoCLickListener(toDoItemPos, position)) ;
+        holder.itemView.setOnClickListener(v -> listener.onToDoCLickListener(toDoItemPos, position));
 
         if(toDoItemPos.getStatus()==1)
         {

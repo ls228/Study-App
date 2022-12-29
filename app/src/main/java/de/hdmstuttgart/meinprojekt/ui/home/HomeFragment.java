@@ -2,10 +2,13 @@ package de.hdmstuttgart.meinprojekt.ui.home;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,7 +69,7 @@ public class HomeFragment extends Fragment {
 
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-
+        try{
         viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
         //count progress bar
@@ -83,6 +86,11 @@ public class HomeFragment extends Fragment {
             System.out.println(countUnchecked);
 
         });
+
+        }catch (NullPointerException e){
+            Log.e(TAG, "onAttach: NullPointerException: "
+                    + e.getMessage());
+        }
 
 
 
@@ -196,7 +204,7 @@ public class HomeFragment extends Fragment {
     {
         if(viewModel==null)
         {
-            throw new IllegalArgumentException();
+            throw new NullPointerException();
         }
         return viewModel;
     }
