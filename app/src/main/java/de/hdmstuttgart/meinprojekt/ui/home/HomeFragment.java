@@ -2,10 +2,12 @@ package de.hdmstuttgart.meinprojekt.ui.home;
 
 import static android.content.Context.MODE_PRIVATE;
 
-import android.annotation.SuppressLint;
+import static de.hdmstuttgart.meinprojekt.ui.home.StudyTimer.mEndTime;
+import static de.hdmstuttgart.meinprojekt.ui.home.StudyTimer.mTimeLeftInMillis;
+import static de.hdmstuttgart.meinprojekt.ui.home.StudyTimer.mTimerRunning;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,23 +33,18 @@ public class HomeFragment extends Fragment {
     /**
      * timer
      */
-    private CountDownTimer mCountDownTimer;
-
-    private boolean mTimerRunning;
-
     private long mStartTimeInMillis;
-    private long mTimeLeftInMillis;
-    private long mEndTime;
+
 
     /**
      * select time
      */
-    private NumberPicker hourPicker;
-    private NumberPicker minutePicker;
+    public NumberPicker hourPicker;
+    public NumberPicker minutePicker;
 
     private long hoursSet;
     private long minutesSet;
-    private int timeSet;
+    public static int timeSet;
 
     /**
      * UI
@@ -58,7 +55,7 @@ public class HomeFragment extends Fragment {
     private Button bButtonReset;
     private Button bButtonSetTime;
 
-    private ProgressBar mProgressBar;
+    public ProgressBar mProgressBar;
     private ProgressBar mProgressBarToDo;
 
     /**
@@ -72,8 +69,10 @@ public class HomeFragment extends Fragment {
 
     private HomeViewModel viewModel;
 
+    StudyTimer studyTimer = new StudyTimer(this);
 
-    @SuppressLint("SuspiciousIndentation")
+
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         //HomeViewModel homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
@@ -97,7 +96,6 @@ public class HomeFragment extends Fragment {
             System.out.println(countUnchecked);
 
         });*/
-
 
         mCountDownText = view.findViewById(R.id.text_view_countdown);
 
@@ -159,16 +157,16 @@ public class HomeFragment extends Fragment {
         bButtonStartPause.setOnClickListener(v -> {
 
             if (mTimerRunning) {
-                pauseTimer();
+                studyTimer.pauseTimer();
             } else if (mTimeLeftInMillis == 0) {
                     Toast toastMessage = Toast.makeText(requireContext(), "Please enter a positive number!", Toast.LENGTH_LONG);
                     toastMessage.show();
                 }else
-                startTimer();
+                studyTimer.startTimer();
         });
 
         bButtonReset.setOnClickListener(v -> {
-            resetTimer();
+            studyTimer.resetTimer();
             mProgressBar.setMax(0);
         });
 
@@ -184,7 +182,7 @@ public class HomeFragment extends Fragment {
 
 
         bButtonSetTime.setOnClickListener(v ->{
-            resetTimer();
+            studyTimer.resetTimer();
             mProgressBar.setMax(0);
             updateWatchInterface();
         });
@@ -206,47 +204,8 @@ public class HomeFragment extends Fragment {
         return viewModel;
     }
 
-    private void startTimer() {
-        mEndTime = System.currentTimeMillis() + mTimeLeftInMillis;
 
-        mCountDownTimer = new CountDownTimer(mTimeLeftInMillis, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                mTimeLeftInMillis = millisUntilFinished;
-                int progress = timeSet - (int) (millisUntilFinished);
-                mProgressBar.setProgress(progress);
-                updateCountDownText();
-            }
-
-            @Override
-            public void onFinish() {
-                mTimerRunning = false;
-                updateWatchInterfaceFinish();
-            }
-        }.start();
-
-        mTimerRunning = true;
-        updateWatchInterface();
-    }
-
-    private void pauseTimer() {
-        mCountDownTimer.cancel();
-        mTimerRunning = false;
-        updateWatchInterfacePause();
-        System.out.println("Checked: " + countStatus.getValue());
-        System.out.println("Unchecked: " + countStatusUnchecked.getValue());
-    }
-
-    private void resetTimer() {
-        mTimeLeftInMillis = 0;
-        mTimerRunning = false;
-        hourPicker.setValue(0);
-        minutePicker.setValue(0);
-        updateCountDownText();
-        updateWatchInterface();
-    }
-
-    private void updateCountDownText() {
+    void updateCountDownText() {
         int hours = (int) (mTimeLeftInMillis / 1000) / 3600;
         int minutes = (int) ((mTimeLeftInMillis / 1000) % 3600) / 60;
         int seconds = (int) (mTimeLeftInMillis / 1000) % 60;
@@ -266,7 +225,7 @@ public class HomeFragment extends Fragment {
     /**
      * in this method the visibility of the buttons is set
      */
-    private void updateWatchInterface() {
+    public void updateWatchInterface() {
         if (mTimerRunning) {
             bButtonStartPause.setText("Pause");
             hourPicker.setVisibility(View.INVISIBLE);
@@ -284,12 +243,16 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private void updateWatchInterfacePause() {
+    void updateWatchInterfacePause() {
         bButtonStartPause.setText("Start");
         bButtonReset.setVisibility(View.VISIBLE);
+        mCountDownText.setVisibility(View.VISIBLE);
+        minutePicker.setVisibility(View.INVISIBLE);
+        hourPicker.setVisibility(View.INVISIBLE);
     }
 
-    private void updateWatchInterfaceFinish() {
+
+    void updateWatchInterfaceFinish() {
         mCountDownText.setText("Done!☺");
         mCountDownText.setVisibility(View.VISIBLE);
         bButtonSetTime.setText("Set Timer");
@@ -321,8 +284,8 @@ public class HomeFragment extends Fragment {
 
         editor.apply();
 
-        if (mCountDownTimer != null) {
-            mCountDownTimer.cancel();
+        if (studyTimer.mCountDownTimer != null) {
+            studyTimer.mCountDownTimer.cancel();
         }
     }
 
@@ -350,9 +313,6 @@ public class HomeFragment extends Fragment {
 
         if(!mTimerRunning && mTimeLeftInMillis > 0){
             updateWatchInterfacePause();
-            mCountDownText.setVisibility(View.VISIBLE);
-            minutePicker.setVisibility(View.INVISIBLE);
-            hourPicker.setVisibility(View.INVISIBLE);
         }else {
             updateWatchInterface();
         }
@@ -368,10 +328,9 @@ public class HomeFragment extends Fragment {
                 updateCountDownText();
                 updateWatchInterface();
             } else {
-                startTimer();
+                studyTimer.startTimer();
             }
         }
-
     }
 }
 
