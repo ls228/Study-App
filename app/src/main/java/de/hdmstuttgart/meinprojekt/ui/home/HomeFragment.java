@@ -29,12 +29,11 @@ import de.hdmstuttgart.meinprojekt.ui.todo.ToDoViewModel;
 
 public class HomeFragment extends Fragment {
 
-    private CountDownTimer mCountDownTimer;
 
-    private TextView mCountDownText;
-    private Button bButtonStartPause;
-    private Button bButtonReset;
-    private Button bButtonSetTime;
+    /**
+     * timer
+     */
+    private CountDownTimer mCountDownTimer;
 
     private boolean mTimerRunning;
 
@@ -42,6 +41,9 @@ public class HomeFragment extends Fragment {
     private long mTimeLeftInMillis;
     private long mEndTime;
 
+    /**
+     * select time
+     */
     private NumberPicker HourPicker;
     private NumberPicker MinutePicker;
 
@@ -49,14 +51,28 @@ public class HomeFragment extends Fragment {
     private long minutesSet;
     private int timeSet;
 
+    /**
+     * UI
+     */
+    private TextView mCountDownText;
+
+    private Button bButtonStartPause;
+    private Button bButtonReset;
+    private Button bButtonSetTime;
+
     private ProgressBar mProgressBar;
     private ProgressBar mProgressBarToDo;
-    private HomeViewModel viewModel;
 
+    /**
+     * count To Dos
+     */
     LiveData<Integer> countStatus;
     LiveData<Integer> countStatusUnchecked;
     private int countChecked;
     private int countUnchecked;
+
+
+    private HomeViewModel viewModel;
 
 
     @SuppressLint("SuspiciousIndentation")
@@ -78,13 +94,11 @@ public class HomeFragment extends Fragment {
             System.out.println(countChecked);
         });
 
-        countStatusUnchecked.observe((LifecycleOwner) getContext(), list -> {
+        /*countStatusUnchecked.observe((LifecycleOwner) getContext(), list -> {
             countUnchecked = countStatusUnchecked.getValue();
             System.out.println(countUnchecked);
 
-        });
-
-
+        });*/
 
 
         mCountDownText = view.findViewById(R.id.text_view_countdown);
@@ -107,7 +121,8 @@ public class HomeFragment extends Fragment {
         MinutePicker.setMaxValue(60);
         MinutePicker.setValue(0);
 
-        //mProgressBar.setProgress(0);
+
+        progressToDos();
 
         /**
          * set hours with number picker and calculate total time
@@ -115,13 +130,13 @@ public class HomeFragment extends Fragment {
         HourPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                hoursSet = Long.valueOf(newVal) * 3600000;
+                hoursSet = (long) newVal * 3600000;
                 calculateTotalTime();
             }
             private void calculateTotalTime() {
                 mTimeLeftInMillis = hoursSet + minutesSet;
                 timeSet = (int) mTimeLeftInMillis;
-                mProgressBar.setMax((int) mTimeLeftInMillis);
+                mProgressBar.setMax(timeSet);
             }
         });
 
@@ -132,29 +147,26 @@ public class HomeFragment extends Fragment {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
 
-                minutesSet = Long.valueOf(newVal) * 60000;
+                minutesSet = (long) newVal * 60000;
                calculateTotalTime();
             }
             private void calculateTotalTime () {
                 mTimeLeftInMillis = hoursSet + minutesSet;
                 timeSet = (int) mTimeLeftInMillis;
-                mProgressBar.setMax((int) mTimeLeftInMillis);
+                mProgressBar.setMax(timeSet);
             }
         });
 
-        setTime(mTimeLeftInMillis);
 
         bButtonStartPause.setOnClickListener(v -> {
 
             if (mTimerRunning) {
                 pauseTimer();
-            } else {
-                if (mTimeLeftInMillis == 0) {
+            } else if (mTimeLeftInMillis == 0) {
                     Toast toastMessage = Toast.makeText(requireContext(), "Please enter a positive number!", Toast.LENGTH_LONG);
                     toastMessage.show();
                 }else
                 startTimer();
-            }
         });
 
         bButtonReset.setOnClickListener(v -> {
@@ -162,14 +174,6 @@ public class HomeFragment extends Fragment {
             mProgressBar.setMax(0);
         });
 
-        bButtonSetTime.setOnClickListener(v -> setTime(mTimeLeftInMillis));
-
-        /*if(count != null){
-            int countToDos = count.getValue();
-
-            mProgressBarToDo.setMax(countToDos);
-            mProgressBarToDo.setProgress(countToDos);
-        }*/
 
         /*count.observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
@@ -181,8 +185,6 @@ public class HomeFragment extends Fragment {
         });*/
 
 
-
-
         bButtonSetTime.setOnClickListener(v ->{
             resetTimer();
             mProgressBar.setMax(0);
@@ -192,6 +194,11 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    public void progressToDos() {
+        mProgressBarToDo.setMax(countUnchecked);
+        mProgressBarToDo.setProgress(countChecked);
+    }
+
     private HomeViewModel getHomeViewModel()
     {
         if(viewModel==null)
@@ -199,12 +206,6 @@ public class HomeFragment extends Fragment {
             throw new IllegalArgumentException();
         }
         return viewModel;
-    }
-
-
-    private void setTime(long timeInMillis) {
-        mStartTimeInMillis = timeInMillis;
-        resetTimer();
     }
 
     private void startTimer() {
@@ -240,8 +241,6 @@ public class HomeFragment extends Fragment {
 
     private void resetTimer() {
         mTimeLeftInMillis = 0;
-        hoursSet = 0;
-        minutesSet = 0;
         mTimerRunning = false;
         HourPicker.setValue(0);
         MinutePicker.setValue(0);
@@ -276,14 +275,13 @@ public class HomeFragment extends Fragment {
             MinutePicker.setVisibility(View.INVISIBLE);
             bButtonReset.setVisibility(View.INVISIBLE);
             mCountDownText.setVisibility(View.VISIBLE);
-            bButtonSetTime.setVisibility(View.INVISIBLE);
         } else {
-            bButtonReset.setVisibility(View.INVISIBLE);
+            bButtonStartPause.setText("Start");
             HourPicker.setVisibility(View.VISIBLE);
             MinutePicker.setVisibility(View.VISIBLE);
             mCountDownText.setVisibility(View.INVISIBLE);
-            bButtonStartPause.setText("Start");
             bButtonStartPause.setVisibility(View.VISIBLE);
+            bButtonReset.setVisibility(View.INVISIBLE);
             bButtonSetTime.setVisibility(View.INVISIBLE);
         }
     }
@@ -302,7 +300,6 @@ public class HomeFragment extends Fragment {
         bButtonReset.setVisibility(View.INVISIBLE);
         HourPicker.setVisibility(View.INVISIBLE);
         MinutePicker.setVisibility(View.INVISIBLE);
-        //mProgressBar.setVisibility(View.INVISIBLE);
     }
 
 
@@ -337,7 +334,6 @@ public class HomeFragment extends Fragment {
      * starts the timer again so that it continues counting down,
      * it is responsible for restoring the state of the CountDownTimer
      */
-
     @Override
     public void onStart() {
         super.onStart();
@@ -347,6 +343,10 @@ public class HomeFragment extends Fragment {
         mStartTimeInMillis = prefs.getLong("startTimeInMillis", 600000);
         mTimeLeftInMillis = prefs.getLong("millisLeft", mStartTimeInMillis);
         mTimerRunning = prefs.getBoolean("timerRunning", false);
+
+        int progress = timeSet - (int) (mTimeLeftInMillis);
+        mProgressBar.setMax(timeSet);
+        mProgressBar.setProgress(progress);
 
         updateCountDownText();
         updateWatchInterface();

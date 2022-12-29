@@ -31,8 +31,5 @@ public class HomeViewModel extends AndroidViewModel {
         return statusUnchecked;
     }
 
-    public LiveData<Integer> getCountStatusUnchecked() {
-        return statusUnchecked;
-    }
 
 }
