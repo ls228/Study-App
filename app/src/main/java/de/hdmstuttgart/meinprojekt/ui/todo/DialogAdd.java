@@ -45,7 +45,6 @@ public class DialogAdd {
         TextView titleHeading;
         TextView topicHeading;
 
-
         Button btnCancel = dialogView.findViewById(R.id.btncancel);
         Button btnAdd = dialogView.findViewById(R.id.btnadd);
 
