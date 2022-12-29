@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -79,8 +80,8 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
 
         holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
 
-            LiveData<Integer> countStatus = this.getToDoViewModel().getCountStatusLD();
-            LiveData<Integer> countStatusUnchecked = this.getToDoViewModel().getCountStatusUnchecked();
+            //LiveData<Integer> countStatus = this.getToDoViewModel().getCountStatusLD();
+            //LiveData<Integer> countStatusUnchecked = this.getToDoViewModel().getCountStatusUnchecked();
 
             if (isChecked) {
                 // The toggle is enabled
@@ -88,13 +89,13 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
 
                 this.getToDoViewModel().updateStatus(1, id);
 
-                System.out.println("Number of checked To Dos: " + countStatus);
+                //System.out.println("Number of checked To Dos: " + countStatus);
 
             } else {
                 // The toggle is disabled
                 Log.d(TAG, "onCheckedChanged: unchecked");
                 this.getToDoViewModel().updateStatus(0, id);
-                System.out.println("Number of unchecked To Dos: " + countStatusUnchecked);
+                //System.out.println("Number of unchecked To Dos: " + countStatusUnchecked);
             }
         });
 

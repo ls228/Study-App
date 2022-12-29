@@ -1,5 +1,6 @@
 package de.hdmstuttgart.meinprojekt.ui.todo;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.SOUTH;
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.app.AlertDialog;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -43,6 +45,9 @@ public class ToDoFragment extends Fragment{
 
     private String inputTitle ="";
     private String inputTopic ="";
+
+
+    //DialogAdd dialogAdd;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -113,8 +118,24 @@ public class ToDoFragment extends Fragment{
             FloatingActionButton fab = view.findViewById(R.id.fab);
 
             fab.setOnClickListener(v -> {
-
                         AlertDialog.Builder builder = new AlertDialog.Builder(v.getRootView().getContext());
+
+                        /*
+                        dialogAdd = new DialogAdd(v,builder);
+                        ToDoItem newToDoItem = dialogAdd.dialog();
+                        System.out.println(newToDoItem);
+                        viewModel.saveToDo(newToDoItem);
+
+                        if(toDoItem.getTitle().equals("")) {
+                            Toast toastMessage = Toast.makeText(requireContext(), "Please enter a valid to do!", Toast.LENGTH_LONG);
+                            toastMessage.show();
+                        }else {
+                            viewModel.saveToDo(toDoItem);
+                            //attach(inputTitle, currentTime, inputTopic, 0);
+                        }*/
+
+
+
                         View dialogView = LayoutInflater.from(v.getRootView().getContext()).inflate(R.layout.addtodo_dialog, null);
 
                         TextView titleHeading;
@@ -156,8 +177,12 @@ public class ToDoFragment extends Fragment{
                                     inputTitle = titleInput.getText().toString();
                                     inputTopic = topicInput.getText().toString();
 
-                                    attach(inputTitle, currentTime, inputTopic, 0);
-
+                                    if(inputTitle.equals("")) {
+                                        Toast toastMessage = Toast.makeText(requireContext(), "Please enter a valid to do!", Toast.LENGTH_LONG);
+                                        toastMessage.show();
+                                    }else {
+                                        attach(inputTitle, currentTime, inputTopic, 0);
+                                    }
                                     dialog.dismiss();
                                 });
                     }
@@ -169,8 +194,7 @@ public class ToDoFragment extends Fragment{
     }
 
 
-
-    private void attach(String title,String currentTime, String studyTopic, Integer status){
+    public void attach(String title,String currentTime, String studyTopic, Integer status){
         try {
             if(title!="") {
                 ToDoItem toDoItem = new ToDoItem(title, currentTime, studyTopic, status);

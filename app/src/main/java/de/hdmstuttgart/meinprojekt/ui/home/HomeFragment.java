@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -50,19 +51,41 @@ public class HomeFragment extends Fragment {
 
     private ProgressBar mProgressBar;
     private ProgressBar mProgressBarToDo;
+    private HomeViewModel viewModel;
 
-    //private HomeViewModel viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
-    //LiveData<Integer> count = viewModel.getCountStatusLD();
-
+    LiveData<Integer> countStatus;
+    LiveData<Integer> countStatusUnchecked;
+    private int countChecked;
+    private int countUnchecked;
 
 
     @SuppressLint("SuspiciousIndentation")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-       // HomeViewModel homeViewModel =
-        //        new ViewModelProvider(this).get(HomeViewModel.class);
+        //HomeViewModel homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+
+        //count progress bar
+        countStatus = this.getHomeViewModel().getCountStatusLD();
+        countStatusUnchecked = this.getHomeViewModel().getCountStatusUnchecked();
+
+        countStatus.observe((LifecycleOwner) getContext(), list -> {
+            countChecked = countStatus.getValue();
+            System.out.println(countChecked);
+        });
+
+        countStatusUnchecked.observe((LifecycleOwner) getContext(), list -> {
+            countUnchecked = countStatusUnchecked.getValue();
+            System.out.println(countUnchecked);
+
+        });
+
+
+
 
         mCountDownText = view.findViewById(R.id.text_view_countdown);
 
@@ -169,6 +192,15 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    private HomeViewModel getHomeViewModel()
+    {
+        if(viewModel==null)
+        {
+            throw new IllegalArgumentException();
+        }
+        return viewModel;
+    }
+
 
     private void setTime(long timeInMillis) {
         mStartTimeInMillis = timeInMillis;
@@ -202,6 +234,8 @@ public class HomeFragment extends Fragment {
         mCountDownTimer.cancel();
         mTimerRunning = false;
         updateWatchInterfacePause();
+        System.out.println("Checked: " + countStatus.getValue());
+        System.out.println("Unchecked: " + countStatusUnchecked.getValue());
     }
 
     private void resetTimer() {
