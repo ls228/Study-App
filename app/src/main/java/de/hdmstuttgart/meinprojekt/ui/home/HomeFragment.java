@@ -31,7 +31,7 @@ public class HomeFragment extends Fragment {
 
 
     /**
-     * timer
+     * save time of timer when closing the fragment
      */
     private long mStartTimeInMillis;
 
@@ -88,14 +88,14 @@ public class HomeFragment extends Fragment {
 
         countStatus.observe((LifecycleOwner) getContext(), list -> {
             countChecked = countStatus.getValue();
-            System.out.println(countChecked);
+            System.out.println("checked:" + countChecked);
         });
 
-        /*countStatusUnchecked.observe((LifecycleOwner) getContext(), list -> {
+        countStatusUnchecked.observe((LifecycleOwner) getContext(), list -> {
             countUnchecked = countStatusUnchecked.getValue();
-            System.out.println(countUnchecked);
+            System.out.println("unchecked:" + countUnchecked);
 
-        });*/
+        });
 
         mCountDownText = view.findViewById(R.id.text_view_countdown);
 
