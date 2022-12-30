@@ -63,8 +63,11 @@ public class HomeFragment extends Fragment {
      */
     LiveData<Integer> countStatus;
     LiveData<Integer> countStatusUnchecked;
+    LiveData<Integer> countStatusAll;
     private int countChecked;
     private int countUnchecked;
+    private int countAll;
+
 
 
     private HomeViewModel viewModel;
@@ -85,17 +88,25 @@ public class HomeFragment extends Fragment {
         //count progress bar
         countStatus = this.getHomeViewModel().getCountStatusLD();
         countStatusUnchecked = this.getHomeViewModel().getCountStatusUnchecked();
+        countStatusAll = this.getHomeViewModel().getCountAll();
 
-        countStatus.observe((LifecycleOwner) getContext(), list -> {
+        /*countStatus.observe((LifecycleOwner) getContext(), list -> {
             countChecked = countStatus.getValue();
             System.out.println("checked:" + countChecked);
-        });
+            mProgressBarToDo.setProgress(countChecked);
+        });*/
 
-        countStatusUnchecked.observe((LifecycleOwner) getContext(), list -> {
+        /*countStatusUnchecked.observe((LifecycleOwner) getContext(), list -> {
             countUnchecked = countStatusUnchecked.getValue();
             System.out.println("unchecked:" + countUnchecked);
 
-        });
+        });*/
+
+        /*countStatusAll.observe((LifecycleOwner) getContext(), list -> {
+            countAll = countStatusAll.getValue();
+            System.out.println("count all To Do's:" + countAll);
+            mProgressBarToDo.setMax(countAll);
+        });*/
 
         mCountDownText = view.findViewById(R.id.text_view_countdown);
 
@@ -117,8 +128,7 @@ public class HomeFragment extends Fragment {
         minutePicker.setMaxValue(60);
         minutePicker.setValue(0);
 
-
-        progressToDos();
+        //progressToDos();
 
         /**
          * set hours with number picker and calculate total time
@@ -190,10 +200,13 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-    public void progressToDos() {
-        mProgressBarToDo.setMax(countUnchecked);
+    /*public void progressToDos() {
+        mProgressBarToDo.setMax(countAll);
+        System.out.println("all" + countAll);
         mProgressBarToDo.setProgress(countChecked);
-    }
+        System.out.println("checked" + countChecked);
+        System.out.println("set!");
+    }*/
 
     private HomeViewModel getHomeViewModel()
     {
@@ -308,6 +321,18 @@ public class HomeFragment extends Fragment {
         int progress = timeSet - (int) (mTimeLeftInMillis);
         mProgressBar.setMax(timeSet);
         mProgressBar.setProgress(progress);
+
+        countStatusAll.observe((LifecycleOwner) getContext(), list -> {
+            countAll = countStatusAll.getValue();
+            System.out.println("count all To Do's:" + countAll);
+            mProgressBarToDo.setMax(countAll);
+        });
+
+        countStatus.observe((LifecycleOwner) getContext(), list -> {
+            countChecked = countStatus.getValue();
+            System.out.println("checked:" + countChecked);
+            mProgressBarToDo.setProgress(countChecked);
+        });
 
         updateCountDownText();
 
