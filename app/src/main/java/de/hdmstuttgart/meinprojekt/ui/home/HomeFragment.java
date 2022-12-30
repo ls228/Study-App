@@ -6,6 +6,7 @@ import static de.hdmstuttgart.meinprojekt.ui.home.StudyTimer.mEndTime;
 import static de.hdmstuttgart.meinprojekt.ui.home.StudyTimer.mTimeLeftInMillis;
 import static de.hdmstuttgart.meinprojekt.ui.home.StudyTimer.mTimerRunning;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,9 +20,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModelProvider;
 
 import java.util.Locale;
 
@@ -56,39 +54,21 @@ public class HomeFragment extends Fragment {
     private Button bButtonSetTime;
 
     public ProgressBar mProgressBar;
-    private ProgressBar mProgressBarToDo;
 
-    /**
-     * count To Dos
-     */
-    LiveData<Integer> countStatus;
-    LiveData<Integer> countStatusUnchecked;
-    LiveData<Integer> countStatusAll;
-    private int countChecked;
-    private int countUnchecked;
-    private int countAll;
-
-
-
-    private HomeViewModel viewModel;
 
     StudyTimer studyTimer = new StudyTimer(this);
+    ToDoCounter toDoCounter;
 
 
-
+    /**
+     * sets the layout of the fragment
+     */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        //HomeViewModel homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-
-        viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
-
-        //count progress bar
-        countStatus = this.getHomeViewModel().getCountStatusLD();
-        countStatusUnchecked = this.getHomeViewModel().getCountStatusUnchecked();
-        countStatusAll = this.getHomeViewModel().getCountAll();
+        toDoCounter = new ToDoCounter(this, view);
 
 
         mCountDownText = view.findViewById(R.id.text_view_countdown);
@@ -101,7 +81,7 @@ public class HomeFragment extends Fragment {
         minutePicker = view.findViewById(R.id.number_picker_min);
 
         mProgressBar = view.findViewById(R.id.progress_bar);
-        mProgressBarToDo = view.findViewById(R.id.progress_bar_count_todo);
+
 
         hourPicker.setMinValue(0);
         hourPicker.setMaxValue(12);
@@ -111,7 +91,6 @@ public class HomeFragment extends Fragment {
         minutePicker.setMaxValue(60);
         minutePicker.setValue(0);
 
-        //progressToDos();
 
         /**
          * set hours with number picker and calculate total time
@@ -174,30 +153,6 @@ public class HomeFragment extends Fragment {
     }
 
 
-    public void progressToDos() {
-          countStatusAll.observe((LifecycleOwner) getContext(), list -> {
-            countAll = countStatusAll.getValue();
-            System.out.println("count all To Do's:" + countAll);
-            mProgressBarToDo.setMax(countAll);
-        });
-
-        countStatus.observe((LifecycleOwner) getContext(), list -> {
-            countChecked = countStatus.getValue();
-            System.out.println("checked:" + countChecked);
-            mProgressBarToDo.setProgress(countChecked);
-        });
-    }
-
-    private HomeViewModel getHomeViewModel()
-    {
-        if(viewModel==null)
-        {
-            throw new IllegalArgumentException();
-        }
-        return viewModel;
-    }
-
-
     void updateCountDownText() {
         int hours = (int) (mTimeLeftInMillis / 1000) / 3600;
         int minutes = (int) ((mTimeLeftInMillis / 1000) % 3600) / 60;
@@ -218,6 +173,7 @@ public class HomeFragment extends Fragment {
     /**
      * in this method the visibility of the buttons is set
      */
+    @SuppressLint("SetTextI18n")
     public void updateWatchInterface() {
         if (mTimerRunning) {
             bButtonStartPause.setText("Pause");
@@ -236,6 +192,7 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     void updateWatchInterfacePause() {
         bButtonStartPause.setText("Start");
         bButtonReset.setVisibility(View.VISIBLE);
@@ -245,6 +202,7 @@ public class HomeFragment extends Fragment {
     }
 
 
+    @SuppressLint("SetTextI18n")
     void updateWatchInterfaceFinish() {
         mCountDownText.setText("Done!☺");
         mCountDownText.setVisibility(View.VISIBLE);
@@ -302,7 +260,7 @@ public class HomeFragment extends Fragment {
         mProgressBar.setMax(timeSet);
         mProgressBar.setProgress(progress);
 
-        progressToDos();
+        toDoCounter.progressToDos();
 
         updateCountDownText();
 
@@ -311,7 +269,6 @@ public class HomeFragment extends Fragment {
         }else {
             updateWatchInterface();
         }
-
 
         if (mTimerRunning) {
             mEndTime = prefs.getLong("endTime", 0);

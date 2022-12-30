@@ -14,7 +14,7 @@ public class StudyTimer {
     public static long mEndTime;
 
 
-    private HomeFragment homeFragment;
+    private final HomeFragment homeFragment;
 
     public StudyTimer(HomeFragment homeFragment) {
         this.homeFragment = homeFragment;
