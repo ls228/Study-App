@@ -33,7 +33,6 @@ public class ToDoCounter {
 
         viewModel = new ViewModelProvider(homeFragment).get(HomeViewModel.class);
 
-        //count progress bar
         countStatus = this.getHomeViewModel().getCountStatusLD();
         countStatusUnchecked = this.getHomeViewModel().getCountStatusUnchecked();
         countStatusAll = this.getHomeViewModel().getCountAll();
