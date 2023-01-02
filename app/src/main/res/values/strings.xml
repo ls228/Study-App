@@ -5,5 +5,9 @@
     <string name="Addtodo">YOUR TO-DOS</string>
     <string name="edit">Delete To Do</string>
     <string name="delete">Delete</string>
+    <string name="buttonPause">Pause</string>
+    <string name="buttonStart">Start</string>
+    <string name="done">Done!☺</string>
+    <string name="set">Set Timer</string>
 
 </resources>

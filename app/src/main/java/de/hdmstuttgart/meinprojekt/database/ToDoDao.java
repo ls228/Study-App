@@ -25,6 +25,9 @@ public interface ToDoDao {
         @Query("SELECT COUNT(*) FROM todoitem WHERE status = 1")
         LiveData<Integer> getCountStatus();
 
+        @Query("SELECT COUNT(*) FROM todoitem")
+        LiveData<Integer> getCount();
+
         @Insert
         void insert(ToDoItem toDoItem);
 
