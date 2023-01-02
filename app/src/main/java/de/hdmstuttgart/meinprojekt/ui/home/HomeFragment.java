@@ -57,7 +57,7 @@ public class HomeFragment extends Fragment {
     private HomeViewModel viewModel;
 
     LiveData<Integer> countStatus;
-    LiveData<Integer> countStatusUnchecked;
+    //LiveData<Integer> countStatusUnchecked;
     private int countChecked;
     private int countUnchecked;
 
@@ -65,8 +65,6 @@ public class HomeFragment extends Fragment {
     @SuppressLint("SuspiciousIndentation")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        //HomeViewModel homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
-
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         try{
@@ -74,26 +72,28 @@ public class HomeFragment extends Fragment {
 
         //count progress bar
         countStatus = this.getHomeViewModel().getCountStatusLD();
-        countStatusUnchecked = this.getHomeViewModel().getCountStatusUnchecked();
+        //countStatusUnchecked = this.getHomeViewModel().getCountStatusUnchecked();
 
-        countStatus.observe((LifecycleOwner) getContext(), list -> {
-            countChecked = countStatus.getValue();
-            System.out.println(countChecked);
-        });
+            if (countStatus != null) {
+                countStatus.observe((LifecycleOwner) getContext(), list -> {
+                    countChecked = countStatus.getValue();
+                    System.out.println(countChecked);
+                });
+            }
 
-        countStatusUnchecked.observe((LifecycleOwner) getContext(), list -> {
-            countUnchecked = countStatusUnchecked.getValue();
-            System.out.println(countUnchecked);
+            /*
+            if(countStatusUnchecked!=null){
+                countStatusUnchecked.observe((LifecycleOwner) getContext(), list -> {
+                    countUnchecked = countStatusUnchecked.getValue();
+                    System.out.println(countUnchecked);
 
-        });
+                });
+            }*/
 
         }catch (NullPointerException e){
             Log.e(TAG, "onAttach: NullPointerException: "
                     + e.getMessage());
         }
-
-
-
 
         mCountDownText = view.findViewById(R.id.text_view_countdown);
 
@@ -243,7 +243,7 @@ public class HomeFragment extends Fragment {
         mTimerRunning = false;
         updateWatchInterfacePause();
         System.out.println("Checked: " + countStatus.getValue());
-        System.out.println("Unchecked: " + countStatusUnchecked.getValue());
+       // System.out.println("Unchecked: " + countStatusUnchecked.getValue());
     }
 
     private void resetTimer() {

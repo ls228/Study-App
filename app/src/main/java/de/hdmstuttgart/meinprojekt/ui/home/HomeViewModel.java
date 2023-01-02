@@ -13,13 +13,14 @@ import de.hdmstuttgart.meinprojekt.database.ToDoRepository;
 public class HomeViewModel extends AndroidViewModel {
 
     private final LiveData<Integer> countStatusLD;
-    private final LiveData<Integer> statusUnchecked;
+    //private final LiveData<Integer> statusUnchecked;
     private final ToDoRepository repository;
 
     public HomeViewModel(@NonNull Application application) {
         super(application);
+
         this.repository = new ToDoRepository(application);
-        this.statusUnchecked = repository.getCountStatusUnchecked();
+        //this.statusUnchecked = repository.getCountStatusUnchecked();
         this.countStatusLD = repository.getCountStatusLD();
     }
 
@@ -27,12 +28,9 @@ public class HomeViewModel extends AndroidViewModel {
         return countStatusLD;
     }
 
-    public LiveData<Integer> getCountStatusUnchecked() {
+    /*public LiveData<Integer> getCountStatusUnchecked() {
         return statusUnchecked;
-    }
+    }*/
 
-    public LiveData<Integer> getCountStatusUnchecked() {
-        return statusUnchecked;
-    }
 
 }
