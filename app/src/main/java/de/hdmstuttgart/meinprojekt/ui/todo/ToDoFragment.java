@@ -33,7 +33,7 @@ import de.hdmstuttgart.meinprojekt.R;
 import de.hdmstuttgart.meinprojekt.database.Converter;
 import de.hdmstuttgart.meinprojekt.model.todo.ToDoItem;
 
-public class ToDoFragment extends Fragment{
+public class ToDoFragment extends Fragment {
 
     private RecyclerView recyclerView;
     List<ToDoItem> list = new ArrayList<>();
@@ -42,60 +42,58 @@ public class ToDoFragment extends Fragment{
     private String currentTime;
     private ToDoViewModel viewModel;
 
-    private String inputTitle ="";
-    private String inputTopic ="";
-
+    private String inputTitle = "";
+    private String inputTopic = "";
 
     private DialogAdd dialogAdd;
     private DialogDelete dialogDelete;
 
 
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-            View view = inflater.inflate(R.layout.fragment_todo, container, false);
+        View view = inflater.inflate(R.layout.fragment_todo, container, false);
 
-            // showing todos
-            recyclerView = view.findViewById(R.id.view_todolist);
-            recyclerView.setHasFixedSize(true);
-            recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        // showing todos
+        recyclerView = view.findViewById(R.id.view_todolist);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
 
-            try {
+        try {
 
-                viewModel = new ViewModelProvider(this).get(ToDoViewModel.class);
+            viewModel = new ViewModelProvider(this).get(ToDoViewModel.class);
 
-                toDoAdapter = new ToDoAdapter(viewModel, list, (toDoItemPos, position) -> {
-                });
-
-
-                viewModel.getSavedToDos().observe((LifecycleOwner) getContext(), list -> {
-
-                    if (list == null) return;
-                    toDoAdapter = new ToDoAdapter(viewModel,
-                            list,
-                            (toDoItemPos, position) -> {
-                                ToDoAdapter adapter = (ToDoAdapter) recyclerView.getAdapter();
-
-                                dialogDelete = new DialogDelete(view,dialogBuilder,viewModel,toDoAdapter,list,position);
-                                dialogDelete.delete();
+            toDoAdapter = new ToDoAdapter(viewModel, list, (toDoItemPos, position) -> {
+            });
 
 
-                            });
-                    recyclerView.setAdapter(toDoAdapter);
-                });
+            viewModel.getSavedToDos().observe((LifecycleOwner) getContext(), list -> {
+
+                if (list == null) return;
+                toDoAdapter = new ToDoAdapter(viewModel,
+                        list,
+                        (toDoItemPos, position) -> {
+                            ToDoAdapter adapter = (ToDoAdapter) recyclerView.getAdapter();
+
+                            dialogDelete = new DialogDelete(view, dialogBuilder, viewModel, toDoAdapter, list, position);
+                            dialogDelete.delete();
 
 
+                        });
                 recyclerView.setAdapter(toDoAdapter);
+            });
 
-                //fab button
-                FloatingActionButton fab = view.findViewById(R.id.fab);
 
-                fab.setOnClickListener(v -> {
+            recyclerView.setAdapter(toDoAdapter);
 
-                        dialogAdd = new DialogAdd(v,dialogBuilder, viewModel);
+            //fab button
+            FloatingActionButton fab = view.findViewById(R.id.fab);
+
+            fab.setOnClickListener(v -> {
+
+                        dialogAdd = new DialogAdd(v, dialogBuilder, viewModel);
                         dialogAdd.dialog();
 
 
@@ -108,9 +106,9 @@ public class ToDoFragment extends Fragment{
                             //attach(inputTitle, currentTime, inputTopic, 0);
                         }*/
 
-                        }
-                );
-            }catch (NullPointerException e) {
+                    }
+            );
+        } catch (NullPointerException e) {
             Log.e(TAG, "onAttach: NullPointerException: "
                     + e.getMessage());
         }

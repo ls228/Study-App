@@ -32,6 +32,8 @@ public class DialogAdd {
     private AlertDialog.Builder dialogBuilder;
     private ToDoViewModel viewModel;
 
+    private String errorMessage = "Please enter a valid To Do!";
+
     public DialogAdd(View v, AlertDialog.Builder dialogBuilder, ToDoViewModel viewModel) {
         this.v = v;
         this.dialogBuilder = dialogBuilder;
@@ -81,7 +83,8 @@ public class DialogAdd {
                     this.toDoItem = new ToDoItem(inputTitle, currentTime, inputTopic, 0);
 
                     if(toDoItem.getTitle().equals("")) {
-                        Toast toastMessage = Toast.makeText(v.getContext(), "Please enter a valid to do!", Toast.LENGTH_LONG);
+
+                        Toast toastMessage = Toast.makeText(v.getContext(), errorMessage, Toast.LENGTH_LONG);
                         toastMessage.show();
                     }else {
                         viewModel.saveToDo(toDoItem);

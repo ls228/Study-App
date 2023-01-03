@@ -29,16 +29,14 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
     OnItemClickListener listener;
 
 
-    private ToDoViewModel getToDoViewModel()
-    {
-        if(viewModel==null)
-        {
+    private ToDoViewModel getToDoViewModel() {
+        if (viewModel == null) {
             throw new NullPointerException();
         }
         return viewModel;
     }
 
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         void onToDoCLickListener(ToDoItem toDoItem, int position);
     }
 
@@ -53,7 +51,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
     @NonNull
     @Override
     public ToDoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.todo_item_layout,parent,false);
+        View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.todo_item_layout, parent, false);
 
         return new ToDoViewHolder(rootView);
     }
@@ -69,12 +67,10 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
 
         holder.itemView.setOnClickListener(v -> listener.onToDoCLickListener(toDoItemPos, position));
 
-        if(toDoItemPos.getStatus()==1)
-        {
+        if (toDoItemPos.getStatus() == 1) {
             holder.checkBox.setChecked(true);
             holder.itemView.setBackgroundColor(Color.rgb(252, 236, 207));
-        }
-        else {
+        } else {
             holder.checkBox.setChecked(false);
         }
 

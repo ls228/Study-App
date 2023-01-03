@@ -80,7 +80,7 @@
         android:layout_marginBottom="109dp"
         app:indicatorDirectionCircular="clockwise"
         app:indicatorSize="150dp"
-        app:trackColor="@color/material_dynamic_neutral_variant90"
+        app:trackColor="@color/grey"
         app:trackCornerRadius="10dp"
         app:trackThickness="15dp" />
 
@@ -95,7 +95,7 @@
         android:layout_marginBottom="108dp"
         app:indicatorDirectionCircular="clockwise"
         app:indicatorSize="150dp"
-        app:trackColor="@color/material_dynamic_neutral_variant90"
+        app:trackColor="@color/grey"
         app:trackThickness="15dp" />
 
 

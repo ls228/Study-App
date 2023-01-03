@@ -23,10 +23,6 @@ public class ToDoViewModel extends AndroidViewModel {
 
     private final ToDoRepository repository;
 
-    private String toastMessage = null;
-
-    private String successMessage= "To Do added successfully!";
-    private String errorMessage = "Please enter a valid";
 
     public ToDoViewModel(@NonNull Application application) {
         super(application);
@@ -43,11 +39,12 @@ public class ToDoViewModel extends AndroidViewModel {
         repository.delete(toDoItem);
     }
 
-    public void saveToDo(ToDoItem toDoItem){
+    public void saveToDo(ToDoItem toDoItem) {
         repository.insert(toDoItem);
     }
 
-    public void updateStatus(Integer status, Integer id){repository.updateStatus(status,id);
+    public void updateStatus(Integer status, Integer id) {
+        repository.updateStatus(status, id);
     }
 
 

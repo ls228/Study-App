@@ -28,9 +28,10 @@ public class HomeFragment extends Fragment {
     private Button bButtonReset;
     private Button bButtonSetTime;
 
-
     StudyTimer studyTimer;
     ToDoCounter toDoCounter;
+
+    private String errorMessage = "Please enter a positive number!";
 
 
     /**
@@ -53,7 +54,7 @@ public class HomeFragment extends Fragment {
             if (mTimerRunning) {
                 studyTimer.pauseTimer();
             } else if (mTimeLeftInMillis == 0) {
-                    Toast toastMessage = Toast.makeText(requireContext(), "Please enter a positive number!", Toast.LENGTH_LONG);
+                    Toast toastMessage = Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_LONG);
                     toastMessage.show();
                 }else
                 studyTimer.startTimer();
