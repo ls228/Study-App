@@ -93,6 +93,8 @@ public class StudyTimer {
         int minutes = (int) ((mTimeLeftInMillis / 1000) % 3600) / 60;
         int seconds = (int) (mTimeLeftInMillis / 1000) % 60;
 
+
+
         String timeLeftFormatted;
         if (hours > 0) {
             timeLeftFormatted = String.format(Locale.getDefault(),
@@ -102,7 +104,12 @@ public class StudyTimer {
                     "%02d:%02d", minutes, seconds);
         }
 
-        mCountDownText.setText(timeLeftFormatted);
+
+        if(seconds == 0) {
+            mCountDownText.setText(R.string.done);
+        } else {
+            mCountDownText.setText(timeLeftFormatted);
+        }
     }
 
 
@@ -118,10 +125,13 @@ public class StudyTimer {
                 updateCountDownText();
             }
 
+
             @Override
             public void onFinish() {
                 mTimerRunning = false;
-                homeFragment.updateWatchInterfaceFinish();
+                homeFragment.updateWatchInterface();
+                resetTimer();
+                //mProgressBar.setMax(0);
             }
         }.start();
 
@@ -140,7 +150,7 @@ public class StudyTimer {
         mTimerRunning = false;
         hourPicker.setValue(0);
         minutePicker.setValue(0);
-        updateCountDownText();
+        //updateCountDownText();
         homeFragment.updateWatchInterface();
     }
 
