@@ -25,7 +25,11 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
     private ToDoViewModel viewModel;
     OnItemClickListener listener;
 
+    /**
+     * This class holds and displays the data of the recyclerview items
+     */
 
+    //exception handling
     private ToDoViewModel getToDoViewModel() {
         if (viewModel == null) {
             throw new NullPointerException();
@@ -33,6 +37,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
         return viewModel;
     }
 
+    //If item is clicked, item and position will be given to onToDoClickListener
     public interface OnItemClickListener {
         void onToDoCLickListener(ToDoItem toDoItem, int position);
     }
@@ -64,6 +69,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
 
         holder.itemView.setOnClickListener(v -> listener.onToDoCLickListener(toDoItemPos, position));
 
+        //if status 1 item has been clicked before, checkbox will be set to checked
         if (toDoItemPos.getStatus() == 1) {
             holder.checkBox.setChecked(true);
             holder.itemView.setBackgroundColor(Color.rgb(252, 236, 207));
@@ -71,24 +77,21 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
             holder.checkBox.setChecked(false);
         }
 
+        //if checkbox is clicked
         holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-
-            //LiveData<Integer> countStatus = this.getToDoViewModel().getCountStatusLD();
-            //LiveData<Integer> countStatusUnchecked = this.getToDoViewModel().getCountStatusUnchecked();
 
             if (isChecked) {
                 // The toggle is enabled
                 Log.d(TAG, "onCheckedChanged: checked");
-
+                //updating status to checked in viewmodel
                 this.getToDoViewModel().updateStatus(1, id);
-
-                //System.out.println("Number of checked To Dos: " + countStatus);
 
             } else {
                 // The toggle is disabled
                 Log.d(TAG, "onCheckedChanged: unchecked");
+                //updating status to unchecked in viewmodel
                 this.getToDoViewModel().updateStatus(0, id);
-                //System.out.println("Number of unchecked To Dos: " + countStatusUnchecked);
+
             }
         });
 
@@ -99,7 +102,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
         return todoitem.size();
     }
 
-
+    //getting the ids of views and checkbox
     static class ToDoViewHolder extends RecyclerView.ViewHolder {
         TextView titleTextView;
         TextView dateTextView;

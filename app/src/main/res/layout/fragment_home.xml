@@ -50,8 +50,7 @@
         android:layout_centerInParent="true"
         android:layout_marginTop="81dp"
         android:icon="@drawable/ic_baseline_access_time_filled_24"
-        android:elevation="10dp"
-        android:clipToPadding="false"
+        android:outlineProvider="bounds"
         android:visibility="invisible" />
 
     <NumberPicker
@@ -98,7 +97,25 @@
         app:indicatorDirectionCircular="clockwise"
         app:indicatorSize="150dp"
         app:trackColor="@color/grey2"
+        app:trackCornerRadius="10dp"
         app:trackThickness="15dp" />
+
+    <ImageView android:id="@+id/ivIconTimer"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="137dp"
+        android:layout_marginLeft="89dp"
+        android:src="@drawable/ic_outline_timer_24" />
+
+    <ImageView
+        android:id="@+id/ivIconToDo"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="137dp"
+        android:layout_marginEnd="-108dp"
+        android:layout_toStartOf="@id/progress_bar_count_todo"
+        android:src="@drawable/ic_baseline_playlist_add_check_24_beige"
+         />
 
 
 </RelativeLayout>
