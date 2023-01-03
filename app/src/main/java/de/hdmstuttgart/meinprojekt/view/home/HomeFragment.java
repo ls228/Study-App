@@ -1,10 +1,10 @@
-package de.hdmstuttgart.meinprojekt.ui.home;
+package de.hdmstuttgart.meinprojekt.view.home;
 
 import static android.content.Context.MODE_PRIVATE;
 
-import static de.hdmstuttgart.meinprojekt.ui.home.StudyTimer.mEndTime;
-import static de.hdmstuttgart.meinprojekt.ui.home.StudyTimer.mTimeLeftInMillis;
-import static de.hdmstuttgart.meinprojekt.ui.home.StudyTimer.mTimerRunning;
+import static de.hdmstuttgart.meinprojekt.view.home.StudyTimer.mEndTime;
+import static de.hdmstuttgart.meinprojekt.view.home.StudyTimer.mTimeLeftInMillis;
+import static de.hdmstuttgart.meinprojekt.view.home.StudyTimer.mTimerRunning;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -32,7 +32,6 @@ public class HomeFragment extends Fragment {
     HomeUI homeUI;
 
 
-
     /**
      * sets the layout of the fragment
      */
@@ -45,16 +44,14 @@ public class HomeFragment extends Fragment {
         studyTimer = new StudyTimer(this, view);
         homeUI = new HomeUI(view);
 
-
-
         homeUI.bButtonStartPause.setOnClickListener(v -> {
 
             if (mTimerRunning) {
                 studyTimer.pauseTimer();
             } else if (mTimeLeftInMillis == 0) {
-                    Toast toastMessage = Toast.makeText(requireContext(), "Please enter a positive number!", Toast.LENGTH_LONG);
-                    toastMessage.show();
-                }else
+                Toast toastMessage = Toast.makeText(requireContext(), "Please enter a positive number!", Toast.LENGTH_LONG);
+                toastMessage.show();
+            } else
                 studyTimer.startTimer();
         });
 
@@ -64,7 +61,7 @@ public class HomeFragment extends Fragment {
         });
 
 
-        homeUI.bButtonSetTime.setOnClickListener(v ->{
+        homeUI.bButtonSetTime.setOnClickListener(v -> {
             studyTimer.resetTimer();
             studyTimer.mProgressBar.setMax(0);
             updateWatchInterface();
@@ -72,8 +69,6 @@ public class HomeFragment extends Fragment {
 
         return view;
     }
-
-
 
 
     /**
@@ -118,7 +113,6 @@ public class HomeFragment extends Fragment {
     }*/
 
 
-
     /**
      * this method is called when the app is closed, it saves the current state of the timer
      * this allows the app to restore the timer's state  when the app is restarted, so that the
@@ -144,6 +138,9 @@ public class HomeFragment extends Fragment {
         }
     }
 
+
+
+
     /**
      * this method is called when the app is opened; it retrieves the saved state of the timer,
      * if the timer was running when the app was last used it calculates the remaining time and
@@ -166,9 +163,9 @@ public class HomeFragment extends Fragment {
 
         studyTimer.updateCountDownText();
 
-        if(!mTimerRunning && mTimeLeftInMillis > 0){
+        if (!mTimerRunning && mTimeLeftInMillis > 0) {
             updateWatchInterfacePause();
-        }else {
+        } else {
             updateWatchInterface();
         }
 

@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="de.hdmstuttgart.meinprojekt.ui.home.HomeFragment"
+        android:name="de.hdmstuttgart.meinprojekt.view.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_todo"
-        android:name="de.hdmstuttgart.meinprojekt.ui.todo.ToDoFragment"
+        android:name="de.hdmstuttgart.meinprojekt.view.todo.ToDoFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_todo" />
 

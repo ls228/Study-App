@@ -1,4 +1,4 @@
-package de.hdmstuttgart.meinprojekt.ui.home;
+package de.hdmstuttgart.meinprojekt.view.home;
 
 import android.view.View;
 import android.widget.ProgressBar;

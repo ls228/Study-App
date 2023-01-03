@@ -1,15 +1,13 @@
-package de.hdmstuttgart.meinprojekt.ui.todo;
+package de.hdmstuttgart.meinprojekt.view.todo;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.app.AlertDialog;
-import android.icu.text.Transliterator;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.hdmstuttgart.meinprojekt.R;
@@ -44,7 +42,7 @@ public class DialogDelete {
 
         dialogBuilder.setView(dialogView);
 
-        dialogBuilder.setCancelable(true);
+        dialogBuilder.setCancelable(false);
 
         AlertDialog dialogEdit = dialogBuilder.show();
 

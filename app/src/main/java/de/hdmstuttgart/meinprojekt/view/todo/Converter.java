@@ -1,4 +1,4 @@
-package de.hdmstuttgart.meinprojekt.database;
+package de.hdmstuttgart.meinprojekt.view.todo;
 
 import androidx.room.TypeConverter;
 
@@ -8,7 +8,7 @@ import java.util.Date;
 
 public class Converter {
 
-    static DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    static DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
     @TypeConverter
     public static String dateToTimestamp(Date date) {

@@ -1,10 +1,8 @@
-package de.hdmstuttgart.meinprojekt.ui.todo;
+package de.hdmstuttgart.meinprojekt.view.todo;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-import static androidx.core.content.ContentProviderCompat.requireContext;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,13 +11,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.lifecycle.ViewModelProvider;
-
 import java.util.Calendar;
 import java.util.Date;
 
 import de.hdmstuttgart.meinprojekt.R;
-import de.hdmstuttgart.meinprojekt.database.Converter;
 import de.hdmstuttgart.meinprojekt.model.todo.ToDoItem;
 
 public class DialogAdd {
@@ -60,7 +55,7 @@ public class DialogAdd {
         topicHeading.setText("Description: ");
 
         dialogBuilder.setView(dialogView);
-        dialogBuilder.setCancelable(true);
+        dialogBuilder.setCancelable(false);
 
         AlertDialog dialog = dialogBuilder.show();
 
@@ -82,11 +77,11 @@ public class DialogAdd {
 
                     this.toDoItem = new ToDoItem(inputTitle, currentTime, inputTopic, 0);
 
-                    if(toDoItem.getTitle().equals("")) {
+                    if (toDoItem.getTitle().equals("")) {
 
                         Toast toastMessage = Toast.makeText(v.getContext(), errorMessage, Toast.LENGTH_LONG);
                         toastMessage.show();
-                    }else {
+                    } else {
                         viewModel.saveToDo(toDoItem);
                         dialog.dismiss();
                     }
@@ -94,8 +89,6 @@ public class DialogAdd {
                 });
 
     }
-
-
 
 }
 

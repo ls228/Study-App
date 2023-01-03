@@ -1,32 +1,32 @@
-package de.hdmstuttgart.meinprojekt.ui.todo;
+package de.hdmstuttgart.meinprojekt.view.todo;
 
 import android.app.Application;
-import android.database.Cursor;
 
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
 
-import de.hdmstuttgart.meinprojekt.database.ToDoDao;
 import de.hdmstuttgart.meinprojekt.database.ToDoRepository;
 
 import de.hdmstuttgart.meinprojekt.model.todo.ToDoItem;
 
 public class ToDoViewModel extends AndroidViewModel {
 
-    //informiert bei Veränderungen
+
     private final LiveData<List<ToDoItem>> toDoLiveData;
 
     private final ToDoRepository repository;
 
-
+    /**
+     * Connection between View an Model
+     * retrieving LiveData from the repository
+     */
     public ToDoViewModel(@NonNull Application application) {
         super(application);
-        //repository Schnittstelle zur Datenbank
+        //repository is connection to database
         repository = new ToDoRepository(application);
         toDoLiveData = repository.getSavedToDos();
     }
