@@ -23,7 +23,9 @@ public class ToDoViewModel extends AndroidViewModel {
     /**
      * Connection between View an Model
      * retrieving LiveData from the repository
+     * gives new data to the repository or is updating
      */
+
     public ToDoViewModel(@NonNull Application application) {
         super(application);
         //repository is connection to database

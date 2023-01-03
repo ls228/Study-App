@@ -21,13 +21,31 @@ import de.hdmstuttgart.meinprojekt.view.todo.ToDoViewModel;
 
 public class DialogAdd {
 
+    /**
+     * This class is used when the users wants to add a new To do to the list
+     * You can add title, a description and add or close dialog
+     */
+
     private String inputTitle = "";
     private String inputTopic = "";
     private String currentTime;
+
     private View v;
+    private View dialogView;
+
     private ToDoItem toDoItem;
     private AlertDialog.Builder dialogBuilder;
     private ToDoViewModel viewModel;
+
+    private EditText titleInput;
+    private EditText topicInput;
+
+
+    private Button btnCancel;
+    private Button btnAdd;
+
+    private TextView titleHeading;
+    private TextView topicHeading;
 
     private String errorMessage = "Please enter a valid To Do!";
 
@@ -39,16 +57,14 @@ public class DialogAdd {
 
     public void dialog() {
 
-        View dialogView = LayoutInflater.from(v.getRootView().getContext()).inflate(R.layout.addtodo_dialog, null);
+        dialogView = LayoutInflater.from(v.getRootView().getContext()).inflate(R.layout.addtodo_dialog, null);
 
-        TextView titleHeading;
-        TextView topicHeading;
 
-        Button btnCancel = dialogView.findViewById(R.id.btncancel);
-        Button btnAdd = dialogView.findViewById(R.id.btnadd);
+        btnCancel = dialogView.findViewById(R.id.btncancel);
+        btnAdd = dialogView.findViewById(R.id.btnadd);
 
-        EditText titleInput = dialogView.findViewById(R.id.titleinput);
-        EditText topicInput = dialogView.findViewById(R.id.textInputEditText);
+        titleInput = dialogView.findViewById(R.id.titleinput);
+        topicInput = dialogView.findViewById(R.id.textInputEditText);
 
         titleHeading = dialogView.findViewById(R.id.titleheading);
         topicHeading = dialogView.findViewById(R.id.topicheading);
@@ -80,10 +96,11 @@ public class DialogAdd {
                     this.toDoItem = new ToDoItem(inputTitle, currentTime, inputTopic, 0);
 
                     if (toDoItem.getTitle().equals("")) {
-
+                        //if input has no title toast message will pop up
                         Toast toastMessage = Toast.makeText(v.getContext(), errorMessage, Toast.LENGTH_LONG);
                         toastMessage.show();
                     } else {
+                        //saving input in viewmodel
                         viewModel.saveToDo(toDoItem);
                         dialog.dismiss();
                     }

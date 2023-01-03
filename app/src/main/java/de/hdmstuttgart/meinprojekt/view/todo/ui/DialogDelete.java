@@ -15,13 +15,22 @@ import de.hdmstuttgart.meinprojekt.model.todo.ToDoItem;
 import de.hdmstuttgart.meinprojekt.view.todo.ToDoViewModel;
 
 public class DialogDelete {
+
+    /**
+     * This class is used when an item is clicked
+     * The user can decide whether he wants to delete or cancel
+     */
+
     private View v;
     private AlertDialog.Builder dialogBuilder;
     private ToDoViewModel viewModel;
-    private AlertDialog dialogEdit;
     private ToDoAdapter toDoAdapter;
     private List<ToDoItem> list;
-    int position;
+    private int position;
+    private Button btnDelete;
+    private Button btnNo;
+    private View dialogView;
+    private AlertDialog dialogEdit;
 
     public DialogDelete(View v,
                         AlertDialog.Builder dialogBuilder,
@@ -39,18 +48,18 @@ public class DialogDelete {
 
     public void delete() {
 
-        View dialogView = LayoutInflater.from(v.getRootView().getContext()).inflate(R.layout.edittodo_dialog, null);
+        dialogView = LayoutInflater.from(v.getRootView().getContext()).inflate(R.layout.edittodo_dialog, null);
 
         dialogBuilder.setView(dialogView);
 
         dialogBuilder.setCancelable(false);
 
-        AlertDialog dialogEdit = dialogBuilder.show();
+        dialogEdit = dialogBuilder.show();
 
         Log.d(TAG, "onClick: opening Edit dialog success");
 
-        Button btnDelete = dialogView.findViewById(R.id.btndelete);
-        Button btnNo = dialogView.findViewById(R.id.btnNo);
+        btnDelete = dialogView.findViewById(R.id.btndelete);
+        btnNo = dialogView.findViewById(R.id.btnNo);
 
         btnDelete.setOnClickListener(v -> {
 
