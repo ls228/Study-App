@@ -1,12 +1,8 @@
-package de.hdmstuttgart.meinprojekt.ui.home;
-
-import static de.hdmstuttgart.meinprojekt.ui.home.StudyTimer.mTimerRunning;
+package de.hdmstuttgart.meinprojekt.view.home;
 
 import android.app.Application;
 import android.view.View;
 import android.widget.Button;
-
-import androidx.core.content.res.ResourcesCompat;
 
 import de.hdmstuttgart.meinprojekt.R;
 
@@ -20,8 +16,6 @@ public class HomeUI extends Application {
     HomeFragment homeFragment;
 
 
-
-
     public HomeUI(View view) {
 
         studyTimer = new StudyTimer(homeFragment, view);
@@ -30,7 +24,6 @@ public class HomeUI extends Application {
         bButtonReset = view.findViewById(R.id.button_reset);
         bButtonSetTime = view.findViewById(R.id.button_set_time);
     }
-
 
 
 }
