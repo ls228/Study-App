@@ -14,7 +14,7 @@ import de.hdmstuttgart.meinprojekt.model.todo.ToDoItem;
 @Dao
 public interface ToDoDao {
 
-        @Query("SELECT * FROM toDoItem ORDER BY date DESC")
+        @Query("SELECT * FROM toDoItem ORDER BY uid DESC")
         LiveData<List<ToDoItem>> getAll();
 
         //get all entries with status 0
