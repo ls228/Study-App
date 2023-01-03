@@ -31,6 +31,9 @@ public class DialogDelete {
     private Button btnNo;
     private View dialogView;
     private AlertDialog dialogEdit;
+    private final String dialogOpen = "onClick: opening Edit dialog success";
+    private final String delete = "onClick: selected item has been successfully deleted";
+    private final String dialogClose= "Closing dialog";
 
     public DialogDelete(View v,
                         AlertDialog.Builder dialogBuilder,
@@ -56,17 +59,18 @@ public class DialogDelete {
 
         dialogEdit = dialogBuilder.show();
 
-        Log.d(TAG, "onClick: opening Edit dialog success");
+        Log.d(TAG, dialogOpen);
 
         btnDelete = dialogView.findViewById(R.id.btndelete);
         btnNo = dialogView.findViewById(R.id.btnNo);
 
         btnDelete.setOnClickListener(v -> {
-
+            Log.d(TAG, delete);
             viewModel.removeToDo(list.get(position));
             toDoAdapter.notifyItemRemoved(position);
             toDoAdapter.notifyItemRangeChanged(position, 1);
             dialogEdit.dismiss();
+            Log.d(TAG, dialogClose);
 
         });
 

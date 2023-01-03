@@ -29,17 +29,20 @@ public class DialogAdd {
     private String inputTitle = "";
     private String inputTopic = "";
     private String currentTime;
+    private final String title = "Title of your new To Do";
+    private final String description = "Description: ";
+    private Date time;
 
     private View v;
     private View dialogView;
+    private ToDoViewModel viewModel;
 
     private ToDoItem toDoItem;
     private AlertDialog.Builder dialogBuilder;
-    private ToDoViewModel viewModel;
+    private AlertDialog dialog;
 
     private EditText titleInput;
     private EditText topicInput;
-
 
     private Button btnCancel;
     private Button btnAdd;
@@ -48,6 +51,11 @@ public class DialogAdd {
     private TextView topicHeading;
 
     private String errorMessage = "Please enter a valid To Do!";
+    private final String dialogclosed = "onClick: closing dialog";
+    private final String input = "onClick: capturing input";
+
+    private Toast toastMessage;
+
 
     public DialogAdd(View v, AlertDialog.Builder dialogBuilder, ToDoViewModel viewModel) {
         this.v = v;
@@ -59,7 +67,6 @@ public class DialogAdd {
 
         dialogView = LayoutInflater.from(v.getRootView().getContext()).inflate(R.layout.addtodo_dialog, null);
 
-
         btnCancel = dialogView.findViewById(R.id.btncancel);
         btnAdd = dialogView.findViewById(R.id.btnadd);
 
@@ -69,26 +76,27 @@ public class DialogAdd {
         titleHeading = dialogView.findViewById(R.id.titleheading);
         topicHeading = dialogView.findViewById(R.id.topicheading);
 
-        titleHeading.setText("Title of your new To Do");
-        topicHeading.setText("Description: ");
+        titleHeading.setText(title);
+        topicHeading.setText(description);
 
         dialogBuilder.setView(dialogView);
         dialogBuilder.setCancelable(false);
 
-        AlertDialog dialog = dialogBuilder.show();
+        dialog = dialogBuilder.show();
 
         btnCancel.setOnClickListener(
                 a -> {
-                    Log.d(TAG, "onClick: closing dialog");
+                    Log.d(TAG, dialogclosed);
                     dialog.dismiss();
                 });
 
+        //if add button is clicked, title, description and the current date will be saved in the viewmodel
         btnAdd.setOnClickListener(
                 a -> {
-                    Date time = Calendar.getInstance().getTime();
+                    time = Calendar.getInstance().getTime();
                     currentTime = Converter.dateToTimestamp(time);
 
-                    Log.d(TAG, "onClick: capturing input");
+                    Log.d(TAG, input);
 
                     inputTitle = titleInput.getText().toString();
                     inputTopic = topicInput.getText().toString();
@@ -97,16 +105,14 @@ public class DialogAdd {
 
                     if (toDoItem.getTitle().equals("")) {
                         //if input has no title toast message will pop up
-                        Toast toastMessage = Toast.makeText(v.getContext(), errorMessage, Toast.LENGTH_LONG);
+                        toastMessage = Toast.makeText(v.getContext(), errorMessage, Toast.LENGTH_LONG);
                         toastMessage.show();
                     } else {
                         //saving input in viewmodel
                         viewModel.saveToDo(toDoItem);
                         dialog.dismiss();
                     }
-
                 });
-
     }
 
 }

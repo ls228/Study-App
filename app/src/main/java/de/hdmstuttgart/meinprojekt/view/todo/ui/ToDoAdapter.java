@@ -23,7 +23,11 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
 
     private final List<ToDoItem> todoitem;
     private ToDoViewModel viewModel;
-    OnItemClickListener listener;
+    private OnItemClickListener listener;
+    private ToDoItem toDoItemPos;
+    private int id;
+    private final String checked = "onCheckedChanged: checked";
+    private final String unchecked = "onCheckedChanged: unchecked";
 
     /**
      * This class holds and displays the data of the recyclerview items
@@ -60,8 +64,8 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ToDoViewHolder holder, int position) {
-        ToDoItem toDoItemPos = todoitem.get(position);
-        int id = toDoItemPos.getId();
+        toDoItemPos = todoitem.get(position);
+        id = toDoItemPos.getId();
 
         holder.titleTextView.setText(toDoItemPos.getTitle());
         holder.dateTextView.setText(toDoItemPos.getDate());
@@ -82,13 +86,13 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
 
             if (isChecked) {
                 // The toggle is enabled
-                Log.d(TAG, "onCheckedChanged: checked");
+                Log.d(TAG, checked);
                 //updating status to checked in viewmodel
                 this.getToDoViewModel().updateStatus(1, id);
 
             } else {
                 // The toggle is disabled
-                Log.d(TAG, "onCheckedChanged: unchecked");
+                Log.d(TAG, unchecked);
                 //updating status to unchecked in viewmodel
                 this.getToDoViewModel().updateStatus(0, id);
 

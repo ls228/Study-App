@@ -75,11 +75,8 @@ public class ToDoFragment extends Fragment {
 
             //Floating button is opening add dialog on click
             fab.setOnClickListener(v -> {
-
                         dialogAdd = new DialogAdd(v, dialogBuilder, viewModel);
                         dialogAdd.dialog();
-
-
                     }
             );
         } catch (NullPointerException e) {
