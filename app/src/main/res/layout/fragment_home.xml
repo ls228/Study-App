@@ -24,8 +24,8 @@
         android:layout_height="48dp"
         android:layout_below="@+id/text_view_countdown"
         android:icon="@drawable/ic_baseline_play_circle_24"
-        android:width="24dp"
-        android:height="24dp"
+        android:width="30dp"
+        android:height="30dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_marginTop="80dp"
@@ -33,9 +33,10 @@
 
     <Button
         android:id="@+id/button_reset"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_below="@+id/text_view_countdown"
+        android:layout_centerHorizontal="true"
         android:layout_centerInParent="true"
         android:layout_marginStart="-47dp"
         android:layout_marginTop="143dp"
@@ -46,8 +47,8 @@
 
     <Button
         android:id="@+id/button_set_time"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_below="@+id/text_view_countdown"
         android:layout_centerInParent="true"
         android:layout_marginTop="81dp"
@@ -82,7 +83,7 @@
         android:layout_marginBottom="109dp"
         app:indicatorDirectionCircular="clockwise"
         app:indicatorSize="150dp"
-        app:trackColor="@color/grey"
+        app:trackColor="@color/grey2"
         app:trackCornerRadius="10dp"
         app:trackThickness="15dp" />
 
@@ -97,7 +98,7 @@
         android:layout_marginBottom="108dp"
         app:indicatorDirectionCircular="clockwise"
         app:indicatorSize="150dp"
-        app:trackColor="@color/grey"
+        app:trackColor="@color/grey2"
         app:trackThickness="15dp" />
 
 
