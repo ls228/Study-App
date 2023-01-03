@@ -105,7 +105,7 @@ public class StudyTimer {
         }
 
 
-        if(seconds == 0) {
+        if(hours == 0 && minutes == 0 && seconds == 0) {
             mCountDownText.setText(R.string.done);
         } else {
             mCountDownText.setText(timeLeftFormatted);
