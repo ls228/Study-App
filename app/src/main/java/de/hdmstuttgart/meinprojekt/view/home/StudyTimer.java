@@ -1,5 +1,6 @@
-package de.hdmstuttgart.meinprojekt.ui.home;
+package de.hdmstuttgart.meinprojekt.view.home;
 
+import android.animation.ValueAnimator;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.NumberPicker;
@@ -32,6 +33,10 @@ public class StudyTimer {
     public ProgressBar mProgressBar;
 
     private final HomeFragment homeFragment;
+
+    private float mValue= 0;
+
+    private ValueAnimator mAnimator;
     View view;
 
     public StudyTimer(HomeFragment homeFragment, View view) {
@@ -45,6 +50,7 @@ public class StudyTimer {
 
         mCountDownText = view.findViewById(R.id.text_view_countdown);
 
+
         hourPicker.setMinValue(0);
         hourPicker.setMaxValue(12);
         hourPicker.setValue(0);
@@ -53,12 +59,24 @@ public class StudyTimer {
         minutePicker.setMaxValue(60);
         minutePicker.setValue(0);
 
+        mAnimator = ValueAnimator.ofFloat(0, mValue);
+        mAnimator.setDuration(800); // set the duration of the animation to 10 seconds
+
+        mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                mValue = (float) animation.getAnimatedValue();
+            }
+        });
+
+
         hourPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                 hoursSet = (long) newVal * 3600000;
                 calculateTotalTime();
             }
+
             private void calculateTotalTime() {
                 mTimeLeftInMillis = hoursSet + minutesSet;
                 timeSet = (int) mTimeLeftInMillis;
@@ -73,7 +91,8 @@ public class StudyTimer {
                 minutesSet = (long) newVal * 60000;
                 calculateTotalTime();
             }
-            private void calculateTotalTime () {
+
+            private void calculateTotalTime() {
                 mTimeLeftInMillis = hoursSet + minutesSet;
                 timeSet = (int) mTimeLeftInMillis;
                 mProgressBar.setMax(timeSet);
@@ -82,17 +101,30 @@ public class StudyTimer {
 
     }
 
-    public void saveTimerProgressBar(){
+    public float getmValue() {
+        return mValue;
+    }
+
+    public void setmValue(float value) {
+        if(mAnimator.isRunning()){
+            mAnimator.cancel();
+        }
+        mAnimator.setFloatValues(mValue,value);
+        mAnimator.start();
+    }
+
+    public void saveTimerProgressBar() {
         int progress = timeSet - (int) (mTimeLeftInMillis);
         mProgressBar.setMax(timeSet);
         mProgressBar.setProgress(progress);
+        setmValue(progress);
+        //startAnimation(timeSet);
     }
 
     void updateCountDownText() {
         int hours = (int) (mTimeLeftInMillis / 1000) / 3600;
         int minutes = (int) ((mTimeLeftInMillis / 1000) % 3600) / 60;
         int seconds = (int) (mTimeLeftInMillis / 1000) % 60;
-
 
 
         String timeLeftFormatted;
@@ -105,13 +137,12 @@ public class StudyTimer {
         }
 
 
-        if(hours == 0 && minutes == 0 && seconds == 0) {
+        if (seconds == 0) {
             mCountDownText.setText(R.string.done);
         } else {
             mCountDownText.setText(timeLeftFormatted);
         }
     }
-
 
     public void startTimer() {
         mEndTime = System.currentTimeMillis() + mTimeLeftInMillis;
@@ -123,6 +154,8 @@ public class StudyTimer {
                 int progress = timeSet - (int) (millisUntilFinished);
                 mProgressBar.setProgress(progress);
                 updateCountDownText();
+                //setmValue(progress);
+                //startAnimation(timeSet);
             }
 
 
@@ -131,6 +164,7 @@ public class StudyTimer {
                 mTimerRunning = false;
                 homeFragment.updateWatchInterface();
                 resetTimer();
+                //animator.cancel();
                 //mProgressBar.setMax(0);
             }
         }.start();
@@ -138,6 +172,7 @@ public class StudyTimer {
         mTimerRunning = true;
         homeFragment.updateWatchInterface();
     }
+
 
     public void pauseTimer() {
         mCountDownTimer.cancel();

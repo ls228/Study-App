@@ -11,10 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import de.hdmstuttgart.meinprojekt.model.todo.ToDoItem;
-/*
-@Database(entities = {ToDoItem.class}, version = 2, autoMigrations = {
-        @AutoMigration(from = 1, to = 2)
-})*/
+
 
 @Database(entities = {ToDoItem.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase{

@@ -39,6 +39,9 @@
         android:text="No"
         app:layout_constraintStart_toStartOf="parent"
         android:background="@color/beige"
+        android:elevation="5dp"
+        android:clipToPadding="false"
+        android:outlineProvider="bounds"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 
