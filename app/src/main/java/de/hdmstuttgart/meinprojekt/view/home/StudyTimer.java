@@ -20,7 +20,6 @@ public class StudyTimer {
     public static long mTimeLeftInMillis;
     public static long mEndTime;
 
-
     public NumberPicker hourPicker;
     public NumberPicker minutePicker;
 
@@ -35,6 +34,8 @@ public class StudyTimer {
     private final HomeFragment homeFragment;
 
     private float mValue= 0;
+
+
 
     private ValueAnimator mAnimator;
     View view;
@@ -134,6 +135,14 @@ public class StudyTimer {
 
         if (seconds == 0) {
             mCountDownText.setText(R.string.done);
+            homeFragment.timeUp = true;
+            System.out.println("timeup true");
+
+            if(homeFragment.timeUp&&homeFragment.allTodosChecked){
+                homeFragment.doneAnimation();
+                System.out.println("done");
+            }
+
         } else {
             mCountDownText.setText(timeLeftFormatted);
         }
@@ -169,7 +178,6 @@ public class StudyTimer {
         mTimerRunning = true;
         homeFragment.updateWatchInterface();
     }
-
 
     public void pauseTimer() {
         mCountDownTimer.cancel();
