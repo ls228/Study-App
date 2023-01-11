@@ -109,11 +109,17 @@ public class DialogAdd {
                         toastMessage.show();
                     } else {
                         //saving input in viewmodel
+                        //ToDoItem savedToDo = attach(inputTitle, currentTime, inputTopic, 0);
                         viewModel.saveToDo(toDoItem);
                         dialog.dismiss();
                     }
                 });
     }
+    /*
+    private ToDoItem attach(String title, String time, String topic, int status){
+        ToDoItem savedItem = new ToDoItem(title, time, topic, status);
+        return savedItem;
+    }*/
 
 }
 

@@ -28,7 +28,7 @@ public class ToDoViewModel extends AndroidViewModel {
 
     public ToDoViewModel(@NonNull Application application) {
         super(application);
-        //repository is connection to database
+        //repository is the connection to database
         repository = new ToDoRepository(application);
         toDoLiveData = repository.getSavedToDos();
     }

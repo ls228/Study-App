@@ -20,7 +20,6 @@ public class StudyTimer {
     public static long mTimeLeftInMillis;
     public static long mEndTime;
 
-
     public NumberPicker hourPicker;
     public NumberPicker minutePicker;
 
@@ -35,6 +34,8 @@ public class StudyTimer {
     private final HomeFragment homeFragment;
 
     private float mValue= 0;
+
+
 
     private ValueAnimator mAnimator;
     View view;
@@ -62,12 +63,8 @@ public class StudyTimer {
         mAnimator = ValueAnimator.ofFloat(0, mValue);
         mAnimator.setDuration(800); // set the duration of the animation to 10 seconds
 
-        mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                mValue = (float) animation.getAnimatedValue();
-            }
-        });
+        mAnimator.addUpdateListener(animation ->
+                mValue = (float) animation.getAnimatedValue());
 
 
         hourPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
@@ -101,23 +98,22 @@ public class StudyTimer {
 
     }
 
-    public float getmValue() {
-        return mValue;
+    public void setmValue(float mValue) {
+        mAnimator.setFloatValues(mValue);
+        mAnimator.start();
     }
 
-    public void setmValue(float value) {
+    public void stopAnimation(){
         if(mAnimator.isRunning()){
             mAnimator.cancel();
         }
-        mAnimator.setFloatValues(mValue,value);
-        mAnimator.start();
     }
 
     public void saveTimerProgressBar() {
         int progress = timeSet - (int) (mTimeLeftInMillis);
         mProgressBar.setMax(timeSet);
         mProgressBar.setProgress(progress);
-        setmValue(progress);
+        //setmValue(progress);
         //startAnimation(timeSet);
     }
 
@@ -139,6 +135,14 @@ public class StudyTimer {
 
         if (seconds == 0) {
             mCountDownText.setText(R.string.done);
+            homeFragment.timeUp = true;
+            System.out.println("timeup true");
+
+            if(homeFragment.timeUp&&homeFragment.allTodosChecked){
+                homeFragment.doneAnimation();
+                System.out.println("done");
+            }
+
         } else {
             mCountDownText.setText(timeLeftFormatted);
         }
@@ -154,7 +158,10 @@ public class StudyTimer {
                 int progress = timeSet - (int) (millisUntilFinished);
                 mProgressBar.setProgress(progress);
                 updateCountDownText();
-                //setmValue(progress);
+
+                if(!(mAnimator.isRunning())){
+                    setmValue(mValue);}
+
                 //startAnimation(timeSet);
             }
 
@@ -164,15 +171,13 @@ public class StudyTimer {
                 mTimerRunning = false;
                 homeFragment.updateWatchInterface();
                 resetTimer();
-                //animator.cancel();
-                //mProgressBar.setMax(0);
+                stopAnimation();
             }
         }.start();
 
         mTimerRunning = true;
         homeFragment.updateWatchInterface();
     }
-
 
     public void pauseTimer() {
         mCountDownTimer.cancel();
@@ -185,7 +190,6 @@ public class StudyTimer {
         mTimerRunning = false;
         hourPicker.setValue(0);
         minutePicker.setValue(0);
-        //updateCountDownText();
         homeFragment.updateWatchInterface();
     }
 

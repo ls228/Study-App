@@ -32,8 +32,10 @@ public class ToDoFragment extends Fragment {
 
     private ToDoAdapter toDoAdapter;
     private ToDoViewModel viewModel;
+
     private DialogAdd dialogAdd;
     private DialogDelete dialogDelete;
+
     private AlertDialog.Builder dialogBuilder;
 
 
@@ -87,14 +89,4 @@ public class ToDoFragment extends Fragment {
         return view;
     }
 
-/*
-    public void onResume() {
-        super.onResume();
-        toDoAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }*/
 }
