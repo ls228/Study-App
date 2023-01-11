@@ -25,12 +25,16 @@ public class DialogDelete {
     private AlertDialog.Builder dialogBuilder;
     private ToDoViewModel viewModel;
     private ToDoAdapter toDoAdapter;
+
     private List<ToDoItem> list;
     private int position;
+
     private Button btnDelete;
     private Button btnNo;
+
     private View dialogView;
     private AlertDialog dialogEdit;
+
     private final String dialogOpen = "onClick: opening Edit dialog success";
     private final String delete = "onClick: selected item has been successfully deleted";
     private final String dialogClose= "Closing dialog";

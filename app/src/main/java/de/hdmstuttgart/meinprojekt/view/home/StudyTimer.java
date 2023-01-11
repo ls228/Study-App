@@ -62,12 +62,8 @@ public class StudyTimer {
         mAnimator = ValueAnimator.ofFloat(0, mValue);
         mAnimator.setDuration(800); // set the duration of the animation to 10 seconds
 
-        mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                mValue = (float) animation.getAnimatedValue();
-            }
-        });
+        mAnimator.addUpdateListener(animation ->
+                mValue = (float) animation.getAnimatedValue());
 
 
         hourPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
@@ -101,23 +97,22 @@ public class StudyTimer {
 
     }
 
-    public float getmValue() {
-        return mValue;
+    public void setmValue(float mValue) {
+        mAnimator.setFloatValues(mValue);
+        mAnimator.start();
     }
 
-    public void setmValue(float value) {
+    public void stopAnimation(){
         if(mAnimator.isRunning()){
             mAnimator.cancel();
         }
-        mAnimator.setFloatValues(mValue,value);
-        mAnimator.start();
     }
 
     public void saveTimerProgressBar() {
         int progress = timeSet - (int) (mTimeLeftInMillis);
         mProgressBar.setMax(timeSet);
         mProgressBar.setProgress(progress);
-        setmValue(progress);
+        //setmValue(progress);
         //startAnimation(timeSet);
     }
 
@@ -154,7 +149,10 @@ public class StudyTimer {
                 int progress = timeSet - (int) (millisUntilFinished);
                 mProgressBar.setProgress(progress);
                 updateCountDownText();
-                //setmValue(progress);
+
+                if(!(mAnimator.isRunning())){
+                    setmValue(mValue);}
+
                 //startAnimation(timeSet);
             }
 
@@ -164,8 +162,7 @@ public class StudyTimer {
                 mTimerRunning = false;
                 homeFragment.updateWatchInterface();
                 resetTimer();
-                //animator.cancel();
-                //mProgressBar.setMax(0);
+                stopAnimation();
             }
         }.start();
 
@@ -185,7 +182,6 @@ public class StudyTimer {
         mTimerRunning = false;
         hourPicker.setValue(0);
         minutePicker.setValue(0);
-        //updateCountDownText();
         homeFragment.updateWatchInterface();
     }
 
