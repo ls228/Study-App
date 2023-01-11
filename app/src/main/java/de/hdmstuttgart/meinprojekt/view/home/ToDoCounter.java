@@ -58,6 +58,22 @@ public class ToDoCounter {
             countChecked = countStatus.getValue();
             System.out.println("checked:" + countChecked);
             mProgressBarToDo.setProgress(countChecked);
+
+            if(countAll==countChecked){
+                homeFragment.allTodosChecked=true;
+                System.out.println("all checked");
+
+                if(homeFragment.timeUp&&homeFragment.allTodosChecked){
+                    homeFragment.doneAnimation();
+                    System.out.println("done");
+                }
+
+            }else{
+                homeFragment.allTodosChecked=false;
+                System.out.println("not all checked");
+            }
         });
+
+
     }
 }

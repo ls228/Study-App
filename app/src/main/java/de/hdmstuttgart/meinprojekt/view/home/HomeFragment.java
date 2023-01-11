@@ -31,6 +31,9 @@ public class HomeFragment extends Fragment {
     ToDoCounter toDoCounter;
     HomeUI homeUI;
 
+    public boolean timeUp = false;
+    public boolean allTodosChecked = false;
+
 
     /**
      * sets the layout of the fragment
@@ -68,6 +71,10 @@ public class HomeFragment extends Fragment {
         });
 
         return view;
+    }
+
+    public void doneAnimation(){
+        studyTimer.mCountDownText.setText("allDone");
     }
 
 
@@ -137,9 +144,6 @@ public class HomeFragment extends Fragment {
             studyTimer.mCountDownTimer.cancel();
         }
     }
-
-
-
 
     /**
      * this method is called when the app is opened; it retrieves the saved state of the timer,
