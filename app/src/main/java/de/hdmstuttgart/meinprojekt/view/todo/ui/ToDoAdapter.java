@@ -23,9 +23,8 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
 
     private final List<ToDoItem> todoitem;
     private ToDoViewModel viewModel;
-    private OnItemClickListener listener;
-    private ToDoItem toDoItemPos;
-    private int id;
+    OnItemClickListener listener;
+    ToDoItem toDoItemPos;
     private final String checked = "onCheckedChanged: checked";
     private final String unchecked = "onCheckedChanged: unchecked";
 
@@ -65,7 +64,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
     @Override
     public void onBindViewHolder(@NonNull ToDoViewHolder holder, int position) {
         toDoItemPos = todoitem.get(position);
-        id = toDoItemPos.getId();
+        int id = toDoItemPos.getId();
 
         holder.titleTextView.setText(toDoItemPos.getTitle());
         holder.dateTextView.setText(toDoItemPos.getDate());
@@ -73,7 +72,6 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
 
         holder.itemView.setOnClickListener(v -> listener.onToDoCLickListener(toDoItemPos, position));
 
-        //if status 1 item has been clicked before, checkbox will be set to checked
         if (toDoItemPos.getStatus() == 1) {
             holder.checkBox.setChecked(true);
             holder.itemView.setBackgroundColor(Color.rgb(252, 236, 207));
@@ -81,10 +79,10 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
             holder.checkBox.setChecked(false);
         }
 
-        //if checkbox is clicked
         holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
 
             if (isChecked) {
+
                 // The toggle is enabled
                 Log.d(TAG, checked);
                 //updating status to checked in viewmodel

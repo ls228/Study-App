@@ -87,7 +87,7 @@ public class ToDoFragment extends Fragment {
         return view;
     }
 
-
+/*
     public void onResume() {
         super.onResume();
         toDoAdapter.notifyDataSetChanged();
@@ -96,5 +96,5 @@ public class ToDoFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-    }
+    }*/
 }
