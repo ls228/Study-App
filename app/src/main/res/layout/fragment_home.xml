@@ -70,52 +70,66 @@
         android:layout_centerVertical="true"
         android:layout_marginEnd="129dp" />
 
-    <com.google.android.material.progressindicator.CircularProgressIndicator
-        android:id="@+id/progress_bar"
+
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/text_view_countdown"
         android:layout_alignParentEnd="true"
         android:layout_centerInParent="true"
-        android:layout_marginEnd="217dp"
-        android:layout_marginBottom="109dp"
-        app:indicatorDirectionCircular="clockwise"
-        app:indicatorSize="150dp"
-        app:trackColor="@color/grey2"
-        app:trackCornerRadius="10dp"
-        app:trackThickness="15dp" />
+        android:layout_marginEnd="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="90dp">
 
-    <com.google.android.material.progressindicator.CircularProgressIndicator
-        android:id="@+id/progress_bar_count_todo"
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="10dp"
+            android:src="@drawable/ic_baseline_playlist_add_check_24_beige"
+            app:layout_anchor="@+id/progress_bar_count_todo"
+            app:layout_anchorGravity="center" />
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progress_bar_count_todo"
+            android:layout_width="409dp"
+            android:layout_height="188dp"
+            app:indicatorDirectionCircular="clockwise"
+            app:indicatorSize="150dp"
+            app:trackColor="@color/grey2"
+            app:trackCornerRadius="10dp"
+            app:trackThickness="15dp" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/text_view_countdown"
-        android:layout_alignParentEnd="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="108dp"
+        android:layout_alignParentStart="true"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="90dp">
+
+
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progress_bar"
+        android:layout_width="409dp"
+        android:layout_height="188dp"
         app:indicatorDirectionCircular="clockwise"
         app:indicatorSize="150dp"
         app:trackColor="@color/grey2"
         app:trackCornerRadius="10dp"
         app:trackThickness="15dp" />
 
-    <ImageView android:id="@+id/ivIconTimer"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="137dp"
-        android:layout_marginLeft="89dp"
-        android:src="@drawable/ic_outline_timer_24" />
-
     <ImageView
-        android:id="@+id/ivIconToDo"
+        android:id="@+id/ivIconTimer"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginTop="137dp"
-        android:layout_marginEnd="-108dp"
-        android:layout_toStartOf="@id/progress_bar_count_todo"
-        android:src="@drawable/ic_baseline_playlist_add_check_24_beige"
-         />
-
+        android:padding="10dp"
+        app:layout_anchor="@+id/progress_bar"
+        app:layout_anchorGravity="center"
+        android:src="@drawable/ic_outline_timer_24" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </RelativeLayout>
