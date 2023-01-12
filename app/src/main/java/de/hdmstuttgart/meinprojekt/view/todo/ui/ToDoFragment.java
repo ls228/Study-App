@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdmstuttgart.meinprojekt.R;
-import de.hdmstuttgart.meinprojekt.model.todo.ToDoItem;
+import de.hdmstuttgart.meinprojekt.model.ToDoItem;
 import de.hdmstuttgart.meinprojekt.view.todo.ToDoViewModel;
 
 public class ToDoFragment extends Fragment {

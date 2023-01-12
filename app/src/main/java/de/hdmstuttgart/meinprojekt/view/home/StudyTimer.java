@@ -3,6 +3,7 @@ package de.hdmstuttgart.meinprojekt.view.home;
 import android.animation.ValueAnimator;
 import android.os.CountDownTimer;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -60,8 +61,9 @@ public class StudyTimer {
         minutePicker.setMaxValue(60);
         minutePicker.setValue(0);
 
-        mAnimator = ValueAnimator.ofFloat(0, mValue);
-        mAnimator.setDuration(800); // set the duration of the animation to 10 seconds
+        mAnimator = ValueAnimator.ofFloat(0, mValue*100);
+        mAnimator.setDuration(500);
+        mAnimator.setInterpolator( new DecelerateInterpolator());// set the duration of the animation to 10 seconds
 
         mAnimator.addUpdateListener(animation ->
                 mValue = (float) animation.getAnimatedValue());
@@ -102,6 +104,8 @@ public class StudyTimer {
         mAnimator.setFloatValues(mValue);
         mAnimator.start();
     }
+
+
 
     public void stopAnimation(){
         if(mAnimator.isRunning()){

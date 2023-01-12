@@ -3,13 +3,11 @@ package de.hdmstuttgart.meinprojekt.database;
 import android.app.Application;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
-import de.hdmstuttgart.meinprojekt.model.todo.ToDoItem;
+import de.hdmstuttgart.meinprojekt.model.ToDoItem;
 
 public class ToDoRepository {
 
