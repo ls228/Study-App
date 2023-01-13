@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,7 +30,11 @@ public class HomeFragment extends Fragment {
 
     StudyTimer studyTimer;
     ToDoCounter toDoCounter;
-    HomeUI homeUI;
+
+    Button bButtonStartPause;
+    Button bButtonReset;
+    Button bButtonSetTime;
+
 
     public boolean timeUp = false;
     public boolean allTodosChecked = false;
@@ -45,9 +50,13 @@ public class HomeFragment extends Fragment {
 
         toDoCounter = new ToDoCounter(this, view);
         studyTimer = new StudyTimer(this, view);
-        homeUI = new HomeUI(view);
 
-        homeUI.bButtonStartPause.setOnClickListener(v -> {
+
+        bButtonStartPause = view.findViewById(R.id.button_start_pause);
+        bButtonReset = view.findViewById(R.id.button_reset);
+        bButtonSetTime = view.findViewById(R.id.button_set_time);
+
+        bButtonStartPause.setOnClickListener(v -> {
 
             if (mTimerRunning) {
                 studyTimer.pauseTimer();
@@ -58,13 +67,13 @@ public class HomeFragment extends Fragment {
                 studyTimer.startTimer();
         });
 
-        homeUI.bButtonReset.setOnClickListener(v -> {
+        bButtonReset.setOnClickListener(v -> {
             studyTimer.resetTimer();
             studyTimer.mProgressBar.setMax(0);
         });
 
 
-        homeUI.bButtonSetTime.setOnClickListener(v -> {
+        bButtonSetTime.setOnClickListener(v -> {
             studyTimer.resetTimer();
             studyTimer.mProgressBar.setMax(0);
             updateWatchInterface();
@@ -83,27 +92,27 @@ public class HomeFragment extends Fragment {
      */
     public void updateWatchInterface() {
         if (mTimerRunning) {
-            homeUI.bButtonStartPause.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_pause_circle_24, null));
-            homeUI.bButtonStartPause.setGravity(Gravity.CENTER);
+            bButtonStartPause.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_pause_circle_24, null));
+            bButtonStartPause.setGravity(Gravity.CENTER);
             studyTimer.hourPicker.setVisibility(View.INVISIBLE);
             studyTimer.minutePicker.setVisibility(View.INVISIBLE);
-            homeUI.bButtonReset.setVisibility(View.INVISIBLE);
+            bButtonReset.setVisibility(View.INVISIBLE);
             studyTimer.mCountDownText.setVisibility(View.VISIBLE);
         } else {
-            homeUI.bButtonStartPause.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_play_circle_24, null));
+            bButtonStartPause.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_play_circle_24, null));
             studyTimer.hourPicker.setVisibility(View.VISIBLE);
             studyTimer.minutePicker.setVisibility(View.VISIBLE);
             studyTimer.mCountDownText.setVisibility(View.INVISIBLE);
-            homeUI.bButtonStartPause.setVisibility(View.VISIBLE);
-            homeUI.bButtonReset.setVisibility(View.INVISIBLE);
-            homeUI.bButtonSetTime.setVisibility(View.INVISIBLE);
+            bButtonStartPause.setVisibility(View.VISIBLE);
+            bButtonReset.setVisibility(View.INVISIBLE);
+            bButtonSetTime.setVisibility(View.INVISIBLE);
         }
     }
 
     void updateWatchInterfacePause() {
-        homeUI.bButtonStartPause.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_play_circle_24, null));
-        homeUI.bButtonReset.setVisibility(View.VISIBLE);
-        homeUI.bButtonReset.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_stop_circle_24, null));
+        bButtonStartPause.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_play_circle_24, null));
+        bButtonReset.setVisibility(View.VISIBLE);
+        bButtonReset.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_stop_circle_24, null));
         studyTimer.mCountDownText.setVisibility(View.VISIBLE);
         studyTimer.minutePicker.setVisibility(View.INVISIBLE);
         studyTimer.hourPicker.setVisibility(View.INVISIBLE);
@@ -111,10 +120,10 @@ public class HomeFragment extends Fragment {
 
     /*void updateWatchInterfaceFinish() {
         studyTimer.mCountDownText.setVisibility(View.VISIBLE);
-        homeUI.bButtonSetTime.setVisibility(View.VISIBLE);
-        homeUI.bButtonSetTime.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_access_time_filled_24, null));
-        homeUI.bButtonStartPause.setVisibility(View.INVISIBLE);
-        homeUI.bButtonReset.setVisibility(View.INVISIBLE);
+        bButtonSetTime.setVisibility(View.VISIBLE);
+        bButtonSetTime.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_access_time_filled_24, null));
+        bButtonStartPause.setVisibility(View.INVISIBLE);
+        bButtonReset.setVisibility(View.INVISIBLE);
         studyTimer.hourPicker.setVisibility(View.INVISIBLE);
         studyTimer.minutePicker.setVisibility(View.INVISIBLE);
     }*/
