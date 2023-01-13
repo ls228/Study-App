@@ -169,20 +169,20 @@ public class StudyTimer {
             @Override
             public void onFinish() {
                 mTimerRunning = false;
-                homeFragment.updateWatchInterface();
+                //homeFragment.updateWatchInterface();
                 resetTimer();
                 stopAnimation();
             }
         }.start();
 
         mTimerRunning = true;
-        homeFragment.updateWatchInterface();
+        //homeFragment.updateWatchInterface();
     }
 
     public void pauseTimer() {
         mCountDownTimer.cancel();
         mTimerRunning = false;
-        homeFragment.updateWatchInterfacePause();
+        //homeFragment.updateWatchInterfacePause();
     }
 
     public void resetTimer() {
@@ -190,7 +190,7 @@ public class StudyTimer {
         mTimerRunning = false;
         hourPicker.setValue(0);
         minutePicker.setValue(0);
-        homeFragment.updateWatchInterface();
+        //homeFragment.updateWatchInterface();
     }
 
 }
