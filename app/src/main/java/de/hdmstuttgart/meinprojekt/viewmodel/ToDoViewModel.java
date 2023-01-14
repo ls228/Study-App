@@ -1,4 +1,4 @@
-package de.hdmstuttgart.meinprojekt.view.todo;
+package de.hdmstuttgart.meinprojekt.viewmodel;
 
 import android.app.Application;
 

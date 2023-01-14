@@ -11,7 +11,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import de.hdmstuttgart.meinprojekt.databinding.ActivityMainBinding;
-import de.hdmstuttgart.meinprojekt.view.todo.ToDoViewModel;
+import de.hdmstuttgart.meinprojekt.viewmodel.ToDoViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
