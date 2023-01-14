@@ -5,9 +5,13 @@ import static android.content.Context.MODE_PRIVATE;
 import static de.hdmstuttgart.meinprojekt.view.home.StudyTimer.mEndTime;
 import static de.hdmstuttgart.meinprojekt.view.home.StudyTimer.mTimeLeftInMillis;
 import static de.hdmstuttgart.meinprojekt.view.home.StudyTimer.mTimerRunning;
+import static de.hdmstuttgart.meinprojekt.view.home.TimerStatus.PAUSE;
+import static de.hdmstuttgart.meinprojekt.view.home.TimerStatus.RESET;
+import static de.hdmstuttgart.meinprojekt.view.home.TimerStatus.RUNNING;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,13 +35,14 @@ public class HomeFragment extends Fragment {
     StudyTimer studyTimer;
     ToDoCounter toDoCounter;
 
-    Button bButtonStartPause;
+    Button bButtonStart;
+    Button bButtonPause;
     Button bButtonReset;
-    Button bButtonSetTime;
-
 
     public boolean timeUp = false;
     public boolean allTodosChecked = false;
+
+    TimerStatus status;
 
 
     /**
@@ -51,82 +56,72 @@ public class HomeFragment extends Fragment {
         toDoCounter = new ToDoCounter(this, view);
         studyTimer = new StudyTimer(this, view);
 
-
-        bButtonStartPause = view.findViewById(R.id.button_start_pause);
+        bButtonStart = view.findViewById(R.id.button_start);
+        bButtonPause = view.findViewById(R.id.button_pause);
         bButtonReset = view.findViewById(R.id.button_reset);
-        bButtonSetTime = view.findViewById(R.id.button_set_time);
 
-        bButtonStartPause.setOnClickListener(v -> {
 
-            if (mTimerRunning) {
-                studyTimer.pauseTimer();
-            } else if (mTimeLeftInMillis == 0) {
+        bButtonStart.setOnClickListener(v -> {
+            if (mTimeLeftInMillis == 0) {
                 Toast toastMessage = Toast.makeText(requireContext(), "Please enter a positive number!", Toast.LENGTH_LONG);
                 toastMessage.show();
             } else
+                updateWatchInterface(RUNNING);
                 studyTimer.startTimer();
         });
 
         bButtonReset.setOnClickListener(v -> {
             studyTimer.resetTimer();
+            updateWatchInterface(RESET);
             studyTimer.mProgressBar.setMax(0);
         });
 
-
-        bButtonSetTime.setOnClickListener(v -> {
-            studyTimer.resetTimer();
-            studyTimer.mProgressBar.setMax(0);
-            updateWatchInterface();
+        bButtonPause.setOnClickListener(v -> {
+            studyTimer.pauseTimer();
+            updateWatchInterface(PAUSE);
         });
+
 
         return view;
     }
 
-    public void doneAnimation(){
+
+    public void doneAnimation() {
         studyTimer.mCountDownText.setText("allDone");
     }
 
 
-    /**
-     * in this method the visibility of the buttons is set
-     */
-    public void updateWatchInterface() {
-        if (mTimerRunning) {
-            bButtonStartPause.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_pause_circle_24, null));
-            bButtonStartPause.setGravity(Gravity.CENTER);
-            studyTimer.hourPicker.setVisibility(View.INVISIBLE);
-            studyTimer.minutePicker.setVisibility(View.INVISIBLE);
-            bButtonReset.setVisibility(View.INVISIBLE);
-            studyTimer.mCountDownText.setVisibility(View.VISIBLE);
-        } else {
-            bButtonStartPause.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_play_circle_24, null));
-            studyTimer.hourPicker.setVisibility(View.VISIBLE);
-            studyTimer.minutePicker.setVisibility(View.VISIBLE);
-            studyTimer.mCountDownText.setVisibility(View.INVISIBLE);
-            bButtonStartPause.setVisibility(View.VISIBLE);
-            bButtonReset.setVisibility(View.INVISIBLE);
-            bButtonSetTime.setVisibility(View.INVISIBLE);
+    void updateWatchInterface(TimerStatus status) {
+        System.out.println("switch");
+        switch (status) {
+            case RUNNING:
+                System.out.println("Running Interface");
+                bButtonStart.setVisibility(View.INVISIBLE);
+                bButtonPause.setVisibility(View.VISIBLE);
+                studyTimer.hourPicker.setVisibility(View.INVISIBLE);
+                studyTimer.minutePicker.setVisibility(View.INVISIBLE);
+                bButtonReset.setVisibility(View.INVISIBLE);
+                studyTimer.mCountDownText.setVisibility(View.VISIBLE);
+                break;
+            case PAUSE:
+                System.out.println("Pause Interface");
+                bButtonStart.setVisibility(View.VISIBLE);
+                bButtonPause.setVisibility(View.INVISIBLE);
+                bButtonReset.setVisibility(View.VISIBLE);
+                studyTimer.mCountDownText.setVisibility(View.VISIBLE);
+                studyTimer.minutePicker.setVisibility(View.INVISIBLE);
+                studyTimer.hourPicker.setVisibility(View.INVISIBLE);
+                break;
+            case RESET:
+                System.out.println("Reset Interface");
+                studyTimer.hourPicker.setVisibility(View.VISIBLE);
+                studyTimer.minutePicker.setVisibility(View.VISIBLE);
+                studyTimer.mCountDownText.setVisibility(View.INVISIBLE);
+                bButtonStart.setVisibility(View.VISIBLE);
+                bButtonReset.setVisibility(View.INVISIBLE);
+                break;
         }
     }
-
-    void updateWatchInterfacePause() {
-        bButtonStartPause.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_play_circle_24, null));
-        bButtonReset.setVisibility(View.VISIBLE);
-        bButtonReset.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_stop_circle_24, null));
-        studyTimer.mCountDownText.setVisibility(View.VISIBLE);
-        studyTimer.minutePicker.setVisibility(View.INVISIBLE);
-        studyTimer.hourPicker.setVisibility(View.INVISIBLE);
-    }
-
-    /*void updateWatchInterfaceFinish() {
-        studyTimer.mCountDownText.setVisibility(View.VISIBLE);
-        bButtonSetTime.setVisibility(View.VISIBLE);
-        bButtonSetTime.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_baseline_access_time_filled_24, null));
-        bButtonStartPause.setVisibility(View.INVISIBLE);
-        bButtonReset.setVisibility(View.INVISIBLE);
-        studyTimer.hourPicker.setVisibility(View.INVISIBLE);
-        studyTimer.minutePicker.setVisibility(View.INVISIBLE);
-    }*/
 
 
     /**
@@ -177,9 +172,10 @@ public class HomeFragment extends Fragment {
         studyTimer.updateCountDownText();
 
         if (!mTimerRunning && mTimeLeftInMillis > 0) {
-            updateWatchInterfacePause();
+            updateWatchInterface(PAUSE);
+            //updateWatchInterfacePause();
         } else {
-            updateWatchInterface();
+            updateWatchInterface(RESET);
         }
 
         if (mTimerRunning) {
@@ -190,11 +186,20 @@ public class HomeFragment extends Fragment {
                 mTimeLeftInMillis = 0;
                 mTimerRunning = false;
                 studyTimer.updateCountDownText();
-                updateWatchInterface();
+                updateWatchInterface(RESET);
             } else {
                 studyTimer.startTimer();
+                updateWatchInterface(RUNNING);
             }
         }
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        System.out.println("onDestroy");
+        studyTimer.stopTimer();
     }
 }
 
