@@ -9,7 +9,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import de.hdmstuttgart.meinprojekt.model.todo.ToDoItem;
+import de.hdmstuttgart.meinprojekt.model.ToDoItem;
 
 @Dao
 public interface ToDoDao {

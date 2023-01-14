@@ -1,4 +1,4 @@
-package de.hdmstuttgart.meinprojekt.view.todo;
+package de.hdmstuttgart.meinprojekt.model;
 
 import androidx.room.TypeConverter;
 

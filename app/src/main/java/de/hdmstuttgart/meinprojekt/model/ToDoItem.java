@@ -1,4 +1,4 @@
-package de.hdmstuttgart.meinprojekt.model.todo;
+package de.hdmstuttgart.meinprojekt.model;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

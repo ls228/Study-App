@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/navigation_todo"
-        android:name="de.hdmstuttgart.meinprojekt.view.todo.ui.ToDoFragment"
+        android:name="de.hdmstuttgart.meinprojekt.view.todo.ToDoFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_todo" />
 

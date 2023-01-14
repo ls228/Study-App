@@ -1,4 +1,4 @@
-package de.hdmstuttgart.meinprojekt.view.todo.ui;
+package de.hdmstuttgart.meinprojekt.view.todo;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
@@ -16,8 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import de.hdmstuttgart.meinprojekt.R;
-import de.hdmstuttgart.meinprojekt.model.todo.ToDoItem;
-import de.hdmstuttgart.meinprojekt.view.todo.ToDoViewModel;
+import de.hdmstuttgart.meinprojekt.model.ToDoItem;
+import de.hdmstuttgart.meinprojekt.viewmodel.ToDoViewModel;
 
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder> {
 
