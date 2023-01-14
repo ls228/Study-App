@@ -5,9 +5,13 @@ import static android.content.Context.MODE_PRIVATE;
 import static de.hdmstuttgart.meinprojekt.view.home.StudyTimer.mEndTime;
 import static de.hdmstuttgart.meinprojekt.view.home.StudyTimer.mTimeLeftInMillis;
 import static de.hdmstuttgart.meinprojekt.view.home.StudyTimer.mTimerRunning;
+import static de.hdmstuttgart.meinprojekt.view.home.TimerStatus.PAUSE;
+import static de.hdmstuttgart.meinprojekt.view.home.TimerStatus.RESET;
+import static de.hdmstuttgart.meinprojekt.view.home.TimerStatus.RUNNING;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,28 +60,26 @@ public class HomeFragment extends Fragment {
         bButtonPause = view.findViewById(R.id.button_pause);
         bButtonReset = view.findViewById(R.id.button_reset);
 
+
         bButtonStart.setOnClickListener(v -> {
             if (mTimeLeftInMillis == 0) {
                 Toast toastMessage = Toast.makeText(requireContext(), "Please enter a positive number!", Toast.LENGTH_LONG);
                 toastMessage.show();
             } else
-                status = TimerStatus.RUNNING;
-                updateWatchInterface();
+                updateWatchInterface(RUNNING);
                 studyTimer.startTimer();
         });
 
 
         bButtonReset.setOnClickListener(v -> {
             studyTimer.resetTimer();
-            status = TimerStatus.RESET;
-            updateWatchInterface();
+            updateWatchInterface(RESET);
             studyTimer.mProgressBar.setMax(0);
         });
 
         bButtonPause.setOnClickListener(v -> {
             studyTimer.pauseTimer();
-            status = TimerStatus.PAUSE;
-            updateWatchInterface();
+            updateWatchInterface(PAUSE);
         });
 
 
@@ -90,7 +92,7 @@ public class HomeFragment extends Fragment {
     }
 
 
-    void updateWatchInterface() {
+    void updateWatchInterface(TimerStatus status) {
         System.out.println("switch");
         switch (status) {
             case RUNNING:
@@ -171,12 +173,10 @@ public class HomeFragment extends Fragment {
         studyTimer.updateCountDownText();
 
         if (!mTimerRunning && mTimeLeftInMillis > 0) {
-            status = TimerStatus.PAUSE;
-            updateWatchInterface();
+            updateWatchInterface(PAUSE);
             //updateWatchInterfacePause();
         } else {
-            status = TimerStatus.RESET;
-            updateWatchInterface();
+            updateWatchInterface(RESET);
         }
 
         if (mTimerRunning) {
@@ -187,12 +187,20 @@ public class HomeFragment extends Fragment {
                 mTimeLeftInMillis = 0;
                 mTimerRunning = false;
                 studyTimer.updateCountDownText();
-                updateWatchInterface();
-                status = TimerStatus.RESET;
+                updateWatchInterface(RESET);
             } else {
                 studyTimer.startTimer();
+                updateWatchInterface(RUNNING);
             }
         }
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        System.out.println("onDestroy");
+        studyTimer.stopTimer();
     }
 }
 

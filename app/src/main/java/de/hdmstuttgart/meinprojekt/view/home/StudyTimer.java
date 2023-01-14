@@ -193,4 +193,15 @@ public class StudyTimer {
         //homeFragment.updateWatchInterface();
     }
 
+    public void stopTimer() {
+        System.out.println("Stop Timer");
+        resetTimer();
+        mTimeLeftInMillis = 0;
+        mTimerRunning = false;
+        if ( mCountDownTimer != null) {
+            mCountDownTimer.cancel();
+        }
+    }
+
+
 }
