@@ -70,7 +70,6 @@ public class HomeFragment extends Fragment {
                 studyTimer.startTimer();
         });
 
-
         bButtonReset.setOnClickListener(v -> {
             studyTimer.resetTimer();
             updateWatchInterface(RESET);

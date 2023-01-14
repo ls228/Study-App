@@ -1,4 +1,4 @@
-package de.hdmstuttgart.meinprojekt.view.todo;
+package de.hdmstuttgart.meinprojekt.viewmodel;
 
 import android.app.Application;
 
@@ -11,7 +11,7 @@ import java.util.List;
 
 import de.hdmstuttgart.meinprojekt.database.ToDoRepository;
 
-import de.hdmstuttgart.meinprojekt.model.todo.ToDoItem;
+import de.hdmstuttgart.meinprojekt.model.ToDoItem;
 
 public class ToDoViewModel extends AndroidViewModel {
 
