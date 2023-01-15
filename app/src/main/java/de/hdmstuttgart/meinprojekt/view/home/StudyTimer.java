@@ -1,6 +1,10 @@
 package de.hdmstuttgart.meinprojekt.view.home;
 
+import static androidx.test.InstrumentationRegistry.getContext;
+
 import android.animation.ValueAnimator;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -36,6 +40,7 @@ public class StudyTimer {
 
     private float mValue= 0;
 
+    public boolean alldone = false;
 
 
     private ValueAnimator mAnimator;
@@ -141,14 +146,15 @@ public class StudyTimer {
             mCountDownText.setText(R.string.done);
             homeFragment.timeUp = true;
             System.out.println("timeup true");
+            alldone = true;
 
             if(homeFragment.timeUp&&homeFragment.allTodosChecked){
                 homeFragment.doneAnimation();
-                System.out.println("done");
             }
 
         } else {
             mCountDownText.setText(timeLeftFormatted);
+            alldone = false;
         }
     }
 

@@ -9,6 +9,7 @@ import static de.hdmstuttgart.meinprojekt.view.home.TimerStatus.PAUSE;
 import static de.hdmstuttgart.meinprojekt.view.home.TimerStatus.RESET;
 import static de.hdmstuttgart.meinprojekt.view.home.TimerStatus.RUNNING;
 
+import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -43,6 +44,8 @@ public class HomeFragment extends Fragment {
     public boolean allTodosChecked = false;
 
     TimerStatus status;
+    private AlertDialog.Builder builder;
+    private DialogDone dialogDone;
 
 
     /**
@@ -62,6 +65,7 @@ public class HomeFragment extends Fragment {
 
 
         bButtonStart.setOnClickListener(v -> {
+
             if (mTimeLeftInMillis == 0) {
                 Toast toastMessage = Toast.makeText(requireContext(), "Please enter a positive number!", Toast.LENGTH_LONG);
                 toastMessage.show();
@@ -81,13 +85,14 @@ public class HomeFragment extends Fragment {
             updateWatchInterface(PAUSE);
         });
 
-
         return view;
     }
 
 
     public void doneAnimation() {
-        studyTimer.mCountDownText.setText("allDone");
+        builder = new AlertDialog.Builder(getContext());
+        dialogDone = new DialogDone(getView(),builder);
+        dialogDone.done();
     }
 
 
@@ -147,6 +152,7 @@ public class HomeFragment extends Fragment {
         if (studyTimer.mCountDownTimer != null) {
             studyTimer.mCountDownTimer.cancel();
         }
+
     }
 
     /**
@@ -192,6 +198,8 @@ public class HomeFragment extends Fragment {
                 updateWatchInterface(RUNNING);
             }
         }
+
+
     }
 
 
