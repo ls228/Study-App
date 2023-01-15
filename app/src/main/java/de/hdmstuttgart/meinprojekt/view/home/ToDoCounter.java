@@ -20,6 +20,7 @@ public class ToDoCounter {
     LiveData<Integer> countStatusAll;
     private int countChecked;
     private int countAll;
+    public boolean todosDone = false;
 
     View view;
     HomeFragment homeFragment;
@@ -63,16 +64,14 @@ public class ToDoCounter {
             if(countAll==countChecked){
                 homeFragment.allTodosChecked=true;
                 System.out.println("all checked");
-
-                if(homeFragment.timeUp&&homeFragment.allTodosChecked){
-                    homeFragment.doneAnimation();
-                    System.out.println("done");
-                }
+                todosDone = true;
 
             }else{
                 homeFragment.allTodosChecked=false;
+                todosDone = false;
                 System.out.println("not all checked");
             }
+            System.out.println("todos: "+todosDone);
         });
 
 

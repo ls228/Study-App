@@ -9,6 +9,8 @@ import static de.hdmstuttgart.meinprojekt.view.home.TimerStatus.PAUSE;
 import static de.hdmstuttgart.meinprojekt.view.home.TimerStatus.RESET;
 import static de.hdmstuttgart.meinprojekt.view.home.TimerStatus.RUNNING;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -31,7 +33,6 @@ public class HomeFragment extends Fragment {
 
     private long mStartTimeInMillis;
 
-
     StudyTimer studyTimer;
     ToDoCounter toDoCounter;
 
@@ -42,12 +43,14 @@ public class HomeFragment extends Fragment {
     public boolean timeUp = false;
     public boolean allTodosChecked = false;
 
-    TimerStatus status;
+    private AlertDialog.Builder builder;
+    private DialogDone dialogDone;
 
 
     /**
      * sets the layout of the fragment
      */
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -81,13 +84,14 @@ public class HomeFragment extends Fragment {
             updateWatchInterface(PAUSE);
         });
 
-
         return view;
     }
 
 
     public void doneAnimation() {
-        studyTimer.mCountDownText.setText("allDone");
+        builder = new AlertDialog.Builder(getContext());
+        dialogDone = new DialogDone(getView(),builder);
+        dialogDone.done();
     }
 
 
@@ -147,6 +151,7 @@ public class HomeFragment extends Fragment {
         if (studyTimer.mCountDownTimer != null) {
             studyTimer.mCountDownTimer.cancel();
         }
+
     }
 
     /**
@@ -173,7 +178,7 @@ public class HomeFragment extends Fragment {
 
         if (!mTimerRunning && mTimeLeftInMillis > 0) {
             updateWatchInterface(PAUSE);
-            //updateWatchInterfacePause();
+
         } else {
             updateWatchInterface(RESET);
         }
@@ -192,6 +197,8 @@ public class HomeFragment extends Fragment {
                 updateWatchInterface(RUNNING);
             }
         }
+
+
     }
 
 

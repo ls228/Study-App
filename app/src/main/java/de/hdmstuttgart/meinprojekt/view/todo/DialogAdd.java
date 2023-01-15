@@ -53,6 +53,7 @@ public class DialogAdd {
     private String errorMessage = "Please enter a valid To Do!";
     private final String dialogclosed = "onClick: closing dialog";
     private final String input = "onClick: capturing input";
+    private final String tag = "DialogAdd";
 
     private Toast toastMessage;
 
@@ -86,7 +87,7 @@ public class DialogAdd {
 
         btnCancel.setOnClickListener(
                 a -> {
-                    Log.d(TAG, dialogclosed);
+                    Log.d(tag, dialogclosed);
                     dialog.dismiss();
                 });
 
@@ -96,7 +97,7 @@ public class DialogAdd {
                     time = Calendar.getInstance().getTime();
                     currentTime = Converter.dateToTimestamp(time);
 
-                    Log.d(TAG, input);
+                    Log.d(tag, input);
 
                     inputTitle = titleInput.getText().toString();
                     inputTopic = topicInput.getText().toString();
