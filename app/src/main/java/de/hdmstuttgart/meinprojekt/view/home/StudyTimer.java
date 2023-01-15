@@ -135,7 +135,7 @@ public class StudyTimer {
                     "%02d:%02d", minutes, seconds);
         }
 
-        if(seconds == 1&&(!homeFragment.allTodosChecked)){
+        if(seconds == 0&&(!homeFragment.allTodosChecked)){
             mCountDownText.setText("Time up");
         }else if (seconds == 0) {
 

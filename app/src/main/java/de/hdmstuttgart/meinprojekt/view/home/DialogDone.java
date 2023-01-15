@@ -26,6 +26,7 @@ public class DialogDone {
 
     private AlertDialog dialogDone;
     private AlertDialog.Builder dialogBuilder;
+    private CountDownTimer timer;
 
     private final String dialogOpen = "onClick: opening Edit dialog success";
 
@@ -51,15 +52,19 @@ public class DialogDone {
         dialogDone.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
         //20000 milli seconds total time, 500 milli seconds is time interval
-        CountDownTimer timer = new CountDownTimer(2000, 500) {
+         timer = new CountDownTimer(1000, 500) {
 
             public void onTick(long millisUntilFinished) {
             }
             public void onFinish() {
                 dialogDone.dismiss();
+                stop();
             }
         }.start();
 
 
+    }
+    private void stop(){
+        timer.cancel();
     }
 }
