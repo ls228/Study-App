@@ -9,6 +9,7 @@ import static de.hdmstuttgart.meinprojekt.view.home.TimerStatus.PAUSE;
 import static de.hdmstuttgart.meinprojekt.view.home.TimerStatus.RESET;
 import static de.hdmstuttgart.meinprojekt.view.home.TimerStatus.RUNNING;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -49,6 +50,7 @@ public class HomeFragment extends Fragment {
     /**
      * sets the layout of the fragment
      */
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 

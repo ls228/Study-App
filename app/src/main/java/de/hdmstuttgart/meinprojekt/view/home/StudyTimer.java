@@ -78,14 +78,9 @@ public class StudyTimer {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                 hoursSet = (long) newVal * 3600000;
-                calculateTotalTime();
+                calculateTotalTime(minutesSet,hoursSet);
             }
 
-            private void calculateTotalTime() {
-                mTimeLeftInMillis = hoursSet + minutesSet;
-                timeSet = (int) mTimeLeftInMillis;
-                mProgressBar.setMax(timeSet);
-            }
         });
 
         minutePicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
@@ -93,24 +88,23 @@ public class StudyTimer {
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
 
                 minutesSet = (long) newVal * 60000;
-                calculateTotalTime();
+                mProgressBar.setMax(calculateTotalTime(minutesSet,hoursSet));
             }
 
-            private void calculateTotalTime() {
-                mTimeLeftInMillis = hoursSet + minutesSet;
-                timeSet = (int) mTimeLeftInMillis;
-                mProgressBar.setMax(timeSet);
-            }
         });
 
+    }
+
+    private int calculateTotalTime(long minutes,long hours) {
+        mTimeLeftInMillis = hours + minutes;
+        timeSet = (int) mTimeLeftInMillis;
+        return timeSet;
     }
 
     public void setmValue(float mValue) {
         mAnimator.setFloatValues(mValue);
         mAnimator.start();
     }
-
-
 
     public void stopAnimation(){
         if(mAnimator.isRunning()){
