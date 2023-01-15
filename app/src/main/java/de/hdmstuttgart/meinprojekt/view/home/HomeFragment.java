@@ -32,7 +32,6 @@ public class HomeFragment extends Fragment {
 
     private long mStartTimeInMillis;
 
-
     StudyTimer studyTimer;
     ToDoCounter toDoCounter;
 
@@ -43,7 +42,6 @@ public class HomeFragment extends Fragment {
     public boolean timeUp = false;
     public boolean allTodosChecked = false;
 
-    TimerStatus status;
     private AlertDialog.Builder builder;
     private DialogDone dialogDone;
 
@@ -65,7 +63,6 @@ public class HomeFragment extends Fragment {
 
 
         bButtonStart.setOnClickListener(v -> {
-            doneAnimation();
             if (mTimeLeftInMillis == 0) {
                 Toast toastMessage = Toast.makeText(requireContext(), "Please enter a positive number!", Toast.LENGTH_LONG);
                 toastMessage.show();
@@ -179,7 +176,7 @@ public class HomeFragment extends Fragment {
 
         if (!mTimerRunning && mTimeLeftInMillis > 0) {
             updateWatchInterface(PAUSE);
-            //updateWatchInterfacePause();
+
         } else {
             updateWatchInterface(RESET);
         }
