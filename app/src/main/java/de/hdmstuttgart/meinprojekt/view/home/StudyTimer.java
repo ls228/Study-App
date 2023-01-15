@@ -141,17 +141,19 @@ public class StudyTimer {
                     "%02d:%02d", minutes, seconds);
         }
 
+        if(seconds == 1){
+            mCountDownText.setText("Time up");
+        }else if (seconds == 0) {
 
-        if (seconds == 0) {
-            mCountDownText.setText(R.string.done);
             homeFragment.timeUp = true;
             System.out.println("timeup true");
             alldone = true;
 
             if(homeFragment.timeUp&&homeFragment.allTodosChecked){
+                mCountDownText.setText("");
                 homeFragment.doneAnimation();
-            }
 
+            }
         } else {
             mCountDownText.setText(timeLeftFormatted);
             alldone = false;

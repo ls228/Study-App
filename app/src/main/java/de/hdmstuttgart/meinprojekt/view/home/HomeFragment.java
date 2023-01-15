@@ -65,7 +65,7 @@ public class HomeFragment extends Fragment {
 
 
         bButtonStart.setOnClickListener(v -> {
-
+            doneAnimation();
             if (mTimeLeftInMillis == 0) {
                 Toast toastMessage = Toast.makeText(requireContext(), "Please enter a positive number!", Toast.LENGTH_LONG);
                 toastMessage.show();
