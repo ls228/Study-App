@@ -160,6 +160,7 @@ public class HomeFragment extends Fragment {
                 studyTimer.minutePicker.setVisibility(View.VISIBLE);
                 studyTimer.mCountDownText.setVisibility(View.INVISIBLE);
                 bButtonStart.setVisibility(View.VISIBLE);
+                bButtonPause.setVisibility(View.INVISIBLE);
                 bButtonReset.setVisibility(View.INVISIBLE);
                 break;
         }

@@ -77,7 +77,7 @@ public class StudyTimer {
             mAnimator.cancel();
         }
     }*/
-}
+    }
 
     public void saveTimerProgressBar(int timeSet) {
         int progress = timeSet - (int) (mTimeLeftInMillis);
@@ -102,6 +102,7 @@ public class StudyTimer {
                     "%02d:%02d", minutes, seconds);
         }
 
+
         if (seconds == 0 && !mTimerRunning) {
             HomeFragment.timeUp = true;
             allDone();
@@ -118,14 +119,12 @@ public class StudyTimer {
             mProgressBar.setProgress(0);
             resetTimer();
             homeFragment.updateWatchInterface(RESET);
-
         } else if (HomeFragment.timeUp && HomeFragment.allTodosChecked) {
 
             mTimerRunning = false;
-
             resetTimer();
             homeFragment.doneAnimation();
-            mProgressBar.setProgress(0);
+            //mProgressBar.setProgress(0);
         }
     }
 
@@ -151,8 +150,9 @@ public class StudyTimer {
             @Override
             public void onFinish() {
                 mTimerRunning = false;
-                //homeFragment.updateWatchInterface();
+                allDone();
                 resetTimer();
+                homeFragment.updateWatchInterface(RESET);
                 //stopAnimation();
             }
         }.start();
@@ -172,6 +172,7 @@ public class StudyTimer {
         mTimerRunning = false;
         hourPicker.setValue(0);
         minutePicker.setValue(0);
+        mProgressBar.setProgress(0);
         //homeFragment.updateWatchInterface();
     }
 
