@@ -78,7 +78,6 @@ public class HomeFragment extends Fragment {
         bButtonPause = view.findViewById(R.id.button_pause);
         bButtonReset = view.findViewById(R.id.button_reset);
 
-
         bButtonStart.setOnClickListener(v -> {
             mhour = studyTimer.hourPicker.getValue();
             mMinute = studyTimer.minutePicker.getValue();
@@ -189,11 +188,18 @@ public class HomeFragment extends Fragment {
         editor.putLong("endTime", mEndTime);
 
         editor.apply();
+        toDoCounter.progressToDos();
 
         if (studyTimer.mCountDownTimer != null) {
             studyTimer.mCountDownTimer.cancel();
         }
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        toDoCounter.progressToDos();
     }
 
     /**

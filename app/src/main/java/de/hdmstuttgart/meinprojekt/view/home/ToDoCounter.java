@@ -1,5 +1,6 @@
 package de.hdmstuttgart.meinprojekt.view.home;
 
+import android.animation.ObjectAnimator;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -18,6 +19,7 @@ public class ToDoCounter {
     LiveData<Integer> countStatus;
     LiveData<Integer> countStatusUnchecked;
     LiveData<Integer> countStatusAll;
+
     private int countChecked;
     private int countAll;
     public boolean todosDone = false;
@@ -53,7 +55,10 @@ public class ToDoCounter {
         countStatusAll.observe((LifecycleOwner) homeFragment.getContext(), count -> {
             countAll = count;
             System.out.println("count all To Do's:" + countAll);
-            mProgressBarToDo.setMax(countAll);
+            mProgressBarToDo.setMax(countAll*5);
+            ObjectAnimator animation = ObjectAnimator.ofInt(mProgressBarToDo, "progress", 0, countChecked * 5);
+            animation.setDuration(1500);
+            animation.start();
         });
 
         countStatus.observe((LifecycleOwner) homeFragment.getContext(), list -> {

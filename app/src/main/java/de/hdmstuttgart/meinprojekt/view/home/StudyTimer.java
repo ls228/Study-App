@@ -36,9 +36,6 @@ public class StudyTimer {
 
     IOnFinish iOnFinish;
 
-    //private float mValue = 0;
-
-    //private ValueAnimator mAnimator;
     View view;
 
     public StudyTimer(View view, IOnFinish iOnFinish) {
@@ -58,33 +55,12 @@ public class StudyTimer {
         minutePicker.setMinValue(0);
         minutePicker.setMaxValue(60);
         minutePicker.setValue(0);
-
-        /*
-        mAnimator = ValueAnimator.ofFloat(0, mValue*100);
-        mAnimator.setDuration(500);
-        mAnimator.setInterpolator( new DecelerateInterpolator());// set the duration of the animation to 10 seconds
-
-        mAnimator.addUpdateListener(animation ->
-                mValue = (float) animation.getAnimatedValue());
-
-    public void setmValue(float mValue) {
-        mAnimator.setFloatValues(mValue);
-        mAnimator.start();
-    }
-
-    public void stopAnimation(){
-        if(mAnimator.isRunning()){
-            mAnimator.cancel();
-        }
-    }*/
     }
 
     public void saveTimerProgressBar(int timeSet) {
         int progress = timeSet - (int) (mTimeLeftInMillis);
         mProgressBar.setMax(timeSet);
         mProgressBar.setProgress(progress);
-        //setmValue(progress);
-        //startAnimation(timeSet);
     }
 
     void updateCountDownText() {
@@ -117,21 +93,14 @@ public class StudyTimer {
                 int progress = timeSet - (int) (millisUntilFinished);
                 mProgressBar.setProgress(progress);
                 updateCountDownText();
-                /*
-                if(!(mAnimator.isRunning())){
-                    setmValue(mValue);}*/
-
-                //startAnimation(timeSet);
             }
 
 
             @Override
             public void onFinish() {
                 mTimerRunning = false;
-                //allDone();
                 resetTimer();
                 iOnFinish.onFinish();
-                //stopAnimation();
             }
         }.start();
 
