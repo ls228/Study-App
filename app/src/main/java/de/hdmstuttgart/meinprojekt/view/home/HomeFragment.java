@@ -72,7 +72,7 @@ public class HomeFragment extends Fragment {
         };
 
         toDoCounter = new ToDoCounter(this, view);
-        studyTimer = new StudyTimer(this, view, onFinish);
+        studyTimer = new StudyTimer(view, onFinish);
 
         bButtonStart = view.findViewById(R.id.button_start);
         bButtonPause = view.findViewById(R.id.button_pause);

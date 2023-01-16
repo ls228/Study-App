@@ -34,8 +34,6 @@ public class StudyTimer {
 
     public ProgressBar mProgressBar;
 
-    private final HomeFragment homeFragment;
-
     IOnFinish iOnFinish;
 
     //private float mValue = 0;
@@ -43,8 +41,7 @@ public class StudyTimer {
     //private ValueAnimator mAnimator;
     View view;
 
-    public StudyTimer(HomeFragment homeFragment, View view, IOnFinish iOnFinish) {
-        this.homeFragment = homeFragment;
+    public StudyTimer(View view, IOnFinish iOnFinish) {
         this.view = view;
         this.iOnFinish = iOnFinish;
 
@@ -107,12 +104,8 @@ public class StudyTimer {
         mCountDownText.setText(timeLeftFormatted);
 
     }
-/*
-    public void allDone() {
-            resetTimer();
-            homeFragment.doneAnimation();
-    }
-*/
+
+
     public void startTimer(int timeSet) {
         System.out.println("Study timer started with: " + timeSet);
         mEndTime = System.currentTimeMillis() + mTimeLeftInMillis;
@@ -138,19 +131,16 @@ public class StudyTimer {
                 //allDone();
                 resetTimer();
                 iOnFinish.onFinish();
-                //homeFragment.updateWatchInterface(RESET);
                 //stopAnimation();
             }
         }.start();
 
         mTimerRunning = true;
-        //homeFragment.updateWatchInterface();
     }
 
     public void pauseTimer() {
         mCountDownTimer.cancel();
         mTimerRunning = false;
-        //homeFragment.updateWatchInterfacePause();
     }
 
     public void resetTimer() {
@@ -159,7 +149,6 @@ public class StudyTimer {
         hourPicker.setValue(0);
         minutePicker.setValue(0);
         mProgressBar.setProgress(0);
-        //homeFragment.updateWatchInterface();
     }
 
     public void stopTimer() {
