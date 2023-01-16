@@ -62,7 +62,6 @@ public class DialogDone {
             }
         }.start();
 
-
     }
     private void stop(){
         timer.cancel();

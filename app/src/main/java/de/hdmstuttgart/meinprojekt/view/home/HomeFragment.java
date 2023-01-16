@@ -1,6 +1,7 @@
 package de.hdmstuttgart.meinprojekt.view.home;
 
 import static android.content.Context.MODE_PRIVATE;
+import static android.webkit.ConsoleMessage.MessageLevel.LOG;
 
 import static de.hdmstuttgart.meinprojekt.view.home.StudyTimer.mEndTime;
 import static de.hdmstuttgart.meinprojekt.view.home.StudyTimer.mTimeLeftInMillis;
@@ -40,11 +41,13 @@ public class HomeFragment extends Fragment {
     Button bButtonPause;
     Button bButtonReset;
 
-    public boolean timeUp = false;
-    public boolean allTodosChecked = false;
+    public static boolean timeUp = false;
+    public static boolean allTodosChecked = false;
 
     private AlertDialog.Builder builder;
     private DialogDone dialogDone;
+
+    TimerStatus status;
 
 
     /**
@@ -65,6 +68,7 @@ public class HomeFragment extends Fragment {
 
 
         bButtonStart.setOnClickListener(v -> {
+
             if (mTimeLeftInMillis == 0) {
                 Toast toastMessage = Toast.makeText(requireContext(), "Please enter a positive number!", Toast.LENGTH_LONG);
                 toastMessage.show();
@@ -84,6 +88,7 @@ public class HomeFragment extends Fragment {
             updateWatchInterface(PAUSE);
         });
 
+
         return view;
     }
 
@@ -92,6 +97,8 @@ public class HomeFragment extends Fragment {
         builder = new AlertDialog.Builder(getContext());
         dialogDone = new DialogDone(getView(),builder);
         dialogDone.done();
+        updateWatchInterface(RESET);
+
     }
 
 
