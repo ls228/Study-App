@@ -20,6 +20,8 @@ public class ToDoViewModel extends AndroidViewModel {
 
     private final ToDoRepository repository;
 
+    private final LiveData<Integer> countStatusLD;
+    private final LiveData<Integer> countAll;
     /**
      * Connection between View an Model
      * retrieving LiveData from the repository
@@ -31,11 +33,17 @@ public class ToDoViewModel extends AndroidViewModel {
         //repository is the connection to database
         repository = new ToDoRepository(application);
         toDoLiveData = repository.getSavedToDos();
+        this.countStatusLD = repository.getCountStatusLD();
+        this.countAll = repository.getCountAll();
     }
 
     public LiveData<List<ToDoItem>> getSavedToDos() {
         return toDoLiveData;
     }
+    public LiveData<Integer> getCountStatusLD() {
+        return countStatusLD;
+    }
+    public LiveData<Integer> getCountAll() {return countAll; }
 
     public void removeToDo(ToDoItem toDoItem) {
         repository.delete(toDoItem);

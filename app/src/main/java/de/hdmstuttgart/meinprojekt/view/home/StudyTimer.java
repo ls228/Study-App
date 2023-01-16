@@ -36,14 +36,17 @@ public class StudyTimer {
 
     private final HomeFragment homeFragment;
 
+    IOnFinish iOnFinish;
+
     //private float mValue = 0;
 
     //private ValueAnimator mAnimator;
     View view;
 
-    public StudyTimer(HomeFragment homeFragment, View view) {
+    public StudyTimer(HomeFragment homeFragment, View view, IOnFinish iOnFinish) {
         this.homeFragment = homeFragment;
         this.view = view;
+        this.iOnFinish = iOnFinish;
 
         hourPicker = view.findViewById(R.id.number_picker_h);
         minutePicker = view.findViewById(R.id.number_picker_min);
@@ -101,33 +104,15 @@ public class StudyTimer {
             timeLeftFormatted = String.format(Locale.getDefault(),
                     "%02d:%02d", minutes, seconds);
         }
-
-
-        if (seconds == 0 && !mTimerRunning) {
-            HomeFragment.timeUp = true;
-            allDone();
-        } else {
-            mCountDownText.setText(timeLeftFormatted);
-        }
+        mCountDownText.setText(timeLeftFormatted);
 
     }
-
+/*
     public void allDone() {
-
-        if (!HomeFragment.allTodosChecked) {
-            mTimerRunning = false;
-            mProgressBar.setProgress(0);
-            resetTimer();
-            homeFragment.updateWatchInterface(RESET);
-        } else if (HomeFragment.timeUp && HomeFragment.allTodosChecked) {
-
-            mTimerRunning = false;
             resetTimer();
             homeFragment.doneAnimation();
-            //mProgressBar.setProgress(0);
-        }
     }
-
+*/
     public void startTimer(int timeSet) {
         System.out.println("Study timer started with: " + timeSet);
         mEndTime = System.currentTimeMillis() + mTimeLeftInMillis;
@@ -150,9 +135,10 @@ public class StudyTimer {
             @Override
             public void onFinish() {
                 mTimerRunning = false;
-                allDone();
+                //allDone();
                 resetTimer();
-                homeFragment.updateWatchInterface(RESET);
+                iOnFinish.onFinish();
+                //homeFragment.updateWatchInterface(RESET);
                 //stopAnimation();
             }
         }.start();

@@ -41,7 +41,6 @@ public class HomeFragment extends Fragment {
     Button bButtonPause;
     Button bButtonReset;
 
-    public static boolean timeUp = false;
     public static boolean allTodosChecked = false;
 
     private AlertDialog.Builder builder;
@@ -67,8 +66,13 @@ public class HomeFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        IOnFinish onFinish = () -> {
+            doneAnimation();
+            HomeFragment.this.updateWatchInterface(RESET);
+        };
+
         toDoCounter = new ToDoCounter(this, view);
-        studyTimer = new StudyTimer(this, view);
+        studyTimer = new StudyTimer(this, view, onFinish);
 
         bButtonStart = view.findViewById(R.id.button_start);
         bButtonPause = view.findViewById(R.id.button_pause);
@@ -107,9 +111,10 @@ public class HomeFragment extends Fragment {
             updateWatchInterface(PAUSE);
         });
 
-
         return view;
     }
+
+
 
     private long calculateTime(int minutes, int hours) {
         System.out.println("in calculate minute, hour: " + minutes+" "+hours);
@@ -128,8 +133,6 @@ public class HomeFragment extends Fragment {
         builder = new AlertDialog.Builder(getContext());
         dialogDone = new DialogDone(getView(),builder);
         dialogDone.done();
-        updateWatchInterface(RESET);
-
     }
 
 

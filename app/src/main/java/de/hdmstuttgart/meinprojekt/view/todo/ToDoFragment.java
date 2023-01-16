@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,6 +24,8 @@ import java.util.List;
 
 import de.hdmstuttgart.meinprojekt.R;
 import de.hdmstuttgart.meinprojekt.model.ToDoItem;
+import de.hdmstuttgart.meinprojekt.view.home.DialogDone;
+import de.hdmstuttgart.meinprojekt.view.home.HomeFragment;
 import de.hdmstuttgart.meinprojekt.viewmodel.ToDoViewModel;
 
 public class ToDoFragment extends Fragment {
@@ -35,8 +38,14 @@ public class ToDoFragment extends Fragment {
 
     private DialogAdd dialogAdd;
     private DialogDelete dialogDelete;
+    private DialogDone dialogDone;
 
     private AlertDialog.Builder dialogBuilder;
+
+    //LiveData<Integer> countStatus;
+    //LiveData<Integer> countStatusAll;
+    //private int countChecked;
+    //private int countAll;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -52,16 +61,22 @@ public class ToDoFragment extends Fragment {
         //enabling add and to do dialog
         dialogBuilder = new AlertDialog.Builder(getContext());
 
+
+
         try {
             viewModel = new ViewModelProvider(this).get(ToDoViewModel.class);
 
             toDoAdapter = new ToDoAdapter(viewModel, list, (toDoItemPos, position) -> {
             });
 
+            //countStatusAll = viewModel.getCountAll();
+
+
             //On tap opening new dialog that allows to delete the to do
-            viewModel.getSavedToDos().observe((LifecycleOwner) getContext(), list -> {
+            viewModel.getSavedToDos().observe(getViewLifecycleOwner(), list -> {
 
                 if (list == null) return;
+                Log.d("TESCHD", "Count: " + list.size());
                 toDoAdapter = new ToDoAdapter(viewModel,
                         list,
                         (toDoItemPos, position) -> {
@@ -69,6 +84,15 @@ public class ToDoFragment extends Fragment {
                             dialogDelete.delete();
                         });
                 recyclerView.setAdapter(toDoAdapter);
+
+                int countAll = list.size();
+                long countChecked = list.stream().filter(toDoItem -> toDoItem.getStatus()==1).count();
+                System.out.println("tap on todo countchecked: "+ countChecked + " countall: "+countAll);
+                if(countAll==countChecked){
+                    dialogBuilder = new AlertDialog.Builder(getContext());
+                    dialogDone = new DialogDone(getView(),dialogBuilder);
+                    dialogDone.done();
+                }
             });
 
 

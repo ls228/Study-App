@@ -50,8 +50,8 @@ public class ToDoCounter {
     }
 
     public void progressToDos() {
-        countStatusAll.observe((LifecycleOwner) homeFragment.getContext(), list -> {
-            countAll = countStatusAll.getValue();
+        countStatusAll.observe((LifecycleOwner) homeFragment.getContext(), count -> {
+            countAll = count;
             System.out.println("count all To Do's:" + countAll);
             mProgressBarToDo.setMax(countAll);
         });
@@ -62,6 +62,7 @@ public class ToDoCounter {
             mProgressBarToDo.setProgress(countChecked);
 
             if(countAll==countChecked){
+
                 HomeFragment.allTodosChecked=true;
                 System.out.println("all checked");
                 todosDone = true;
