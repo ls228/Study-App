@@ -110,7 +110,7 @@ public class StudyTimer {
         System.out.println("Study timer started with: " + timeSet);
         mEndTime = System.currentTimeMillis() + mTimeLeftInMillis;
 
-        mCountDownTimer = new CountDownTimer(mTimeLeftInMillis, 1000) {
+        mCountDownTimer = new CountDownTimer(mTimeLeftInMillis, 50) {
             @Override
             public void onTick(long millisUntilFinished) {
                 mTimeLeftInMillis = millisUntilFinished;
