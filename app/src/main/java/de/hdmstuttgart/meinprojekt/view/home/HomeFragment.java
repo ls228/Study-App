@@ -47,6 +47,14 @@ public class HomeFragment extends Fragment {
     private AlertDialog.Builder builder;
     private DialogDone dialogDone;
 
+    private long hoursSet;
+    private long minutesSet;
+    private long timeSet;
+    private int newTime;
+
+    private int mhour = 0;
+    private int mMinute = 0;
+
     TimerStatus status;
 
 
@@ -68,16 +76,27 @@ public class HomeFragment extends Fragment {
 
 
         bButtonStart.setOnClickListener(v -> {
+            mhour = studyTimer.hourPicker.getValue();
+            mMinute = studyTimer.minutePicker.getValue();
+            System.out.println("Hour: " + mhour + " Minute: "+ mMinute);
+            newTime = (int) calculateTime(mMinute,mhour);
+            mTimeLeftInMillis = newTime;
+            System.out.println("calculated time: " + newTime);
+            studyTimer.mProgressBar.setMax(newTime);
 
+
+            System.out.println("time left in millis: "+ mTimeLeftInMillis);
             if (mTimeLeftInMillis == 0) {
                 Toast toastMessage = Toast.makeText(requireContext(), "Please enter a positive number!", Toast.LENGTH_LONG);
                 toastMessage.show();
             } else
                 updateWatchInterface(RUNNING);
-                studyTimer.startTimer();
+                studyTimer.startTimer(newTime);
         });
 
         bButtonReset.setOnClickListener(v -> {
+            mhour = 0;
+            mMinute = 0;
             studyTimer.resetTimer();
             updateWatchInterface(RESET);
             studyTimer.mProgressBar.setMax(0);
@@ -90,6 +109,18 @@ public class HomeFragment extends Fragment {
 
 
         return view;
+    }
+
+    private long calculateTime(int minutes, int hours) {
+        System.out.println("in calculate minute, hour: " + minutes+" "+hours);
+        minutesSet =  (long) minutes * 60000;
+        hoursSet = (long) hours * 3600000;
+        System.out.println("in long minute: " + minutesSet +"in long hour: " + hoursSet);
+
+        timeSet = minutesSet + hoursSet;
+
+        return timeSet;
+
     }
 
 
@@ -177,7 +208,7 @@ public class HomeFragment extends Fragment {
         mTimeLeftInMillis = prefs.getLong("millisLeft", mStartTimeInMillis);
         mTimerRunning = prefs.getBoolean("timerRunning", false);
 
-        studyTimer.saveTimerProgressBar();
+        studyTimer.saveTimerProgressBar(newTime);
 
         toDoCounter.progressToDos();
 
@@ -200,7 +231,7 @@ public class HomeFragment extends Fragment {
                 studyTimer.updateCountDownText();
                 updateWatchInterface(RESET);
             } else {
-                studyTimer.startTimer();
+                studyTimer.startTimer(newTime);
                 updateWatchInterface(RUNNING);
             }
         }
