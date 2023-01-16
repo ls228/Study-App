@@ -3,6 +3,8 @@ package de.hdmstuttgart.meinprojekt.view.todo;
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.app.AlertDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,6 +65,8 @@ public class DialogDelete {
         dialogBuilder.setCancelable(false);
 
         dialogEdit = dialogBuilder.show();
+        dialogEdit.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
 
         Log.d(tag, dialogOpen);
 

@@ -35,9 +35,9 @@ public class ToDoCounter {
 
         viewModel = new ViewModelProvider(homeFragment).get(HomeViewModel.class);
 
-        countStatus = this.getHomeViewModel().getCountStatusLD();
-        countStatusUnchecked = this.getHomeViewModel().getCountStatusUnchecked();
-        countStatusAll = this.getHomeViewModel().getCountAll();
+        countStatus = viewModel.getCountStatusLD();
+        countStatusUnchecked = viewModel.getCountStatusUnchecked();
+        countStatusAll = viewModel.getCountAll();
     }
 
     private HomeViewModel getHomeViewModel()
@@ -62,12 +62,12 @@ public class ToDoCounter {
             mProgressBarToDo.setProgress(countChecked);
 
             if(countAll==countChecked){
-                homeFragment.allTodosChecked=true;
+                HomeFragment.allTodosChecked=true;
                 System.out.println("all checked");
                 todosDone = true;
 
             }else{
-                homeFragment.allTodosChecked=false;
+                HomeFragment.allTodosChecked=false;
                 todosDone = false;
                 System.out.println("not all checked");
             }

@@ -27,14 +27,14 @@ public class CalculateTime {
         return timeSet;
     }
 
-    public void calculateTime(long minutes, long hours) {
-        this.minutesSet =  minutes * 60000;
-        this.hoursSet = hours * 3600000;
-        Log.d("CalculateTime","minutesSet: " + minutesSet);
-        Log.d("CalculateTime","hoursSet: " + hoursSet);
-        this.mTimeLeftInMillis = minutesSet + hoursSet;
-        this.timeSet =  mTimeLeftInMillis;
-        Log.d("CalculateTime","timeset" + timeSet);
+    public long calculateTime(long minutes, long hours) {
+        minutesSet =  minutes * 60000;
+        hoursSet = hours * 3600000;
+
+        timeSet = minutesSet + hoursSet;
+
+        return timeSet;
+
     }
 
     public void calculateTotalTime(long hour, long minute) {
