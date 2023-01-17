@@ -16,17 +16,6 @@ public interface ToDoDao {
     @Query("SELECT * FROM toDoItem ORDER BY uid DESC")
     LiveData<List<ToDoItem>> getAll();
 
-    //get all entries with status 0
-    @Query("SELECT COUNT(status) FROM todoitem WHERE status = 0")
-    LiveData<Integer> getStatusUnchecked();
-
-    //Counting all entries with status 1
-    @Query("SELECT COUNT(status) FROM todoitem WHERE status = 1")
-    LiveData<Integer> getCountStatus();
-
-    @Query("SELECT COUNT(*) FROM todoitem")
-    LiveData<Integer> getCount();
-
     @Insert
     void insert(ToDoItem toDoItem);
 

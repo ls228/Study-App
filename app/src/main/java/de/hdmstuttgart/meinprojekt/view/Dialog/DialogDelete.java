@@ -16,7 +16,7 @@ import java.util.List;
 import de.hdmstuttgart.meinprojekt.R;
 import de.hdmstuttgart.meinprojekt.model.ToDoItem;
 import de.hdmstuttgart.meinprojekt.view.todo.ToDoAdapter;
-import de.hdmstuttgart.meinprojekt.viewmodel.ToDoViewModel;
+import de.hdmstuttgart.meinprojekt.viewmodel.ViewModel;
 
 public class DialogDelete {
 
@@ -29,7 +29,7 @@ public class DialogDelete {
 
     private final View v;
     private View dialogView;
-    private final ToDoViewModel viewModel;
+    private final ViewModel viewModel;
     private final ToDoAdapter toDoAdapter;
     private final List<ToDoItem> list;
     private final int position;
@@ -41,7 +41,7 @@ public class DialogDelete {
 
     public DialogDelete(View v,
                         AlertDialog.Builder dialogBuilder,
-                        ToDoViewModel viewModel,
+                        ViewModel viewModel,
                         ToDoAdapter toDoAdapter,
                         List<ToDoItem> list,
                         int position) {

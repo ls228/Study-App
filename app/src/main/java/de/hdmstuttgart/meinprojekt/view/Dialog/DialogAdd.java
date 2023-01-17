@@ -17,7 +17,7 @@ import java.util.Date;
 import de.hdmstuttgart.meinprojekt.R;
 import de.hdmstuttgart.meinprojekt.model.Converter;
 import de.hdmstuttgart.meinprojekt.model.ToDoItem;
-import de.hdmstuttgart.meinprojekt.viewmodel.ToDoViewModel;
+import de.hdmstuttgart.meinprojekt.viewmodel.ViewModel;
 
 public class DialogAdd {
 
@@ -38,7 +38,7 @@ public class DialogAdd {
     private Date time;
 
     private final View v;
-    private final ToDoViewModel viewModel;
+    private final ViewModel viewModel;
 
     private ToDoItem toDoItem;
     private final AlertDialog.Builder dialogBuilder;
@@ -51,7 +51,7 @@ public class DialogAdd {
     private Toast toastMessage;
 
 
-    public DialogAdd(View v, AlertDialog.Builder dialogBuilder, ToDoViewModel viewModel) {
+    public DialogAdd(View v, AlertDialog.Builder dialogBuilder, ViewModel viewModel) {
         this.v = v;
         this.dialogBuilder = dialogBuilder;
         this.viewModel = viewModel;

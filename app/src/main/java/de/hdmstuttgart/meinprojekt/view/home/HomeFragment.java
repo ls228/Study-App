@@ -37,8 +37,8 @@ public class HomeFragment extends Fragment {
     private AlertDialog.Builder builder;
     private DialogDone dialogDone;
     private int newTime;
-    private int mhour = 0;
-    private int mMinute = 0;
+    private int mhour = 1;
+    private int mMinute = 1;
     private static final String tag = "HomeFragment";
 
     /**

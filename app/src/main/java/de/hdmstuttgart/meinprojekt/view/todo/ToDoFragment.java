@@ -19,21 +19,22 @@ import de.hdmstuttgart.meinprojekt.R;
 import de.hdmstuttgart.meinprojekt.view.Dialog.DialogAdd;
 import de.hdmstuttgart.meinprojekt.view.Dialog.DialogDelete;
 import de.hdmstuttgart.meinprojekt.view.Dialog.DialogDone;
-import de.hdmstuttgart.meinprojekt.viewmodel.ToDoViewModel;
+import de.hdmstuttgart.meinprojekt.viewmodel.ViewModel;
 
 public class ToDoFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    //private final List<ToDoItem> list = new ArrayList<>();
 
     private ToDoAdapter toDoAdapter;
-    private ToDoViewModel viewModel;
+    private ViewModel viewModel;
 
     private DialogAdd dialogAdd;
     private DialogDelete dialogDelete;
     private DialogDone dialogDone;
 
     private AlertDialog.Builder dialogBuilder;
+
+    private static final String tag = "ToDoFragment";
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -51,13 +52,13 @@ public class ToDoFragment extends Fragment {
 
 
         try {
-            viewModel = new ViewModelProvider(this).get(ToDoViewModel.class);
+            viewModel = new ViewModelProvider(this).get(ViewModel.class);
 
             //On tap opening new dialog that allows to delete the to do
             viewModel.getSavedToDos().observe(getViewLifecycleOwner(), list -> {
 
                 if (list == null) throw new NullPointerException();
-                Log.d("ToDoFragment", "Count: " + list.size());
+                Log.d(tag, "Count: " + list.size());
 
                 toDoAdapter = new ToDoAdapter(viewModel,
                         list,
@@ -88,7 +89,7 @@ public class ToDoFragment extends Fragment {
                     }
             );
         } catch (Exception e) {
-            Log.e("ToDoFragment", "onAttach: Exception: "
+            Log.e(tag, "onAttach: Exception: "
                     + e.getMessage());
         }
 
