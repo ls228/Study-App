@@ -78,13 +78,13 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
             if (isChecked) {
 
                 // The toggle is enabled
-                Log.d(TAG, checked);
+                Log.d("ToDoAdapter", checked);
                 //updating status to checked in viewmodel
                 this.getToDoViewModel().updateStatus(1, id);
 
             } else {
                 // The toggle is disabled
-                Log.d(TAG, unchecked);
+                Log.d("ToDoAdapter", unchecked);
                 //updating status to unchecked in viewmodel
                 this.getToDoViewModel().updateStatus(0, id);
 

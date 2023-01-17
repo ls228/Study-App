@@ -1,4 +1,7 @@
-package de.hdmstuttgart.meinprojekt.view.todo;
+package de.hdmstuttgart.meinprojekt.view.Dialog;
+
+import static de.hdmstuttgart.meinprojekt.view.Dialog.DialogAdd.dialogOpen;
+import static de.hdmstuttgart.meinprojekt.view.Dialog.DialogAdd.dialogClosed;
 
 import android.app.AlertDialog;
 import android.graphics.Color;
@@ -12,13 +15,13 @@ import java.util.List;
 
 import de.hdmstuttgart.meinprojekt.R;
 import de.hdmstuttgart.meinprojekt.model.ToDoItem;
+import de.hdmstuttgart.meinprojekt.view.todo.ToDoAdapter;
 import de.hdmstuttgart.meinprojekt.viewmodel.ToDoViewModel;
 
 public class DialogDelete {
 
-    private final String dialogOpen = "onClick: opening Edit dialog success";
+
     private final String delete = "onClick: selected item has been successfully deleted";
-    private final String dialogClose = "Closing dialog";
     /**
      * This class is used when an item is clicked
      * The user can decide whether he wants to delete or cancel
@@ -73,7 +76,7 @@ public class DialogDelete {
             toDoAdapter.notifyItemRemoved(position);
             toDoAdapter.notifyItemRangeChanged(position, 1);
             dialogEdit.dismiss();
-            Log.d(tag, dialogClose);
+            Log.d(tag, dialogClosed);
 
         });
 

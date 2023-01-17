@@ -1,4 +1,7 @@
-package de.hdmstuttgart.meinprojekt.view.home;
+package de.hdmstuttgart.meinprojekt.view.Dialog;
+
+import static de.hdmstuttgart.meinprojekt.view.Dialog.DialogAdd.dialogClosed;
+import static de.hdmstuttgart.meinprojekt.view.Dialog.DialogAdd.dialogOpen;
 
 import android.app.AlertDialog;
 import android.graphics.drawable.ColorDrawable;
@@ -11,7 +14,7 @@ import de.hdmstuttgart.meinprojekt.R;
 
 public class DialogDone {
 
-    private final String dialogOpen = "onClick: opening Edit dialog success";
+
     /**
      * This class is used when an item is clicked
      * The user can decide whether he wants to delete or cancel
@@ -22,6 +25,8 @@ public class DialogDone {
     private AlertDialog dialogDone;
     private final AlertDialog.Builder dialogBuilder;
     private CountDownTimer timer;
+
+    private final String tag = "DialogDone";
 
     public DialogDone(View v,
                       AlertDialog.Builder dialogBuilder) {
@@ -40,7 +45,7 @@ public class DialogDone {
 
         dialogDone = dialogBuilder.show();
 
-        Log.d("DialogDone", dialogOpen);
+        Log.d(tag, dialogOpen);
 
         dialogDone.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
@@ -53,6 +58,7 @@ public class DialogDone {
             public void onFinish() {
                 dialogDone.dismiss();
                 stop();
+                Log.d(tag, dialogClosed);
             }
         }.start();
 

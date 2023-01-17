@@ -16,6 +16,7 @@ public class StudyTimer {
     public static boolean mTimerRunning;
     public static long mTimeLeftInMillis;
     public static long mEndTime;
+
     public CountDownTimer mCountDownTimer;
     public NumberPicker hourPicker;
     public NumberPicker minutePicker;
@@ -23,6 +24,8 @@ public class StudyTimer {
     public TextView mCountDownText;
 
     public ProgressBar mProgressBar;
+
+    public static final String tag = "StudyTimer";
 
     IOnFinish iOnFinish;
 
@@ -49,6 +52,7 @@ public class StudyTimer {
 
     public void saveTimerProgressBar(int timeSet) {
         int progress = timeSet - (int) (mTimeLeftInMillis);
+        Log.d(tag, "Saved progress "+progress);
         mProgressBar.setMax(timeSet);
         mProgressBar.setProgress(progress);
     }
@@ -73,7 +77,7 @@ public class StudyTimer {
 
 
     public void startTimer(int timeSet) {
-        Log.d("StudyTimer","Study timer started with: " + timeSet);
+        Log.d(tag,"Study timer started with: " + timeSet);
         mEndTime = System.currentTimeMillis() + mTimeLeftInMillis;
 
         mCountDownTimer = new CountDownTimer(mTimeLeftInMillis, 50) {
@@ -89,6 +93,7 @@ public class StudyTimer {
 
             @Override
             public void onFinish() {
+                Log.d(tag, "Time up");
                 mTimerRunning = false;
                 resetTimer();
                 iOnFinish.onFinish();
@@ -99,20 +104,23 @@ public class StudyTimer {
     }
 
     public void pauseTimer() {
+        Log.d(tag, "Pause Timer");
         mCountDownTimer.cancel();
         mTimerRunning = false;
     }
 
     public void resetTimer() {
+        Log.d(tag, "reset Timer");
         mTimeLeftInMillis = 0;
         mTimerRunning = false;
         hourPicker.setValue(0);
         minutePicker.setValue(0);
+        mProgressBar.setMax(0);
         mProgressBar.setProgress(0);
     }
 
     public void stopTimer() {
-        Log.d("StudyTimer", "Stop Timer");
+        Log.d(tag, "Stop Timer");
         resetTimer();
         mTimeLeftInMillis = 0;
         mTimerRunning = false;

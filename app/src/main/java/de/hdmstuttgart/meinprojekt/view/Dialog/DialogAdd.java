@@ -1,4 +1,4 @@
-package de.hdmstuttgart.meinprojekt.view.todo;
+package de.hdmstuttgart.meinprojekt.view.Dialog;
 
 import android.app.AlertDialog;
 import android.graphics.Color;
@@ -23,8 +23,9 @@ public class DialogAdd {
 
     private final String title = "Title of your new To Do";
     private final String description = "Description: ";
-    private final String dialogclosed = "onClick: closing dialog";
-    private final String input = "onClick: capturing input";
+    public static final String dialogClosed = "onClick: closing dialog";
+    public static final String dialogOpen = "onClick: opening Edit dialog success";
+    private static final String input = "onClick: capturing input";
     private final String tag = "DialogAdd";
     /**
      * This class is used when the users wants to add a new To do to the list
@@ -35,18 +36,17 @@ public class DialogAdd {
     private String inputTopic = "";
     private String currentTime;
     private Date time;
+
     private final View v;
-    private View dialogView;
     private final ToDoViewModel viewModel;
+
     private ToDoItem toDoItem;
     private final AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
+
     private EditText titleInput;
     private EditText topicInput;
-    private Button btnCancel;
-    private Button btnAdd;
-    private TextView titleHeading;
-    private TextView topicHeading;
+
     private final String errorMessage = "Please enter a valid To Do!";
     private Toast toastMessage;
 
@@ -59,16 +59,16 @@ public class DialogAdd {
 
     public void dialog() {
 
-        dialogView = LayoutInflater.from(v.getRootView().getContext()).inflate(R.layout.addtodo_dialog, null);
+        View dialogView = LayoutInflater.from(v.getRootView().getContext()).inflate(R.layout.addtodo_dialog, null);
 
-        btnCancel = dialogView.findViewById(R.id.btncancel);
-        btnAdd = dialogView.findViewById(R.id.btnadd);
+        Button btnCancel = dialogView.findViewById(R.id.btncancel);
+        Button btnAdd = dialogView.findViewById(R.id.btnadd);
 
         titleInput = dialogView.findViewById(R.id.titleinput);
         topicInput = dialogView.findViewById(R.id.textInputEditText);
 
-        titleHeading = dialogView.findViewById(R.id.titleheading);
-        topicHeading = dialogView.findViewById(R.id.topicheading);
+        TextView titleHeading = dialogView.findViewById(R.id.titleheading);
+        TextView topicHeading = dialogView.findViewById(R.id.topicheading);
 
         titleHeading.setText(title);
         topicHeading.setText(description);
@@ -77,11 +77,14 @@ public class DialogAdd {
         dialogBuilder.setCancelable(false);
 
         dialog = dialogBuilder.show();
+
+        Log.d(tag, dialogOpen);
+
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         btnCancel.setOnClickListener(
                 a -> {
-                    Log.d(tag, dialogclosed);
+                    Log.d(tag, dialogClosed);
                     dialog.dismiss();
                 });
 

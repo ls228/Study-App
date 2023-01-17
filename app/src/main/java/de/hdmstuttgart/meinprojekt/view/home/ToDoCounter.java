@@ -24,29 +24,14 @@ public class ToDoCounter {
 
     private final ProgressBar mProgressBarToDo;
     private final HomeViewModel viewModel;
-
-    /*
-    public boolean todosDone = false;
-    public LiveData<List<ToDoItem>> toDoItems;
-    LiveData<Integer> countStatus;
-    LiveData<Integer> countStatusUnchecked;
-    LiveData<Integer> countStatusAll;
-    private int countChecked;
-    private int countAll;*/
-
     private final Context homeFragmentContext;
 
 
     public ToDoCounter(HomeFragment homeFragment, View view, Context context) {
         this.homeFragmentContext = context;
-
         mProgressBarToDo = view.findViewById(R.id.progress_bar_count_todo);
-
         viewModel = new ViewModelProvider(homeFragment).get(HomeViewModel.class);
 
-        //countStatus = viewModel.getCountStatusLD();
-        //countStatusUnchecked = viewModel.getCountStatusUnchecked();
-        //countStatusAll = viewModel.getCountAll();
     }
 
     private HomeViewModel getHomeViewModel() {
@@ -60,7 +45,7 @@ public class ToDoCounter {
         try {
 
             getHomeViewModel().getSavedToDos().observe((LifecycleOwner) homeFragmentContext, list -> {
-                if (list == null) return;
+                if (list == null) throw new NullPointerException();
                 int countAll = list.size();
                 Log.d("ToDoCounter", "all todos: " + countAll);
                 mProgressBarToDo.setMax(countAll * 5);
@@ -75,8 +60,8 @@ public class ToDoCounter {
                 animation.start();
 
             });
-        }catch(NullPointerException e){
-
+        } catch (Exception e) {
+            Log.d("ToDoCounter", "Thrown exception: " + e.getMessage());
         }
 
         /*
