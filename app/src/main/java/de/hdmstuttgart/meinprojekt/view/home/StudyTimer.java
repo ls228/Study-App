@@ -1,6 +1,7 @@
 package de.hdmstuttgart.meinprojekt.view.home;
 
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.widget.NumberPicker;
 import android.widget.ProgressBar;
@@ -52,7 +53,7 @@ public class StudyTimer {
         mProgressBar.setProgress(progress);
     }
 
-    void updateCountDownText() {
+    String updateCountDownText() {
         int hours = (int) (mTimeLeftInMillis / 1000) / 3600;
         int minutes = (int) ((mTimeLeftInMillis / 1000) % 3600) / 60;
         int seconds = (int) (mTimeLeftInMillis / 1000) % 60;
@@ -66,13 +67,13 @@ public class StudyTimer {
             timeLeftFormatted = String.format(Locale.getDefault(),
                     "%02d:%02d", minutes, seconds);
         }
-        mCountDownText.setText(timeLeftFormatted);
+        return timeLeftFormatted;
 
     }
 
 
     public void startTimer(int timeSet) {
-        System.out.println("Study timer started with: " + timeSet);
+        Log.d("StudyTimer","Study timer started with: " + timeSet);
         mEndTime = System.currentTimeMillis() + mTimeLeftInMillis;
 
         mCountDownTimer = new CountDownTimer(mTimeLeftInMillis, 50) {
@@ -81,7 +82,8 @@ public class StudyTimer {
                 mTimeLeftInMillis = millisUntilFinished;
                 int progress = timeSet - (int) (millisUntilFinished);
                 mProgressBar.setProgress(progress);
-                updateCountDownText();
+                String timeLeft = updateCountDownText();
+                mCountDownText.setText(timeLeft);
             }
 
 
@@ -110,7 +112,7 @@ public class StudyTimer {
     }
 
     public void stopTimer() {
-        System.out.println("Stop Timer");
+        Log.d("StudyTimer", "Stop Timer");
         resetTimer();
         mTimeLeftInMillis = 0;
         mTimerRunning = false;
