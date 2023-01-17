@@ -11,6 +11,7 @@ import static de.hdmstuttgart.meinprojekt.view.home.TimerStatus.RUNNING;
 import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,26 +22,24 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import de.hdmstuttgart.meinprojekt.R;
+import de.hdmstuttgart.meinprojekt.view.Dialog.DialogDone;
 
 public class HomeFragment extends Fragment {
 
-    public static boolean allTodosChecked = false;
     StudyTimer studyTimer;
     ToDoCounter toDoCounter;
 
     Button bButtonStart;
     Button bButtonPause;
     Button bButtonReset;
-    TimerStatus status;
+
     private long mStartTimeInMillis;
     private AlertDialog.Builder builder;
     private DialogDone dialogDone;
-    private long hoursSet;
-    private long minutesSet;
-    private long timeSet;
     private int newTime;
-    private int mhour = 0;
-    private int mMinute = 0;
+    private int mhour = 1;
+    private int mMinute = 1;
+    private static final String tag = "HomeFragment";
 
     /**
      * sets the layout of the fragment
@@ -51,6 +50,7 @@ public class HomeFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        //Opens interface to show done animation and reset the timer, to call it from different classes
         IOnFinish onFinish = () -> {
             doneAnimation();
             HomeFragment.this.updateWatchInterface(RESET);
@@ -66,14 +66,15 @@ public class HomeFragment extends Fragment {
         bButtonStart.setOnClickListener(v -> {
             mhour = studyTimer.hourPicker.getValue();
             mMinute = studyTimer.minutePicker.getValue();
-            System.out.println("Hour: " + mhour + " Minute: " + mMinute);
+            Log.d(tag,"Hour: " + mhour + " Minute: " + mMinute);
+
             newTime = (int) calculateTime(mMinute, mhour);
             mTimeLeftInMillis = newTime;
-            System.out.println("calculated time: " + newTime);
+            Log.d(tag,"calculated time: " + newTime);
             studyTimer.mProgressBar.setMax(newTime);
 
+            Log.d(tag,"time left in millis: " + mTimeLeftInMillis);
 
-            System.out.println("time left in millis: " + mTimeLeftInMillis);
             if (mTimeLeftInMillis == 0) {
                 Toast toastMessage = Toast.makeText(requireContext(), "Please enter a positive number!", Toast.LENGTH_LONG);
                 toastMessage.show();
@@ -87,7 +88,6 @@ public class HomeFragment extends Fragment {
             mMinute = 0;
             studyTimer.resetTimer();
             updateWatchInterface(RESET);
-            studyTimer.mProgressBar.setMax(0);
         });
 
         bButtonPause.setOnClickListener(v -> {
@@ -99,26 +99,27 @@ public class HomeFragment extends Fragment {
     }
 
 
+    //this method calculates the minute and hour input in milliseconds and returns the these two summed up
     private long calculateTime(int minutes, int hours) {
-        System.out.println("in calculate minute, hour: " + minutes + " " + hours);
-        minutesSet = (long) minutes * 60000;
-        hoursSet = (long) hours * 3600000;
-        System.out.println("in long minute: " + minutesSet + "in long hour: " + hoursSet);
-
-        timeSet = minutesSet + hoursSet;
+        long minutesSet = (long) minutes * 60000;
+        long hoursSet = (long) hours * 3600000;
+        long timeSet = minutesSet + hoursSet;
 
         return timeSet;
 
     }
 
-
+    //this Method opens the dialog for the check animation if the time is up or all todos checked
     public void doneAnimation() {
         builder = new AlertDialog.Builder(getContext());
         dialogDone = new DialogDone(getView(), builder);
         dialogDone.done();
     }
 
-
+    /**
+     * This method updates the interface of the timer depending on the status event Running, Reset and Pause
+     * @param status
+     */
     void updateWatchInterface(TimerStatus status) {
         System.out.println("switch");
         switch (status) {

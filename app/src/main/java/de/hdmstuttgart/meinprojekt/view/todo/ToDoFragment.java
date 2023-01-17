@@ -1,7 +1,5 @@
 package de.hdmstuttgart.meinprojekt.view.todo;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,27 +15,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import de.hdmstuttgart.meinprojekt.R;
-import de.hdmstuttgart.meinprojekt.model.ToDoItem;
-import de.hdmstuttgart.meinprojekt.view.home.DialogDone;
-import de.hdmstuttgart.meinprojekt.viewmodel.ToDoViewModel;
+import de.hdmstuttgart.meinprojekt.view.Dialog.DialogAdd;
+import de.hdmstuttgart.meinprojekt.view.Dialog.DialogDelete;
+import de.hdmstuttgart.meinprojekt.view.Dialog.DialogDone;
+import de.hdmstuttgart.meinprojekt.viewmodel.ViewModel;
 
 public class ToDoFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private final List<ToDoItem> list = new ArrayList<>();
 
     private ToDoAdapter toDoAdapter;
-    private ToDoViewModel viewModel;
+    private ViewModel viewModel;
 
     private DialogAdd dialogAdd;
     private DialogDelete dialogDelete;
     private DialogDone dialogDone;
 
     private AlertDialog.Builder dialogBuilder;
+
+    private static final String tag = "ToDoFragment";
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -55,16 +52,14 @@ public class ToDoFragment extends Fragment {
 
 
         try {
-            viewModel = new ViewModelProvider(this).get(ToDoViewModel.class);
-
-
-
+            viewModel = new ViewModelProvider(this).get(ViewModel.class);
 
             //On tap opening new dialog that allows to delete the to do
             viewModel.getSavedToDos().observe(getViewLifecycleOwner(), list -> {
 
-                if (list == null) return;
-                Log.d("TESCHD", "Count: " + list.size());
+                if (list == null) throw new NullPointerException();
+                Log.d(tag, "Count: " + list.size());
+
                 toDoAdapter = new ToDoAdapter(viewModel,
                         list,
                         (toDoItemPos, position) -> {
@@ -75,7 +70,7 @@ public class ToDoFragment extends Fragment {
 
                 int countAll = list.size();
                 long countChecked = list.stream().filter(toDoItem -> toDoItem.getStatus() == 1).count();
-                System.out.println("tap on todo countchecked: " + countChecked + " countall: " + countAll);
+
                 if (countAll == countChecked) {
                     dialogBuilder = new AlertDialog.Builder(getContext());
                     dialogDone = new DialogDone(getView(), dialogBuilder);
@@ -93,8 +88,8 @@ public class ToDoFragment extends Fragment {
                         dialogAdd.dialog();
                     }
             );
-        } catch (NullPointerException e) {
-            Log.e(TAG, "onAttach: NullPointerException: "
+        } catch (Exception e) {
+            Log.e(tag, "onAttach: Exception: "
                     + e.getMessage());
         }
 

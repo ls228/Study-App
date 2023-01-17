@@ -7,49 +7,27 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 
-import org.junit.runner.manipulation.Ordering;
-
-import java.security.acl.Owner;
-import java.util.List;
-
 import de.hdmstuttgart.meinprojekt.R;
-import de.hdmstuttgart.meinprojekt.model.ToDoItem;
-import de.hdmstuttgart.meinprojekt.viewmodel.HomeViewModel;
+import de.hdmstuttgart.meinprojekt.viewmodel.ViewModel;
 
 public class ToDoCounter {
 
 
     private final ProgressBar mProgressBarToDo;
-    private final HomeViewModel viewModel;
-
-    /*
-    public boolean todosDone = false;
-    public LiveData<List<ToDoItem>> toDoItems;
-    LiveData<Integer> countStatus;
-    LiveData<Integer> countStatusUnchecked;
-    LiveData<Integer> countStatusAll;
-    private int countChecked;
-    private int countAll;*/
-
+    private final ViewModel viewModel;
     private final Context homeFragmentContext;
 
 
     public ToDoCounter(HomeFragment homeFragment, View view, Context context) {
         this.homeFragmentContext = context;
-
         mProgressBarToDo = view.findViewById(R.id.progress_bar_count_todo);
+        viewModel = new ViewModelProvider(homeFragment).get(ViewModel.class);
 
-        viewModel = new ViewModelProvider(homeFragment).get(HomeViewModel.class);
-
-        //countStatus = viewModel.getCountStatusLD();
-        //countStatusUnchecked = viewModel.getCountStatusUnchecked();
-        //countStatusAll = viewModel.getCountAll();
     }
 
-    private HomeViewModel getHomeViewModel() {
+    private ViewModel getViewModel() {
         if (viewModel == null) {
             throw new NullPointerException();
         }
@@ -59,8 +37,8 @@ public class ToDoCounter {
     public void progressToDos() {
         try {
 
-            getHomeViewModel().getSavedToDos().observe((LifecycleOwner) homeFragmentContext, list -> {
-                if (list == null) return;
+            getViewModel().getSavedToDos().observe((LifecycleOwner) homeFragmentContext, list -> {
+                if (list == null) throw new NullPointerException();
                 int countAll = list.size();
                 Log.d("ToDoCounter", "all todos: " + countAll);
                 mProgressBarToDo.setMax(countAll * 5);
@@ -75,8 +53,8 @@ public class ToDoCounter {
                 animation.start();
 
             });
-        }catch(NullPointerException e){
-
+        } catch (Exception e) {
+            Log.d("ToDoCounter", "Thrown exception: " + e.getMessage());
         }
 
         /*

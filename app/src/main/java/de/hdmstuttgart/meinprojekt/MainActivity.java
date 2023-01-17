@@ -11,12 +11,12 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import de.hdmstuttgart.meinprojekt.databinding.ActivityMainBinding;
-import de.hdmstuttgart.meinprojekt.viewmodel.ToDoViewModel;
+import de.hdmstuttgart.meinprojekt.viewmodel.ViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
-    private ToDoViewModel viewModel;
+    private ViewModel viewModel;
 
 
     @Override

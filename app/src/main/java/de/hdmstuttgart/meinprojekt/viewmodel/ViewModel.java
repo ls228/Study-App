@@ -11,8 +11,7 @@ import java.util.List;
 import de.hdmstuttgart.meinprojekt.database.ToDoRepository;
 import de.hdmstuttgart.meinprojekt.model.ToDoItem;
 
-public class ToDoViewModel extends AndroidViewModel {
-
+public class ViewModel extends AndroidViewModel {
 
     private final LiveData<List<ToDoItem>> toDoLiveData;
 
@@ -24,7 +23,7 @@ public class ToDoViewModel extends AndroidViewModel {
      * gives new data to the repository or is updating
      */
 
-    public ToDoViewModel(@NonNull Application application) {
+    public ViewModel(@NonNull Application application) {
         super(application);
         //repository is the connection to database
         repository = new ToDoRepository(application);

@@ -1,7 +1,5 @@
 package de.hdmstuttgart.meinprojekt.view.todo;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,7 +15,7 @@ import java.util.List;
 
 import de.hdmstuttgart.meinprojekt.R;
 import de.hdmstuttgart.meinprojekt.model.ToDoItem;
-import de.hdmstuttgart.meinprojekt.viewmodel.ToDoViewModel;
+import de.hdmstuttgart.meinprojekt.viewmodel.ViewModel;
 
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder> {
 
@@ -26,10 +24,10 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
     private final String unchecked = "onCheckedChanged: unchecked";
     OnItemClickListener listener;
     ToDoItem toDoItemPos;
-    private final ToDoViewModel viewModel;
+    private final ViewModel viewModel;
 
     //item
-    public ToDoAdapter(ToDoViewModel viewModel, List<ToDoItem> todoitem, OnItemClickListener listener) {
+    public ToDoAdapter(ViewModel viewModel, List<ToDoItem> todoitem, OnItemClickListener listener) {
         this.viewModel = viewModel;
         this.todoitem = todoitem;
         this.listener = listener;
@@ -40,7 +38,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
      */
 
     //exception handling
-    private ToDoViewModel getToDoViewModel() {
+    private ViewModel getViewModel() {
         if (viewModel == null) {
             throw new NullPointerException();
         }
@@ -78,15 +76,15 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
             if (isChecked) {
 
                 // The toggle is enabled
-                Log.d(TAG, checked);
+                Log.d("ToDoAdapter", checked);
                 //updating status to checked in viewmodel
-                this.getToDoViewModel().updateStatus(1, id);
+                this.getViewModel().updateStatus(1, id);
 
             } else {
                 // The toggle is disabled
-                Log.d(TAG, unchecked);
+                Log.d("ToDoAdapter", unchecked);
                 //updating status to unchecked in viewmodel
-                this.getToDoViewModel().updateStatus(0, id);
+                this.getViewModel().updateStatus(0, id);
 
             }
         });
