@@ -6,33 +6,26 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import java.util.List;
+
 import de.hdmstuttgart.meinprojekt.database.ToDoRepository;
+import de.hdmstuttgart.meinprojekt.model.ToDoItem;
 
 public class HomeViewModel extends AndroidViewModel {
 
-    private final LiveData<Integer> countStatusLD;
-    private final LiveData<Integer> statusUnchecked;
-    private final LiveData<Integer> countAll;
+    private final LiveData<List<ToDoItem>> toDoLiveData;
 
     public HomeViewModel(@NonNull Application application) {
         super(application);
         ToDoRepository repository = new ToDoRepository(application);
-        this.statusUnchecked = repository.getCountStatusUnchecked();
-        this.countStatusLD = repository.getCountStatusLD();
-        this.countAll = repository.getCountAll();
+        this.toDoLiveData = repository.getSavedToDos();
+
     }
 
-    public LiveData<Integer> getCountStatusLD() {
-        return countStatusLD;
+    public LiveData<List<ToDoItem>> getSavedToDos() {
+        return toDoLiveData;
     }
 
-    public LiveData<Integer> getCountStatusUnchecked() {
-        return statusUnchecked;
-    }
-
-    public LiveData<Integer> getCountAll() {
-        return countAll;
-    }
 
 
 }

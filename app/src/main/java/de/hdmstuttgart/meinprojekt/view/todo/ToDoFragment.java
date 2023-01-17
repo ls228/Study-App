@@ -39,11 +39,6 @@ public class ToDoFragment extends Fragment {
 
     private AlertDialog.Builder dialogBuilder;
 
-    //LiveData<Integer> countStatus;
-    //LiveData<Integer> countStatusAll;
-    //private int countChecked;
-    //private int countAll;
-
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -62,10 +57,7 @@ public class ToDoFragment extends Fragment {
         try {
             viewModel = new ViewModelProvider(this).get(ToDoViewModel.class);
 
-            toDoAdapter = new ToDoAdapter(viewModel, list, (toDoItemPos, position) -> {
-            });
 
-            //countStatusAll = viewModel.getCountAll();
 
 
             //On tap opening new dialog that allows to delete the to do

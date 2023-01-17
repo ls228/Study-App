@@ -56,7 +56,7 @@ public class HomeFragment extends Fragment {
             HomeFragment.this.updateWatchInterface(RESET);
         };
 
-        toDoCounter = new ToDoCounter(this, view);
+        toDoCounter = new ToDoCounter(this,view, getContext());
         studyTimer = new StudyTimer(view, onFinish);
 
         bButtonStart = view.findViewById(R.id.button_start);
