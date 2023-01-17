@@ -1,7 +1,5 @@
 package de.hdmstuttgart.meinprojekt.view.todo;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
 import android.app.AlertDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -17,12 +15,17 @@ import java.util.Calendar;
 import java.util.Date;
 
 import de.hdmstuttgart.meinprojekt.R;
-import de.hdmstuttgart.meinprojekt.model.ToDoItem;
 import de.hdmstuttgart.meinprojekt.model.Converter;
+import de.hdmstuttgart.meinprojekt.model.ToDoItem;
 import de.hdmstuttgart.meinprojekt.viewmodel.ToDoViewModel;
 
 public class DialogAdd {
 
+    private final String title = "Title of your new To Do";
+    private final String description = "Description: ";
+    private final String dialogclosed = "onClick: closing dialog";
+    private final String input = "onClick: capturing input";
+    private final String tag = "DialogAdd";
     /**
      * This class is used when the users wants to add a new To do to the list
      * You can add title, a description and add or close dialog
@@ -31,32 +34,20 @@ public class DialogAdd {
     private String inputTitle = "";
     private String inputTopic = "";
     private String currentTime;
-    private final String title = "Title of your new To Do";
-    private final String description = "Description: ";
     private Date time;
-
-    private View v;
+    private final View v;
     private View dialogView;
-    private ToDoViewModel viewModel;
-
+    private final ToDoViewModel viewModel;
     private ToDoItem toDoItem;
-    private AlertDialog.Builder dialogBuilder;
+    private final AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
-
     private EditText titleInput;
     private EditText topicInput;
-
     private Button btnCancel;
     private Button btnAdd;
-
     private TextView titleHeading;
     private TextView topicHeading;
-
-    private String errorMessage = "Please enter a valid To Do!";
-    private final String dialogclosed = "onClick: closing dialog";
-    private final String input = "onClick: capturing input";
-    private final String tag = "DialogAdd";
-
+    private final String errorMessage = "Please enter a valid To Do!";
     private Toast toastMessage;
 
 

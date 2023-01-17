@@ -22,11 +22,18 @@ import de.hdmstuttgart.meinprojekt.viewmodel.ToDoViewModel;
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder> {
 
     private final List<ToDoItem> todoitem;
-    private ToDoViewModel viewModel;
-    OnItemClickListener listener;
-    ToDoItem toDoItemPos;
     private final String checked = "onCheckedChanged: checked";
     private final String unchecked = "onCheckedChanged: unchecked";
+    OnItemClickListener listener;
+    ToDoItem toDoItemPos;
+    private final ToDoViewModel viewModel;
+
+    //item
+    public ToDoAdapter(ToDoViewModel viewModel, List<ToDoItem> todoitem, OnItemClickListener listener) {
+        this.viewModel = viewModel;
+        this.todoitem = todoitem;
+        this.listener = listener;
+    }
 
     /**
      * This class holds and displays the data of the recyclerview items
@@ -39,19 +46,6 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
         }
         return viewModel;
     }
-
-    //If item is clicked, item and position will be given to onToDoClickListener
-    public interface OnItemClickListener {
-        void onToDoCLickListener(ToDoItem toDoItem, int position);
-    }
-
-    //item
-    public ToDoAdapter(ToDoViewModel viewModel, List<ToDoItem> todoitem, OnItemClickListener listener) {
-        this.viewModel = viewModel;
-        this.todoitem = todoitem;
-        this.listener = listener;
-    }
-
 
     @NonNull
     @Override
@@ -102,6 +96,11 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
     @Override
     public int getItemCount() {
         return todoitem.size();
+    }
+
+    //If item is clicked, item and position will be given to onToDoClickListener
+    public interface OnItemClickListener {
+        void onToDoCLickListener(ToDoItem toDoItem, int position);
     }
 
     //getting the ids of views and checkbox

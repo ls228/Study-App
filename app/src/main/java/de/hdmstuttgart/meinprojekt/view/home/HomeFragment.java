@@ -1,8 +1,6 @@
 package de.hdmstuttgart.meinprojekt.view.home;
 
 import static android.content.Context.MODE_PRIVATE;
-import static android.webkit.ConsoleMessage.MessageLevel.LOG;
-
 import static de.hdmstuttgart.meinprojekt.view.home.StudyTimer.mEndTime;
 import static de.hdmstuttgart.meinprojekt.view.home.StudyTimer.mTimeLeftInMillis;
 import static de.hdmstuttgart.meinprojekt.view.home.StudyTimer.mTimerRunning;
@@ -10,12 +8,9 @@ import static de.hdmstuttgart.meinprojekt.view.home.TimerStatus.PAUSE;
 import static de.hdmstuttgart.meinprojekt.view.home.TimerStatus.RESET;
 import static de.hdmstuttgart.meinprojekt.view.home.TimerStatus.RUNNING;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,39 +18,29 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
-
 
 import de.hdmstuttgart.meinprojekt.R;
 
 public class HomeFragment extends Fragment {
 
-    private long mStartTimeInMillis;
-
+    public static boolean allTodosChecked = false;
     StudyTimer studyTimer;
     ToDoCounter toDoCounter;
 
     Button bButtonStart;
     Button bButtonPause;
     Button bButtonReset;
-
-    public static boolean allTodosChecked = false;
-
+    TimerStatus status;
+    private long mStartTimeInMillis;
     private AlertDialog.Builder builder;
     private DialogDone dialogDone;
-
     private long hoursSet;
     private long minutesSet;
     private long timeSet;
     private int newTime;
-
     private int mhour = 0;
     private int mMinute = 0;
-
-    TimerStatus status;
-
 
     /**
      * sets the layout of the fragment
@@ -81,20 +66,20 @@ public class HomeFragment extends Fragment {
         bButtonStart.setOnClickListener(v -> {
             mhour = studyTimer.hourPicker.getValue();
             mMinute = studyTimer.minutePicker.getValue();
-            System.out.println("Hour: " + mhour + " Minute: "+ mMinute);
-            newTime = (int) calculateTime(mMinute,mhour);
+            System.out.println("Hour: " + mhour + " Minute: " + mMinute);
+            newTime = (int) calculateTime(mMinute, mhour);
             mTimeLeftInMillis = newTime;
             System.out.println("calculated time: " + newTime);
             studyTimer.mProgressBar.setMax(newTime);
 
 
-            System.out.println("time left in millis: "+ mTimeLeftInMillis);
+            System.out.println("time left in millis: " + mTimeLeftInMillis);
             if (mTimeLeftInMillis == 0) {
                 Toast toastMessage = Toast.makeText(requireContext(), "Please enter a positive number!", Toast.LENGTH_LONG);
                 toastMessage.show();
             } else
                 updateWatchInterface(RUNNING);
-                studyTimer.startTimer(newTime);
+            studyTimer.startTimer(newTime);
         });
 
         bButtonReset.setOnClickListener(v -> {
@@ -114,12 +99,11 @@ public class HomeFragment extends Fragment {
     }
 
 
-
     private long calculateTime(int minutes, int hours) {
-        System.out.println("in calculate minute, hour: " + minutes+" "+hours);
-        minutesSet =  (long) minutes * 60000;
+        System.out.println("in calculate minute, hour: " + minutes + " " + hours);
+        minutesSet = (long) minutes * 60000;
         hoursSet = (long) hours * 3600000;
-        System.out.println("in long minute: " + minutesSet +"in long hour: " + hoursSet);
+        System.out.println("in long minute: " + minutesSet + "in long hour: " + hoursSet);
 
         timeSet = minutesSet + hoursSet;
 
@@ -130,7 +114,7 @@ public class HomeFragment extends Fragment {
 
     public void doneAnimation() {
         builder = new AlertDialog.Builder(getContext());
-        dialogDone = new DialogDone(getView(),builder);
+        dialogDone = new DialogDone(getView(), builder);
         dialogDone.done();
     }
 

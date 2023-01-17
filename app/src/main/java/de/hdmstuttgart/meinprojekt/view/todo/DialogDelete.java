@@ -1,7 +1,5 @@
 package de.hdmstuttgart.meinprojekt.view.todo;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
 import android.app.AlertDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -18,29 +16,25 @@ import de.hdmstuttgart.meinprojekt.viewmodel.ToDoViewModel;
 
 public class DialogDelete {
 
+    private final String dialogOpen = "onClick: opening Edit dialog success";
+    private final String delete = "onClick: selected item has been successfully deleted";
+    private final String dialogClose = "Closing dialog";
     /**
      * This class is used when an item is clicked
      * The user can decide whether he wants to delete or cancel
      */
 
-    private View v;
+    private final View v;
     private View dialogView;
-    private ToDoViewModel viewModel;
-    private ToDoAdapter toDoAdapter;
-
-    private List<ToDoItem> list;
-    private int position;
-
+    private final ToDoViewModel viewModel;
+    private final ToDoAdapter toDoAdapter;
+    private final List<ToDoItem> list;
+    private final int position;
     private Button btnDelete;
     private Button btnNo;
-
     private AlertDialog dialogEdit;
-    private AlertDialog.Builder dialogBuilder;
-    private String tag = "DialogDelete";
-
-    private final String dialogOpen = "onClick: opening Edit dialog success";
-    private final String delete = "onClick: selected item has been successfully deleted";
-    private final String dialogClose= "Closing dialog";
+    private final AlertDialog.Builder dialogBuilder;
+    private final String tag = "DialogDelete";
 
     public DialogDelete(View v,
                         AlertDialog.Builder dialogBuilder,

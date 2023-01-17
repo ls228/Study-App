@@ -2,7 +2,6 @@ package de.hdmstuttgart.meinprojekt.viewmodel;
 
 import android.app.Application;
 
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -10,7 +9,6 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 
 import de.hdmstuttgart.meinprojekt.database.ToDoRepository;
-
 import de.hdmstuttgart.meinprojekt.model.ToDoItem;
 
 public class ToDoViewModel extends AndroidViewModel {
@@ -22,6 +20,7 @@ public class ToDoViewModel extends AndroidViewModel {
 
     private final LiveData<Integer> countStatusLD;
     private final LiveData<Integer> countAll;
+
     /**
      * Connection between View an Model
      * retrieving LiveData from the repository
@@ -40,10 +39,14 @@ public class ToDoViewModel extends AndroidViewModel {
     public LiveData<List<ToDoItem>> getSavedToDos() {
         return toDoLiveData;
     }
+
     public LiveData<Integer> getCountStatusLD() {
         return countStatusLD;
     }
-    public LiveData<Integer> getCountAll() {return countAll; }
+
+    public LiveData<Integer> getCountAll() {
+        return countAll;
+    }
 
     public void removeToDo(ToDoItem toDoItem) {
         repository.delete(toDoItem);

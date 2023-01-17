@@ -8,21 +8,29 @@ import androidx.room.PrimaryKey;
 @Entity
 public class ToDoItem {
 
+    @ColumnInfo(name = "title")
+    private final String title;
+    @ColumnInfo(name = "date")
+    private final String date;
+    @ColumnInfo(name = "topic")
+    private final String topic;
+    @ColumnInfo(name = "status")
+    private final Integer status;
     @PrimaryKey(autoGenerate = true)
     public int uid;
 
-    @ColumnInfo(name = "title")
-    private final String title;
 
-    @ColumnInfo(name = "date")
-    private final String date;
-
-    @ColumnInfo(name = "topic")
-    private final String topic;
-
-    @ColumnInfo(name = "status")
-    private final Integer status;
-
+    public ToDoItem(
+            String title,
+            String date,
+            String topic,
+            Integer status
+    ) {
+        this.title = title;
+        this.date = date;
+        this.topic = topic;
+        this.status = status;
+    }
 
     public String getDate() {
         return date;
@@ -36,21 +44,12 @@ public class ToDoItem {
         return topic;
     }
 
-    public Integer getStatus(){ return status; }
+    public Integer getStatus() {
+        return status;
+    }
 
-    public Integer getId(){ return uid;}
-
-
-    public ToDoItem(
-            String title,
-            String date,
-            String topic,
-            Integer status
-    ) {
-        this.title = title;
-        this.date = date;
-        this.topic = topic;
-        this.status = status;
+    public Integer getId() {
+        return uid;
     }
 
 

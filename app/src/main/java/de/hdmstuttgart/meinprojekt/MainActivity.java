@@ -2,13 +2,13 @@ package de.hdmstuttgart.meinprojekt;
 
 import android.os.Bundle;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import de.hdmstuttgart.meinprojekt.databinding.ActivityMainBinding;
 import de.hdmstuttgart.meinprojekt.viewmodel.ToDoViewModel;

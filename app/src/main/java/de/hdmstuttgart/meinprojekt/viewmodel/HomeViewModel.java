@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-
 import de.hdmstuttgart.meinprojekt.database.ToDoRepository;
 
 public class HomeViewModel extends AndroidViewModel {
@@ -31,7 +30,9 @@ public class HomeViewModel extends AndroidViewModel {
         return statusUnchecked;
     }
 
-    public LiveData<Integer> getCountAll() {return countAll; }
+    public LiveData<Integer> getCountAll() {
+        return countAll;
+    }
 
 
 }

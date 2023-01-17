@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
-
 import de.hdmstuttgart.meinprojekt.model.ToDoItem;
 
 public class ToDoRepository {

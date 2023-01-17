@@ -13,29 +13,28 @@ import de.hdmstuttgart.meinprojekt.model.ToDoItem;
 
 
 @Database(entities = {ToDoItem.class}, version = 1)
-public abstract class AppDatabase extends RoomDatabase{
-    public abstract ToDoDao toDoDao();
-
-    private static volatile AppDatabase INSTANCE;
+public abstract class AppDatabase extends RoomDatabase {
     private static final int NUMBER_OF_THREADS = 4;
     static final ExecutorService databaseWriteExecutor =
             Executors.newFixedThreadPool(NUMBER_OF_THREADS);
-
+    private static volatile AppDatabase INSTANCE;
 
     static AppDatabase getDatabase(final Context context) {
         //es wird nur eine Datenbank Instanz erzeugt
 
-        if(INSTANCE == null){
-            synchronized (AppDatabase.class){
-                if(INSTANCE == null){
+        if (INSTANCE == null) {
+            synchronized (AppDatabase.class) {
+                if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                                    AppDatabase.class,"todoDb")
+                                    AppDatabase.class, "todoDb")
                             .build();
                 }
             }
         }
         return INSTANCE;
     }
+
+    public abstract ToDoDao toDoDao();
 
 }
 

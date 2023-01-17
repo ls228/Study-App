@@ -1,15 +1,7 @@
 package de.hdmstuttgart.meinprojekt.view.home;
 
-import static androidx.test.InstrumentationRegistry.getContext;
-
-import static de.hdmstuttgart.meinprojekt.view.home.TimerStatus.RESET;
-
-import android.animation.ValueAnimator;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.os.CountDownTimer;
 import android.view.View;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -20,13 +12,10 @@ import de.hdmstuttgart.meinprojekt.R;
 
 public class StudyTimer {
 
-    public CountDownTimer mCountDownTimer;
-
     public static boolean mTimerRunning;
-
     public static long mTimeLeftInMillis;
     public static long mEndTime;
-
+    public CountDownTimer mCountDownTimer;
     public NumberPicker hourPicker;
     public NumberPicker minutePicker;
 

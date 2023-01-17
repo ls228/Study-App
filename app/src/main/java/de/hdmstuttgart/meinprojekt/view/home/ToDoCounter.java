@@ -15,19 +15,15 @@ public class ToDoCounter {
 
 
     private final ProgressBar mProgressBarToDo;
-
+    private final HomeViewModel viewModel;
+    public boolean todosDone = false;
     LiveData<Integer> countStatus;
     LiveData<Integer> countStatusUnchecked;
     LiveData<Integer> countStatusAll;
-
-    private int countChecked;
-    private int countAll;
-    public boolean todosDone = false;
-
     View view;
     HomeFragment homeFragment;
-
-    private final HomeViewModel viewModel;
+    private int countChecked;
+    private int countAll;
 
     public ToDoCounter(HomeFragment homeFragment, View view) {
         this.homeFragment = homeFragment;
@@ -42,10 +38,8 @@ public class ToDoCounter {
         countStatusAll = viewModel.getCountAll();
     }
 
-    private HomeViewModel getHomeViewModel()
-    {
-        if(viewModel==null)
-        {
+    private HomeViewModel getHomeViewModel() {
+        if (viewModel == null) {
             throw new IllegalArgumentException();
         }
         return viewModel;
@@ -55,7 +49,7 @@ public class ToDoCounter {
         countStatusAll.observe((LifecycleOwner) homeFragment.getContext(), count -> {
             countAll = count;
             System.out.println("count all To Do's:" + countAll);
-            mProgressBarToDo.setMax(countAll*5);
+            mProgressBarToDo.setMax(countAll * 5);
             ObjectAnimator animation = ObjectAnimator.ofInt(mProgressBarToDo, "progress", 0, countChecked * 5);
             animation.setDuration(1500);
             animation.start();
@@ -66,18 +60,18 @@ public class ToDoCounter {
             System.out.println("checked:" + countChecked);
             mProgressBarToDo.setProgress(countChecked);
 
-            if(countAll==countChecked){
+            if (countAll == countChecked) {
 
-                HomeFragment.allTodosChecked=true;
+                HomeFragment.allTodosChecked = true;
                 System.out.println("all checked");
                 todosDone = true;
 
-            }else{
-                HomeFragment.allTodosChecked=false;
+            } else {
+                HomeFragment.allTodosChecked = false;
                 todosDone = false;
                 System.out.println("not all checked");
             }
-            System.out.println("todos: "+todosDone);
+            System.out.println("todos: " + todosDone);
         });
 
 

@@ -1,9 +1,5 @@
 package de.hdmstuttgart.meinprojekt.model;
 
-import android.util.Log;
-
-import java.util.Locale;
-
 public class CalculateTime {
     private long mTimeLeftInMillis;
     private long hoursSet;
@@ -28,7 +24,7 @@ public class CalculateTime {
     }
 
     public long calculateTime(long minutes, long hours) {
-        minutesSet =  minutes * 60000;
+        minutesSet = minutes * 60000;
         hoursSet = hours * 3600000;
 
         timeSet = minutesSet + hoursSet;
@@ -41,7 +37,6 @@ public class CalculateTime {
         mTimeLeftInMillis = hour + minute;
         this.timeSet = (int) mTimeLeftInMillis;
     }
-
 
 
 }
