@@ -78,9 +78,10 @@ public class HomeFragment extends Fragment {
             if (mTimeLeftInMillis == 0) {
                 Toast toastMessage = Toast.makeText(requireContext(), "Please enter a positive number!", Toast.LENGTH_LONG);
                 toastMessage.show();
-            } else
+            } else {
                 updateWatchInterface(RUNNING);
-            studyTimer.startTimer(newTime);
+                studyTimer.startTimer(newTime);
+            }
         });
 
         bButtonReset.setOnClickListener(v -> {

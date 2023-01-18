@@ -51,10 +51,15 @@ public class StudyTimer {
     }
 
     public void saveTimerProgressBar(int timeSet) {
-        int progress = timeSet - (int) (mTimeLeftInMillis);
-        Log.d(tag, "Saved progress "+progress);
-        mProgressBar.setMax(timeSet);
-        mProgressBar.setProgress(progress);
+        if(mTimeLeftInMillis != 0) {
+            int progress = timeSet - (int) (mTimeLeftInMillis);
+            Log.d(tag, "Saved progress " + progress);
+            mProgressBar.setMax(timeSet);
+            mProgressBar.setProgress(progress);
+        }
+        else{
+            mProgressBar.setProgress(0);
+        }
     }
 
     String updateCountDownText() {
