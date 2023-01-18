@@ -8,6 +8,7 @@ import static de.hdmstuttgart.meinprojekt.view.home.TimerStatus.PAUSE;
 import static de.hdmstuttgart.meinprojekt.view.home.TimerStatus.RESET;
 import static de.hdmstuttgart.meinprojekt.view.home.TimerStatus.RUNNING;
 
+import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,18 +17,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.ViewModelProvider;
 
 import de.hdmstuttgart.meinprojekt.R;
 import de.hdmstuttgart.meinprojekt.view.Dialog.DialogDone;
+import de.hdmstuttgart.meinprojekt.viewmodel.ViewModel;
 
 public class HomeFragment extends Fragment {
 
     StudyTimer studyTimer;
-    ToDoCounter toDoCounter;
 
     Button bButtonStart;
     Button bButtonPause;
@@ -36,14 +41,19 @@ public class HomeFragment extends Fragment {
     private long mStartTimeInMillis;
     private AlertDialog.Builder builder;
     private DialogDone dialogDone;
+
+    private ProgressBar mProgressBarToDo;
+    private ViewModel viewModel;
+
     private int newTime;
-    private int mhour = 1;
-    private int mMinute = 1;
+    private int mhour = 0;
+    private int mMinute = 0;
     private static final String tag = "HomeFragment";
 
     /**
      * sets the layout of the fragment
      */
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -56,12 +66,14 @@ public class HomeFragment extends Fragment {
             HomeFragment.this.updateWatchInterface(RESET);
         };
 
-        toDoCounter = new ToDoCounter(this,view, getContext());
         studyTimer = new StudyTimer(view, onFinish);
 
         bButtonStart = view.findViewById(R.id.button_start);
         bButtonPause = view.findViewById(R.id.button_pause);
         bButtonReset = view.findViewById(R.id.button_reset);
+
+        mProgressBarToDo = view.findViewById(R.id.progress_bar_count_todo);
+        viewModel = new ViewModelProvider(this).get(ViewModel.class);
 
         bButtonStart.setOnClickListener(v -> {
             mhour = studyTimer.hourPicker.getValue();
@@ -98,6 +110,13 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    private ViewModel getViewModel() {
+        if (viewModel == null) {
+            throw new NullPointerException();
+        }
+        return viewModel;
+    }
+
 
     //this method calculates the minute and hour input in milliseconds and returns the these two summed up
     private long calculateTime(int minutes, int hours) {
@@ -109,7 +128,31 @@ public class HomeFragment extends Fragment {
 
     }
 
-    //this Method opens the dialog for the check animation if the time is up or all todos checked
+    public void progressToDos() {
+
+        try {
+            getViewModel().getSavedToDos().observe(getViewLifecycleOwner(), list -> {
+                if (list == null) throw new NullPointerException();
+                int countAll = list.size();
+                Log.d("ToDoCounter", "all todos: " + countAll);
+                mProgressBarToDo.setMax(countAll * 5);
+
+                int countChecked = (int) list.stream().filter(toDoItem -> toDoItem.getStatus() == 1).count();
+
+                Log.d("ToDoCounter", "checked: " + countChecked + "int: " + (int) countChecked);
+                mProgressBarToDo.setProgress(countChecked);
+
+                ObjectAnimator animation = ObjectAnimator.ofInt(mProgressBarToDo, "progress", 0, countChecked * 5);
+                animation.setDuration(1500);
+                animation.start();
+
+            });
+        } catch (Exception e) {
+            Log.d("ToDoCounter", "Thrown exception: " + e.getMessage());
+        }
+    }
+
+        //this Method opens the dialog for the check animation if the time is up or all todos checked
     public void doneAnimation() {
         builder = new AlertDialog.Builder(getContext());
         dialogDone = new DialogDone(getView(), builder);
@@ -173,7 +216,7 @@ public class HomeFragment extends Fragment {
         editor.putLong("endTime", mEndTime);
 
         editor.apply();
-        toDoCounter.progressToDos();
+        progressToDos();
 
         if (studyTimer.mCountDownTimer != null) {
             studyTimer.mCountDownTimer.cancel();
@@ -184,7 +227,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        toDoCounter.progressToDos();
+        progressToDos();
     }
 
     /**
@@ -203,9 +246,11 @@ public class HomeFragment extends Fragment {
         mTimeLeftInMillis = prefs.getLong("millisLeft", mStartTimeInMillis);
         mTimerRunning = prefs.getBoolean("timerRunning", false);
 
-        studyTimer.saveTimerProgressBar(newTime);
+        studyTimer.mProgressBar.setMax(newTime);
+        int progress = studyTimer.saveTimerProgressBar(newTime);
+        studyTimer.mProgressBar.setProgress(progress);
 
-        toDoCounter.progressToDos();
+        progressToDos();
 
         studyTimer.updateCountDownText();
 
@@ -230,10 +275,7 @@ public class HomeFragment extends Fragment {
                 updateWatchInterface(RUNNING);
             }
         }
-
-
     }
-
 
     @Override
     public void onDestroy() {

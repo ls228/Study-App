@@ -16,7 +16,7 @@ import de.hdmstuttgart.meinprojekt.viewmodel.ViewModel;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
-    private ViewModel viewModel;
+    //private ViewModel viewModel;
 
 
     @Override
@@ -39,4 +39,9 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
     }
 
+    @Override
+    protected void onDestroy() {
+
+        super.onDestroy();
+    }
 }
