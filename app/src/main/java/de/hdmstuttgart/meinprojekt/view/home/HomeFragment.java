@@ -118,7 +118,7 @@ public class HomeFragment extends Fragment {
 
     private void saveTimerProgress(){
 
-        SharedPreferences prefs = getContext().getSharedPreferences("prefs", MODE_PRIVATE);
+        SharedPreferences prefs = requireContext().getSharedPreferences("prefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
 
         editor.putLong("startTimeInMillis", mStartTimeInMillis);
@@ -179,8 +179,8 @@ public class HomeFragment extends Fragment {
     }
 
     /**
-     * This method updates the interface of the timer depending on the status event Running, Reset and Pause
-     * @param status
+     * This method updates the interface of the timer depending on the status event
+     * @param status Running, Reset or Pause
      */
     void updateWatchInterface(TimerStatus status) {
         System.out.println("switch");
@@ -231,7 +231,7 @@ public class HomeFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        SharedPreferences prefs = getContext().getSharedPreferences("prefs", MODE_PRIVATE);
+        SharedPreferences prefs = requireContext().getSharedPreferences("prefs", MODE_PRIVATE);
 
         mStartTimeInMillis = prefs.getLong("startTimeInMillis", 600000);
         mTimeLeftInMillis = prefs.getLong("millisLeft", mStartTimeInMillis);
