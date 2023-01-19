@@ -61,7 +61,6 @@ public class DialogDone {
                 Log.d(tag, dialogClosed);
             }
         }.start();
-
     }
 
     private void stop() {

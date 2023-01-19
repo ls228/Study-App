@@ -34,6 +34,7 @@ public class ToDoFragment extends Fragment {
 
     private AlertDialog.Builder dialogBuilder;
 
+
     private static final String tag = "ToDoFragment";
 
 
@@ -49,7 +50,6 @@ public class ToDoFragment extends Fragment {
 
         //enabling add and to do dialog
         dialogBuilder = new AlertDialog.Builder(getContext());
-
 
         try {
             viewModel = new ViewModelProvider(this).get(ViewModel.class);
@@ -71,13 +71,12 @@ public class ToDoFragment extends Fragment {
                 int countAll = list.size();
                 long countChecked = list.stream().filter(toDoItem -> toDoItem.getStatus() == 1).count();
 
-                if (countAll == countChecked) {
+                if (countAll == countChecked&&countAll!=0) {
                     dialogBuilder = new AlertDialog.Builder(getContext());
                     dialogDone = new DialogDone(getView(), dialogBuilder);
                     dialogDone.done();
                 }
             });
-
 
             //fab button
             FloatingActionButton fab = view.findViewById(R.id.fab);
