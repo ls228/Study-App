@@ -50,10 +50,14 @@ public class StudyTimer {
     }
 
     public int saveTimerProgressBar(int timeSet) {
+        if(mTimeLeftInMillis!=0){
         int progress = timeSet - (int) (mTimeLeftInMillis);
         Log.d(tag, "Saved progress "+progress);
         return progress;
-    }
+    }else {
+            return 0;
+        }
+        }
 
     public String updateCountDownText() {
         int hours = (int) (mTimeLeftInMillis / 1000) / 3600;

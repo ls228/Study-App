@@ -22,9 +22,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 
 import de.hdmstuttgart.meinprojekt.R;
@@ -65,7 +63,7 @@ public class HomeFragment extends Fragment {
         //Opens interface to show done animation and reset the timer, to call it from different classes
 
         media = new MediaPlayer();
-        media = MediaPlayer.create(getContext(),R.raw.ringtone);
+        media = MediaPlayer.create(this.getContext(),R.raw.ringtone);
 
         IOnFinish onFinish = () -> {
             media.start();
@@ -113,8 +111,6 @@ public class HomeFragment extends Fragment {
             studyTimer.pauseTimer();
             updateWatchInterface(PAUSE);
         });
-
-
         return view;
     }
 
