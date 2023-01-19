@@ -50,14 +50,14 @@ public class StudyTimer {
     }
 
     public int saveTimerProgressBar(int timeSet) {
-        if(mTimeLeftInMillis!=0){
-        int progress = timeSet - (int) (mTimeLeftInMillis);
-        Log.d(tag, "Saved progress "+progress);
-        return progress;
-    }else {
+        if (mTimeLeftInMillis != 0) {
+            int progress = timeSet - (int) (mTimeLeftInMillis);
+            Log.d(tag, "Saved progress " + progress);
+            return progress;
+        } else {
             return 0;
         }
-        }
+    }
 
     public String updateCountDownText() {
         int hours = (int) (mTimeLeftInMillis / 1000) / 3600;
@@ -77,7 +77,7 @@ public class StudyTimer {
 
     //timer is started and Progressbar shows the current process
     public void startTimer(int timeSet) {
-        Log.d(tag,"Study timer started with: " + timeSet);
+        Log.d(tag, "Study timer started with: " + timeSet);
         mEndTime = System.currentTimeMillis() + mTimeLeftInMillis;
 
         mCountDownTimer = new CountDownTimer(mTimeLeftInMillis, 50) {
@@ -118,16 +118,6 @@ public class StudyTimer {
         mProgressBar.setProgress(0);
     }
 
-    public void stopTimer() {
-        Log.d(tag, "Stop Timer");
-        resetTimer();
-        mTimeLeftInMillis = 0;
-        mTimerRunning = false;
-        /*
-        if (mCountDownTimer != null) {
-            mCountDownTimer.cancel();
-        }*/
-    }
 
 
 }
