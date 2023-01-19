@@ -21,8 +21,6 @@ import de.hdmstuttgart.meinprojekt.viewmodel.ViewModel;
 
 public class DialogAdd {
 
-    private final String title = "Title of your new To Do";
-    private final String description = "Description: ";
     public static final String dialogClosed = "onClick: closing dialog";
     public static final String dialogOpen = "onClick: opening Edit dialog success";
     private static final String input = "onClick: capturing input";
@@ -70,7 +68,9 @@ public class DialogAdd {
         TextView titleHeading = dialogView.findViewById(R.id.titleheading);
         TextView topicHeading = dialogView.findViewById(R.id.topicheading);
 
+        String title = "Title of your new To Do";
         titleHeading.setText(title);
+        String description = "Description: ";
         topicHeading.setText(description);
 
         dialogBuilder.setView(dialogView);
@@ -113,11 +113,5 @@ public class DialogAdd {
                     }
                 });
     }
-    /*
-    private ToDoItem attach(String title, String time, String topic, int status){
-        ToDoItem savedItem = new ToDoItem(title, time, topic, status);
-        return savedItem;
-    }*/
-
 }
 

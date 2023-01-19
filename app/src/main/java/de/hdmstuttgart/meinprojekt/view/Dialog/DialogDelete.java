@@ -28,13 +28,10 @@ public class DialogDelete {
      */
 
     private final View v;
-    private View dialogView;
     private final ViewModel viewModel;
     private final ToDoAdapter toDoAdapter;
     private final List<ToDoItem> list;
     private final int position;
-    private Button btnDelete;
-    private Button btnNo;
     private AlertDialog dialogEdit;
     private final AlertDialog.Builder dialogBuilder;
     private final String tag = "DialogDelete";
@@ -55,7 +52,7 @@ public class DialogDelete {
 
     public void delete() {
 
-        dialogView = LayoutInflater.from(v.getRootView().getContext()).inflate(R.layout.edittodo_dialog, null);
+        View dialogView = LayoutInflater.from(v.getRootView().getContext()).inflate(R.layout.edittodo_dialog, null);
 
         dialogBuilder.setView(dialogView);
 
@@ -67,8 +64,8 @@ public class DialogDelete {
 
         Log.d(tag, dialogOpen);
 
-        btnDelete = dialogView.findViewById(R.id.btndelete);
-        btnNo = dialogView.findViewById(R.id.btnNo);
+        Button btnDelete = dialogView.findViewById(R.id.btndelete);
+        Button btnNo = dialogView.findViewById(R.id.btnNo);
 
         btnDelete.setOnClickListener(v -> {
             Log.d(tag, delete);
@@ -80,9 +77,7 @@ public class DialogDelete {
 
         });
 
-        btnNo.setOnClickListener(v -> {
-            dialogEdit.dismiss();
-        });
+        btnNo.setOnClickListener(v -> dialogEdit.dismiss());
 
     }
 }

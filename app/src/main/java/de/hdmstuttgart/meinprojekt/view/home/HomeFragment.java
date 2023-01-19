@@ -143,7 +143,8 @@ public class HomeFragment extends Fragment {
         long minutesSet = (long) minutes * 60000;
         long hoursSet = (long) hours * 3600000;
 
-        return minutesSet + hoursSet;
+       // return minutesSet + hoursSet;
+        return 5000;
 
     }
 

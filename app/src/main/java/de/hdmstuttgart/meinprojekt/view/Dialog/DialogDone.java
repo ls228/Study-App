@@ -21,7 +21,6 @@ public class DialogDone {
      */
 
     private final View v;
-    private View dialogView;
     private AlertDialog dialogDone;
     private final AlertDialog.Builder dialogBuilder;
     private CountDownTimer timer;
@@ -37,7 +36,7 @@ public class DialogDone {
 
     public void done() {
 
-        dialogView = LayoutInflater.from(v.getRootView().getContext()).inflate(R.layout.done_dialog, null);
+        View dialogView = LayoutInflater.from(v.getRootView().getContext()).inflate(R.layout.done_dialog, null);
 
         dialogBuilder.setView(dialogView);
 
