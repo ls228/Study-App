@@ -40,7 +40,6 @@ public class StudyTimer {
         mProgressBar = view.findViewById(R.id.progress_bar);
         mCountDownText = view.findViewById(R.id.text_view_countdown);
 
-
         hourPicker.setMinValue(0);
         hourPicker.setMaxValue(12);
         hourPicker.setValue(0);
@@ -62,11 +61,10 @@ public class StudyTimer {
         }
     }
 
-    String updateCountDownText() {
+    public String updateCountDownText() {
         int hours = (int) (mTimeLeftInMillis / 1000) / 3600;
         int minutes = (int) ((mTimeLeftInMillis / 1000) % 3600) / 60;
         int seconds = (int) (mTimeLeftInMillis / 1000) % 60;
-
 
         String timeLeftFormatted;
         if (hours > 0) {
@@ -77,10 +75,9 @@ public class StudyTimer {
                     "%02d:%02d", minutes, seconds);
         }
         return timeLeftFormatted;
-
     }
 
-
+    //timer is started and Progressbar shows the current process
     public void startTimer(int timeSet) {
         Log.d(tag,"Study timer started with: " + timeSet);
         mEndTime = System.currentTimeMillis() + mTimeLeftInMillis;
@@ -95,10 +92,9 @@ public class StudyTimer {
                 mCountDownText.setText(timeLeft);
             }
 
-
             @Override
             public void onFinish() {
-                Log.d(tag, "Time up");
+                Log.d(tag, "Time up on Finish");
                 mTimerRunning = false;
                 resetTimer();
                 iOnFinish.onFinish();
@@ -129,9 +125,10 @@ public class StudyTimer {
         resetTimer();
         mTimeLeftInMillis = 0;
         mTimerRunning = false;
+        /*
         if (mCountDownTimer != null) {
             mCountDownTimer.cancel();
-        }
+        }*/
     }
 
 
