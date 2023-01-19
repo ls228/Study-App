@@ -88,7 +88,7 @@ public class StudyTimer {
 
             @Override
             public void onFinish() {
-                Log.d(tag, "Time up");
+                Log.d(tag, "Time up on Finish");
                 mTimerRunning = false;
                 resetTimer();
                 iOnFinish.onFinish();
@@ -119,9 +119,10 @@ public class StudyTimer {
         resetTimer();
         mTimeLeftInMillis = 0;
         mTimerRunning = false;
+        /*
         if (mCountDownTimer != null) {
             mCountDownTimer.cancel();
-        }
+        }*/
     }
 
 

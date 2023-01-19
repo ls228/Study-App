@@ -11,6 +11,7 @@ import static de.hdmstuttgart.meinprojekt.view.home.TimerStatus.RUNNING;
 import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,6 +45,7 @@ public class HomeFragment extends Fragment {
 
     private ProgressBar mProgressBarToDo;
     private ViewModel viewModel;
+    private MediaPlayer media;
 
     private int newTime;
     private int mhour = 0;
@@ -61,7 +63,12 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         //Opens interface to show done animation and reset the timer, to call it from different classes
+
+        media = new MediaPlayer();
+        media = MediaPlayer.create(getContext(),R.raw.ringtone);
+
         IOnFinish onFinish = () -> {
+            media.start();
             doneAnimation();
             HomeFragment.this.updateWatchInterface(RESET);
         };
@@ -90,9 +97,9 @@ public class HomeFragment extends Fragment {
             if (mTimeLeftInMillis == 0) {
                 Toast toastMessage = Toast.makeText(requireContext(), "Please enter a positive number!", Toast.LENGTH_LONG);
                 toastMessage.show();
-            } else
+            } else{
                 updateWatchInterface(RUNNING);
-            studyTimer.startTimer(newTime);
+                studyTimer.startTimer(newTime);}
         });
 
         bButtonReset.setOnClickListener(v -> {
@@ -106,6 +113,7 @@ public class HomeFragment extends Fragment {
             studyTimer.pauseTimer();
             updateWatchInterface(PAUSE);
         });
+
 
         return view;
     }
@@ -197,32 +205,7 @@ public class HomeFragment extends Fragment {
     }
 
 
-    /**
-     * this method is called when the app is closed, it saves the current state of the timer
-     * this allows the app to restore the timer's state  when the app is restarted, so that the
-     * user can continue using the timer where they left off;
-     * it cancels the CountDownTimer
-     */
-    @Override
-    public void onStop() {
-        super.onStop();
 
-        SharedPreferences prefs = getContext().getSharedPreferences("prefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-
-        editor.putLong("startTimeInMillis", mStartTimeInMillis);
-        editor.putLong("millisLeft", mTimeLeftInMillis);
-        editor.putBoolean("timerRunning", mTimerRunning);
-        editor.putLong("endTime", mEndTime);
-
-        editor.apply();
-        progressToDos();
-
-        if (studyTimer.mCountDownTimer != null) {
-            studyTimer.mCountDownTimer.cancel();
-        }
-
-    }
 
     @Override
     public void onResume() {
@@ -249,6 +232,7 @@ public class HomeFragment extends Fragment {
         studyTimer.mProgressBar.setMax(newTime);
         int progress = studyTimer.saveTimerProgressBar(newTime);
         studyTimer.mProgressBar.setProgress(progress);
+
 
         progressToDos();
 
@@ -277,11 +261,39 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    /**
+     * this method is called when the app is closed, it saves the current state of the timer
+     * this allows the app to restore the timer's state  when the app is restarted, so that the
+     * user can continue using the timer where they left off;
+     * it cancels the CountDownTimer
+     */
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        SharedPreferences prefs = getContext().getSharedPreferences("prefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        editor.putLong("startTimeInMillis", mStartTimeInMillis);
+        editor.putLong("millisLeft", mTimeLeftInMillis);
+        editor.putBoolean("timerRunning", mTimerRunning);
+        editor.putLong("endTime", mEndTime);
+
+        editor.apply();
+        progressToDos();
+        media.release();
+
+        if (studyTimer.mCountDownTimer != null) {
+            studyTimer.mCountDownTimer.cancel();
+        }
+
+    }
+
     @Override
     public void onDestroy() {
-        super.onDestroy();
         System.out.println("onDestroy");
         studyTimer.stopTimer();
+        super.onDestroy();
     }
 }
 
