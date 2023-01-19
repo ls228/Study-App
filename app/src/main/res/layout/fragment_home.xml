@@ -92,7 +92,8 @@
             android:padding="10dp"
             android:src="@drawable/ic_baseline_playlist_add_check_24_beige"
             app:layout_anchor="@+id/progress_bar_count_todo"
-            app:layout_anchorGravity="center" />
+            app:layout_anchorGravity="center"
+            android:contentDescription="@string/todo" />
 
         <com.google.android.material.progressindicator.CircularProgressIndicator
             android:id="@+id/progress_bar_count_todo"
@@ -134,7 +135,8 @@
         android:padding="10dp"
         app:layout_anchor="@+id/progress_bar"
         app:layout_anchorGravity="center"
-        android:src="@drawable/ic_outline_timer_24" />
+        android:src="@drawable/ic_outline_timer_24"
+        android:contentDescription="@string/todo" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </RelativeLayout>

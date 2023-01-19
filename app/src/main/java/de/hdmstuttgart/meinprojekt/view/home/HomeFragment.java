@@ -139,7 +139,7 @@ public class HomeFragment extends Fragment {
 
 
     //this method calculates the minute and hour input in milliseconds and returns the these two summed up
-    private long calculateTime(int minutes, int hours) {
+    public long calculateTime(int minutes, int hours) {
         long minutesSet = (long) minutes * 60000;
         long hoursSet = (long) hours * 3600000;
 
@@ -171,7 +171,7 @@ public class HomeFragment extends Fragment {
         }
     }
 
-        //this Method opens the dialog for the check animation if the time is up or all todos checked
+    //this Method opens the dialog for the check animation if the time is up or all todos checked
     public void doneAnimation() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         DialogDone dialogDone = new DialogDone(getView(), builder);
