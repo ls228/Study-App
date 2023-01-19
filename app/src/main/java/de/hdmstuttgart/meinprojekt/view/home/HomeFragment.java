@@ -22,9 +22,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 
 import de.hdmstuttgart.meinprojekt.R;
@@ -40,8 +38,6 @@ public class HomeFragment extends Fragment {
     Button bButtonReset;
 
     private long mStartTimeInMillis;
-    private AlertDialog.Builder builder;
-    private DialogDone dialogDone;
 
     private ProgressBar mProgressBarToDo;
     private ViewModel viewModel;
@@ -51,6 +47,7 @@ public class HomeFragment extends Fragment {
     private int mhour = 0;
     private int mMinute = 0;
     private static final String tag = "HomeFragment";
+
 
     /**
      * sets the layout of the fragment
@@ -62,11 +59,12 @@ public class HomeFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        //Opens interface to show done animation and reset the timer, to call it from different classes
+        saveTimerProgress();
 
         media = new MediaPlayer();
-        media = MediaPlayer.create(getContext(),R.raw.ringtone);
+        media = MediaPlayer.create(this.getContext(),R.raw.ringtone);
 
+        //Opens interface to show done animation and reset the timer, to call it from different classes
         IOnFinish onFinish = () -> {
             media.start();
             doneAnimation();
@@ -114,8 +112,22 @@ public class HomeFragment extends Fragment {
             updateWatchInterface(PAUSE);
         });
 
-
         return view;
+    }
+
+
+    private void saveTimerProgress(){
+
+        SharedPreferences prefs = getContext().getSharedPreferences("prefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        editor.putLong("startTimeInMillis", mStartTimeInMillis);
+        editor.putLong("millisLeft", mTimeLeftInMillis);
+        editor.putBoolean("timerRunning", mTimerRunning);
+        editor.putLong("endTime", mEndTime);
+
+        editor.apply();
+
     }
 
     private ViewModel getViewModel() {
@@ -130,9 +142,8 @@ public class HomeFragment extends Fragment {
     private long calculateTime(int minutes, int hours) {
         long minutesSet = (long) minutes * 60000;
         long hoursSet = (long) hours * 3600000;
-        long timeSet = minutesSet + hoursSet;
 
-        return timeSet;
+        return minutesSet + hoursSet;
 
     }
 
@@ -162,8 +173,8 @@ public class HomeFragment extends Fragment {
 
         //this Method opens the dialog for the check animation if the time is up or all todos checked
     public void doneAnimation() {
-        builder = new AlertDialog.Builder(getContext());
-        dialogDone = new DialogDone(getView(), builder);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        DialogDone dialogDone = new DialogDone(getView(), builder);
         dialogDone.done();
     }
 
@@ -204,9 +215,6 @@ public class HomeFragment extends Fragment {
         }
     }
 
-
-
-
     @Override
     public void onResume() {
         super.onResume();
@@ -232,7 +240,6 @@ public class HomeFragment extends Fragment {
         studyTimer.mProgressBar.setMax(newTime);
         int progress = studyTimer.saveTimerProgressBar(newTime);
         studyTimer.mProgressBar.setProgress(progress);
-
 
         progressToDos();
 
@@ -271,15 +278,6 @@ public class HomeFragment extends Fragment {
     public void onStop() {
         super.onStop();
 
-        SharedPreferences prefs = getContext().getSharedPreferences("prefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-
-        editor.putLong("startTimeInMillis", mStartTimeInMillis);
-        editor.putLong("millisLeft", mTimeLeftInMillis);
-        editor.putBoolean("timerRunning", mTimerRunning);
-        editor.putLong("endTime", mEndTime);
-
-        editor.apply();
         progressToDos();
         media.release();
 
@@ -291,8 +289,7 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        System.out.println("onDestroy");
-        studyTimer.stopTimer();
+        Log.d(tag,"onDestroy");
         super.onDestroy();
     }
 }
