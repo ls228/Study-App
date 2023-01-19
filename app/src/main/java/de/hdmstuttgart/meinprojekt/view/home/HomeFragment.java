@@ -25,7 +25,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.util.Locale;
+
 import de.hdmstuttgart.meinprojekt.R;
+import de.hdmstuttgart.meinprojekt.model.ToDoItem;
 import de.hdmstuttgart.meinprojekt.view.Dialog.DialogDone;
 import de.hdmstuttgart.meinprojekt.viewmodel.ViewModel;
 
@@ -71,6 +74,13 @@ public class HomeFragment extends Fragment {
             HomeFragment.this.updateWatchInterface(RESET);
         };
 
+        /*
+        ISaveTimerProgressBar saveTimerProgressBar = (int timeSet) ->{
+            HomeFragment.this.saveTimerProgressBar(timeSet);
+        };
+        */
+
+
         studyTimer = new StudyTimer(view, onFinish);
 
         bButtonStart = view.findViewById(R.id.button_start);
@@ -115,6 +125,33 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+
+
+    public int saveTimerProgressBar(int timeSet) {
+        if (mTimeLeftInMillis != 0) {
+            int progress = timeSet - (int) (mTimeLeftInMillis);
+            Log.d(tag, "Saved progress " + progress);
+            return progress;
+        } else {
+            return 0;
+        }
+    }
+
+    public String updateCountDownText() {
+        int hours = (int) (mTimeLeftInMillis / 1000) / 3600;
+        int minutes = (int) ((mTimeLeftInMillis / 1000) % 3600) / 60;
+        int seconds = (int) (mTimeLeftInMillis / 1000) % 60;
+
+        String timeLeftFormatted;
+        if (hours > 0) {
+            timeLeftFormatted = String.format(Locale.getDefault(),
+                    "%d:%02d:%02d", hours, minutes, seconds);
+        } else {
+            timeLeftFormatted = String.format(Locale.getDefault(),
+                    "%02d:%02d", minutes, seconds);
+        }
+        return timeLeftFormatted;
+    }
 
     private void saveTimerProgress(){
 
@@ -238,7 +275,7 @@ public class HomeFragment extends Fragment {
         mTimerRunning = prefs.getBoolean("timerRunning", false);
 
         studyTimer.mProgressBar.setMax(newTime);
-        int progress = studyTimer.saveTimerProgressBar(newTime);
+        int progress = saveTimerProgressBar(newTime);
         studyTimer.mProgressBar.setProgress(progress);
 
         progressToDos();
