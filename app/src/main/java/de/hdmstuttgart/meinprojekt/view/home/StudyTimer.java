@@ -28,7 +28,6 @@ public class StudyTimer {
     public static final String tag = "StudyTimer";
 
     IOnFinish iOnFinish;
-    //ISaveTimerProgressBar iSaveTimerProgressBar;
 
     View view;
 

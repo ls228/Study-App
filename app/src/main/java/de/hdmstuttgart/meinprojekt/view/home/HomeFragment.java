@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -74,11 +75,6 @@ public class HomeFragment extends Fragment {
             HomeFragment.this.updateWatchInterface(RESET);
         };
 
-        /*
-        ISaveTimerProgressBar saveTimerProgressBar = (int timeSet) ->{
-            HomeFragment.this.saveTimerProgressBar(timeSet);
-        };
-        */
 
 
         studyTimer = new StudyTimer(view, onFinish);
@@ -137,21 +133,7 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    public String updateCountDownText() {
-        int hours = (int) (mTimeLeftInMillis / 1000) / 3600;
-        int minutes = (int) ((mTimeLeftInMillis / 1000) % 3600) / 60;
-        int seconds = (int) (mTimeLeftInMillis / 1000) % 60;
 
-        String timeLeftFormatted;
-        if (hours > 0) {
-            timeLeftFormatted = String.format(Locale.getDefault(),
-                    "%d:%02d:%02d", hours, minutes, seconds);
-        } else {
-            timeLeftFormatted = String.format(Locale.getDefault(),
-                    "%02d:%02d", minutes, seconds);
-        }
-        return timeLeftFormatted;
-    }
 
     private void saveTimerProgress(){
 
