@@ -23,20 +23,14 @@ import de.hdmstuttgart.meinprojekt.viewmodel.ViewModel;
 
 public class ToDoFragment extends Fragment {
 
+    private static final String tag = "ToDoFragment";
     private RecyclerView recyclerView;
-
     private ToDoAdapter toDoAdapter;
     private ViewModel viewModel;
-
     private DialogAdd dialogAdd;
     private DialogDelete dialogDelete;
     private DialogDone dialogDone;
-
     private AlertDialog.Builder dialogBuilder;
-
-
-    private static final String tag = "ToDoFragment";
-
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -71,7 +65,7 @@ public class ToDoFragment extends Fragment {
                 int countAll = list.size();
                 long countChecked = list.stream().filter(toDoItem -> toDoItem.getStatus() == 1).count();
 
-                if (countAll == countChecked&&countAll!=0) {
+                if (countAll == countChecked && countAll != 0) {
                     dialogBuilder = new AlertDialog.Builder(getContext());
                     dialogDone = new DialogDone(getView(), dialogBuilder);
                     dialogDone.done();

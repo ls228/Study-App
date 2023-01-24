@@ -18,7 +18,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -26,10 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import java.util.Locale;
-
 import de.hdmstuttgart.meinprojekt.R;
-import de.hdmstuttgart.meinprojekt.model.ToDoItem;
 import de.hdmstuttgart.meinprojekt.view.Dialog.DialogDone;
 import de.hdmstuttgart.meinprojekt.viewmodel.ViewModel;
 
@@ -48,7 +44,7 @@ public class HomeFragment extends Fragment {
     private MediaPlayer media;
 
     private int newTime;
-    private int mhour = 0;
+    private int mHour = 0;
     private int mMinute = 0;
     private static final String tag = "HomeFragment";
 
@@ -87,11 +83,11 @@ public class HomeFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(ViewModel.class);
 
         bButtonStart.setOnClickListener(v -> {
-            mhour = studyTimer.hourPicker.getValue();
+            mHour = studyTimer.hourPicker.getValue();
             mMinute = studyTimer.minutePicker.getValue();
-            Log.d(tag,"Hour: " + mhour + " Minute: " + mMinute);
+            Log.d(tag,"Hour: " + mHour + " Minute: " + mMinute);
 
-            newTime = (int) calculateTime(mMinute, mhour);
+            newTime = (int) calculateTime(mMinute, mHour);
             mTimeLeftInMillis = newTime;
             Log.d(tag,"calculated time: " + newTime);
             studyTimer.mProgressBar.setMax(newTime);
@@ -107,7 +103,7 @@ public class HomeFragment extends Fragment {
         });
 
         bButtonReset.setOnClickListener(v -> {
-            mhour = 0;
+            mHour = 0;
             mMinute = 0;
             studyTimer.resetTimer();
             updateWatchInterface(RESET);
@@ -162,8 +158,8 @@ public class HomeFragment extends Fragment {
         long minutesSet = (long) minutes * 60000;
         long hoursSet = (long) hours * 3600000;
 
-       // return minutesSet + hoursSet;
-        return 5000;
+       return minutesSet + hoursSet;
+        //return 5000;
 
     }
 
