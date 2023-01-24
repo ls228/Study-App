@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -25,7 +26,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.util.Locale;
+
 import de.hdmstuttgart.meinprojekt.R;
+import de.hdmstuttgart.meinprojekt.model.ToDoItem;
 import de.hdmstuttgart.meinprojekt.view.Dialog.DialogDone;
 import de.hdmstuttgart.meinprojekt.viewmodel.ViewModel;
 
@@ -70,6 +74,8 @@ public class HomeFragment extends Fragment {
             doneAnimation();
             HomeFragment.this.updateWatchInterface(RESET);
         };
+
+
 
         studyTimer = new StudyTimer(view, onFinish);
 
@@ -116,9 +122,22 @@ public class HomeFragment extends Fragment {
     }
 
 
+
+    public int saveTimerProgressBar(int timeSet) {
+        if (mTimeLeftInMillis != 0) {
+            int progress = timeSet - (int) (mTimeLeftInMillis);
+            Log.d(tag, "Saved progress " + progress);
+            return progress;
+        } else {
+            return 0;
+        }
+    }
+
+
+
     private void saveTimerProgress(){
 
-        SharedPreferences prefs = getContext().getSharedPreferences("prefs", MODE_PRIVATE);
+        SharedPreferences prefs = requireContext().getSharedPreferences("prefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
 
         editor.putLong("startTimeInMillis", mStartTimeInMillis);
@@ -139,7 +158,7 @@ public class HomeFragment extends Fragment {
 
 
     //this method calculates the minute and hour input in milliseconds and returns the these two summed up
-    private long calculateTime(int minutes, int hours) {
+    public long calculateTime(int minutes, int hours) {
         long minutesSet = (long) minutes * 60000;
         long hoursSet = (long) hours * 3600000;
 
@@ -172,7 +191,7 @@ public class HomeFragment extends Fragment {
         }
     }
 
-        //this Method opens the dialog for the check animation if the time is up or all todos checked
+    //this Method opens the dialog for the check animation if the time is up or all todos checked
     public void doneAnimation() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         DialogDone dialogDone = new DialogDone(getView(), builder);
@@ -180,8 +199,8 @@ public class HomeFragment extends Fragment {
     }
 
     /**
-     * This method updates the interface of the timer depending on the status event Running, Reset and Pause
-     * @param status
+     * This method updates the interface of the timer depending on the status event
+     * @param status Running, Reset or Pause
      */
     void updateWatchInterface(TimerStatus status) {
         System.out.println("switch");
@@ -232,14 +251,14 @@ public class HomeFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        SharedPreferences prefs = getContext().getSharedPreferences("prefs", MODE_PRIVATE);
+        SharedPreferences prefs = requireContext().getSharedPreferences("prefs", MODE_PRIVATE);
 
         mStartTimeInMillis = prefs.getLong("startTimeInMillis", 600000);
         mTimeLeftInMillis = prefs.getLong("millisLeft", mStartTimeInMillis);
         mTimerRunning = prefs.getBoolean("timerRunning", false);
 
         studyTimer.mProgressBar.setMax(newTime);
-        int progress = studyTimer.saveTimerProgressBar(newTime);
+        int progress = saveTimerProgressBar(newTime);
         studyTimer.mProgressBar.setProgress(progress);
 
         progressToDos();
