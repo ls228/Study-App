@@ -25,12 +25,14 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
     OnItemClickListener listener;
     ToDoItem toDoItemPos;
     private final ViewModel viewModel;
+    IAllChecked iAllChecked;
 
     //item
-    public ToDoAdapter(ViewModel viewModel, List<ToDoItem> todoitem, OnItemClickListener listener) {
+    public ToDoAdapter(ViewModel viewModel, List<ToDoItem> todoitem, OnItemClickListener listener, IAllChecked iAllChecked) {
         this.viewModel = viewModel;
         this.todoitem = todoitem;
         this.listener = listener;
+        this.iAllChecked = iAllChecked;
     }
 
     /**
@@ -79,7 +81,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
                 Log.d("ToDoAdapter", checked);
                 //updating status to checked in viewmodel
                 this.getViewModel().updateStatus(1, id);
-
+                iAllChecked.allChecked();
             } else {
                 // The toggle is disabled
                 Log.d("ToDoAdapter", unchecked);

@@ -1,6 +1,7 @@
 package de.hdmstuttgart.meinprojekt.viewmodel;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -44,6 +45,7 @@ public class ViewModel extends AndroidViewModel {
     }
 
     public void updateStatus(Integer status, Integer id) {
+        Log.d("Chilli", "status: "+ status + " id: " + id);
         repository.updateStatus(status, id);
     }
 

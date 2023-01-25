@@ -31,6 +31,10 @@ public class ToDoFragment extends Fragment {
     private DialogDelete dialogDelete;
     private DialogDone dialogDone;
     private AlertDialog.Builder dialogBuilder;
+    private boolean firstLoad = true;
+
+    int countAll;
+    long countChecked;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -48,28 +52,38 @@ public class ToDoFragment extends Fragment {
         try {
             viewModel = new ViewModelProvider(this).get(ViewModel.class);
 
+            IAllChecked iAllChecked = () -> {
+                if (countAll-1 == countChecked && countAll != 0 && !firstLoad) {
+                    dialogBuilder = new AlertDialog.Builder(getContext());
+                    dialogDone = new DialogDone(getView(), dialogBuilder);
+                    dialogDone.done();
+                }
+            };
+
             //On tap opening new dialog that allows to delete the to do
             viewModel.getSavedToDos().observe(getViewLifecycleOwner(), list -> {
 
                 if (list == null) throw new NullPointerException();
                 Log.d(tag, "Count: " + list.size());
 
+                countAll = list.size();
+                countChecked = list.stream().filter(toDoItem -> toDoItem.getStatus() == 1).count();
+
+
                 toDoAdapter = new ToDoAdapter(viewModel,
                         list,
                         (toDoItemPos, position) -> {
                             dialogDelete = new DialogDelete(view, dialogBuilder, viewModel, toDoAdapter, list, position);
                             dialogDelete.delete();
-                        });
+                        }, iAllChecked);
                 recyclerView.setAdapter(toDoAdapter);
 
-                int countAll = list.size();
-                long countChecked = list.stream().filter(toDoItem -> toDoItem.getStatus() == 1).count();
-
-                if (countAll == countChecked && countAll != 0) {
+                /*if (countAll == countChecked && countAll != 0 && !firstLoad) {
                     dialogBuilder = new AlertDialog.Builder(getContext());
                     dialogDone = new DialogDone(getView(), dialogBuilder);
                     dialogDone.done();
-                }
+                }*/
+                firstLoad = false;
             });
 
             //fab button
