@@ -47,5 +47,5 @@ public class ViewModel extends AndroidViewModel {
         repository.updateStatus(status, id);
     }
 
-
+    public void statusOne(){repository.statusOne();}
 }

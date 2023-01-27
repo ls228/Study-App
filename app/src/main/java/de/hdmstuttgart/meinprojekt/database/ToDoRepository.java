@@ -35,6 +35,10 @@ public class ToDoRepository {
         AppDatabase.databaseWriteExecutor.execute(() -> toDoDao.updateStatus(status, id));
     }
 
+    public void statusOne() {
+        AppDatabase.databaseWriteExecutor.execute(() -> toDoDao.statusOne());
+    }
+
     public void delete(ToDoItem toDoItem) {
         AppDatabase.databaseWriteExecutor.execute(() -> toDoDao.delete(toDoItem));
     }

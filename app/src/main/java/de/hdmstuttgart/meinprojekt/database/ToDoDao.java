@@ -22,6 +22,9 @@ public interface ToDoDao {
     @Query("UPDATE todoitem SET status=:status WHERE uid=:id")
     void updateStatus(Integer status, Integer id);
 
+    @Query("UPDATE todoitem SET status=1")
+    void statusOne();
+
     @Delete
     void delete(ToDoItem toDoItem);
 

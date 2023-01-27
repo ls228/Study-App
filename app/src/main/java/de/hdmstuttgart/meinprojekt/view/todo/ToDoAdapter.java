@@ -1,5 +1,6 @@
 package de.hdmstuttgart.meinprojekt.view.todo;
 
+
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
     OnItemClickListener listener;
     ToDoItem toDoItemPos;
     private final ViewModel viewModel;
+    private static final String tag = "ToDoAdapter";
 
     //item
     public ToDoAdapter(ViewModel viewModel, List<ToDoItem> todoitem, OnItemClickListener listener) {
@@ -45,6 +47,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
         return viewModel;
     }
 
+
     @NonNull
     @Override
     public ToDoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -64,6 +67,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
 
         holder.itemView.setOnClickListener(v -> listener.onToDoCLickListener(toDoItemPos, position));
 
+
         if (toDoItemPos.getStatus() == 1) {
             holder.checkBox.setChecked(true);
             holder.itemView.setBackgroundColor(Color.rgb(252, 236, 207));
@@ -74,18 +78,17 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
         holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
 
             if (isChecked) {
-
                 // The toggle is enabled
-                Log.d("ToDoAdapter", checked);
+                Log.d(tag, checked);
                 //updating status to checked in viewmodel
+                Log.d(tag, "id item: " + id);
                 this.getViewModel().updateStatus(1, id);
 
             } else {
                 // The toggle is disabled
-                Log.d("ToDoAdapter", unchecked);
+                Log.d(tag, unchecked);
                 //updating status to unchecked in viewmodel
                 this.getViewModel().updateStatus(0, id);
-
             }
         });
 
@@ -117,6 +120,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
             dateTextView = itemView.findViewById(R.id.date);
             topicTextView = itemView.findViewById(R.id.topic);
             checkBox = itemView.findViewById(R.id.checkbox);
+
         }
     }
 

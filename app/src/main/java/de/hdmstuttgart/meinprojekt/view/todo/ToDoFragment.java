@@ -1,11 +1,12 @@
 package de.hdmstuttgart.meinprojekt.view.todo;
-
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -33,7 +34,8 @@ public class ToDoFragment extends Fragment {
     private DialogDone dialogDone;
 
     private AlertDialog.Builder dialogBuilder;
-
+    private Button checkAll;
+    private int countAll;
 
     private static final String tag = "ToDoFragment";
 
@@ -67,11 +69,11 @@ public class ToDoFragment extends Fragment {
                             dialogDelete.delete();
                         });
                 recyclerView.setAdapter(toDoAdapter);
-
-                int countAll = list.size();
+                //int countAll
+                countAll = list.size();
                 long countChecked = list.stream().filter(toDoItem -> toDoItem.getStatus() == 1).count();
 
-                if (countAll == countChecked&&countAll!=0) {
+                if (countAll == countChecked && countAll != 0) {
                     dialogBuilder = new AlertDialog.Builder(getContext());
                     dialogDone = new DialogDone(getView(), dialogBuilder);
                     dialogDone.done();
@@ -87,6 +89,15 @@ public class ToDoFragment extends Fragment {
                         dialogAdd.dialog();
                     }
             );
+
+
+            checkAll = view.findViewById(R.id.checkButton);
+
+            checkAll.setOnClickListener(v -> {
+                    viewModel.statusOne();
+            });
+
+
         } catch (Exception e) {
             Log.e(tag, "onAttach: Exception: "
                     + e.getMessage());
