@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -25,7 +26,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.util.Locale;
+
 import de.hdmstuttgart.meinprojekt.R;
+import de.hdmstuttgart.meinprojekt.model.ToDoItem;
 import de.hdmstuttgart.meinprojekt.view.Dialog.DialogDone;
 import de.hdmstuttgart.meinprojekt.viewmodel.ViewModel;
 
@@ -36,6 +40,7 @@ public class HomeFragment extends Fragment {
     Button bButtonStart;
     Button bButtonPause;
     Button bButtonReset;
+    private boolean pauseBeforeStart = false;
 
     private long mStartTimeInMillis;
 
@@ -44,7 +49,7 @@ public class HomeFragment extends Fragment {
     private MediaPlayer media;
 
     private int newTime;
-    private int mHour = 0;
+    private int mhour = 0;
     private int mMinute = 0;
     private static final String tag = "HomeFragment";
 
@@ -62,7 +67,7 @@ public class HomeFragment extends Fragment {
         saveTimerProgress();
 
         media = new MediaPlayer();
-        media = MediaPlayer.create(this.getContext(),R.raw.ringtone);
+        media = MediaPlayer.create(this.getContext(), R.raw.ringtone);
 
         //Opens interface to show done animation and reset the timer, to call it from different classes
         IOnFinish onFinish = () -> {
@@ -70,7 +75,6 @@ public class HomeFragment extends Fragment {
             doneAnimation();
             HomeFragment.this.updateWatchInterface(RESET);
         };
-
 
 
         studyTimer = new StudyTimer(view, onFinish);
@@ -83,40 +87,45 @@ public class HomeFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(ViewModel.class);
 
         bButtonStart.setOnClickListener(v -> {
-            mHour = studyTimer.hourPicker.getValue();
-            mMinute = studyTimer.minutePicker.getValue();
-            Log.d(tag,"Hour: " + mHour + " Minute: " + mMinute);
+            if(!pauseBeforeStart){
+                mhour = studyTimer.hourPicker.getValue();
+                mMinute = studyTimer.minutePicker.getValue();
+                Log.d(tag, "Hour: " + mhour + " Minute: " + mMinute);
+                newTime = (int) calculateTime(mMinute, mhour);
 
-            newTime = (int) calculateTime(mMinute, mHour);
-            mTimeLeftInMillis = newTime;
-            Log.d(tag,"calculated time: " + newTime);
-            studyTimer.mProgressBar.setMax(newTime);
+                mTimeLeftInMillis = newTime;
+                Log.d(tag, "calculated time: " + newTime);
+                studyTimer.mProgressBar.setMax(newTime);
 
-            Log.d(tag,"time left in millis: " + mTimeLeftInMillis);
+
+            Log.d(tag, "time left in millis: " + mTimeLeftInMillis);}
 
             if (mTimeLeftInMillis == 0) {
                 Toast toastMessage = Toast.makeText(requireContext(), "Please enter a positive number!", Toast.LENGTH_LONG);
                 toastMessage.show();
-            } else{
+            } else {
                 updateWatchInterface(RUNNING);
-                studyTimer.startTimer(newTime);}
+                studyTimer.startTimer(newTime);
+            }
+            pauseBeforeStart = false;
         });
 
         bButtonReset.setOnClickListener(v -> {
-            mHour = 0;
+            pauseBeforeStart = false;
+            mhour = 0;
             mMinute = 0;
             studyTimer.resetTimer();
             updateWatchInterface(RESET);
         });
 
         bButtonPause.setOnClickListener(v -> {
+            pauseBeforeStart = true;
             studyTimer.pauseTimer();
             updateWatchInterface(PAUSE);
         });
 
         return view;
     }
-
 
 
     public int saveTimerProgressBar(int timeSet) {
@@ -130,8 +139,7 @@ public class HomeFragment extends Fragment {
     }
 
 
-
-    private void saveTimerProgress(){
+    private void saveTimerProgress() {
 
         SharedPreferences prefs = requireContext().getSharedPreferences("prefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -158,8 +166,8 @@ public class HomeFragment extends Fragment {
         long minutesSet = (long) minutes * 60000;
         long hoursSet = (long) hours * 3600000;
 
-       return minutesSet + hoursSet;
-        //return 5000;
+       // return minutesSet + hoursSet;
+        return 5000;
 
     }
 
@@ -169,12 +177,12 @@ public class HomeFragment extends Fragment {
             getViewModel().getSavedToDos().observe(getViewLifecycleOwner(), list -> {
                 if (list == null) throw new NullPointerException();
                 int countAll = list.size();
-                Log.d("ToDoCounter", "all todos: " + countAll);
+                Log.d(tag, "all todos: " + countAll);
                 mProgressBarToDo.setMax(countAll * 5);
 
-                int countChecked = (int) list.stream().filter(toDoItem -> toDoItem.getStatus() == 1).count();
+                int countChecked = (int) list.stream().filter(toDoItem -> toDoItem.getStatus()).count();
 
-                Log.d("ToDoCounter", "checked: " + countChecked + "int: " + (int) countChecked);
+                Log.d(tag, "checked: " + countChecked + "int: " + (int) countChecked);
                 mProgressBarToDo.setProgress(countChecked);
 
                 ObjectAnimator animation = ObjectAnimator.ofInt(mProgressBarToDo, "progress", 0, countChecked * 5);
@@ -196,6 +204,7 @@ public class HomeFragment extends Fragment {
 
     /**
      * This method updates the interface of the timer depending on the status event
+     *
      * @param status Running, Reset or Pause
      */
     void updateWatchInterface(TimerStatus status) {
@@ -305,7 +314,7 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        Log.d(tag,"onDestroy");
+        Log.d(tag, "onDestroy");
         super.onDestroy();
     }
 }

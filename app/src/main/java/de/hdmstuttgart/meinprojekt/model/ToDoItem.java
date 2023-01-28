@@ -15,7 +15,7 @@ public class ToDoItem {
     @ColumnInfo(name = "topic")
     private final String topic;
     @ColumnInfo(name = "status")
-    private final Integer status;
+    private boolean status;
     @PrimaryKey(autoGenerate = true)
     public int uid;
 
@@ -24,7 +24,7 @@ public class ToDoItem {
             String title,
             String date,
             String topic,
-            Integer status
+            boolean status
     ) {
         this.title = title;
         this.date = date;
@@ -44,11 +44,15 @@ public class ToDoItem {
         return topic;
     }
 
-    public Integer getStatus() {
+    public boolean getStatus() {
         return status;
     }
 
-    public Integer getId() {
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public int getId() {
         return uid;
     }
 
