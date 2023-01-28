@@ -14,7 +14,6 @@ import de.hdmstuttgart.meinprojekt.model.ToDoItem;
 
 public class ViewModel extends AndroidViewModel {
 
-    private final LiveData<List<ToDoItem>> toDoLiveData;
 
     private final ToDoRepository repository;
 
@@ -28,11 +27,11 @@ public class ViewModel extends AndroidViewModel {
         super(application);
         //repository is the connection to database
         repository = new ToDoRepository(application);
-        toDoLiveData = repository.getSavedToDos();
+
     }
 
     public LiveData<List<ToDoItem>> getSavedToDos() {
-        return toDoLiveData;
+        return repository.getSavedToDos();
     }
 
     public void removeToDo(ToDoItem toDoItem) {
