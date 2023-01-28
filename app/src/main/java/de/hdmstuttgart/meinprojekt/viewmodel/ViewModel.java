@@ -5,6 +5,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
 
@@ -28,7 +29,6 @@ public class ViewModel extends AndroidViewModel {
         //repository is the connection to database
         repository = new ToDoRepository(application);
         toDoLiveData = repository.getSavedToDos();
-
     }
 
     public LiveData<List<ToDoItem>> getSavedToDos() {
@@ -43,7 +43,7 @@ public class ViewModel extends AndroidViewModel {
         repository.insert(toDoItem);
     }
 
-    public void updateStatus(Integer status, Integer id) {
+    public void updateStatus(boolean status, int id) {
         repository.updateStatus(status, id);
     }
 

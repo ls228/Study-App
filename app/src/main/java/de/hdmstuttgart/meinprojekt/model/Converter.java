@@ -8,7 +8,7 @@ import java.util.Date;
 
 public class Converter {
 
-    static DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    static DateFormat dateFormat = new SimpleDateFormat("dd.MM");
 
     @TypeConverter
     public static String dateToTimestamp(Date date) {

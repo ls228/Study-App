@@ -38,7 +38,7 @@ public class DialogAdd {
     private Date time;
 
     private final View v;
-    private final ViewModel viewModel;
+    //private final ViewModel viewModel;
 
     private ToDoItem toDoItem;
     private final AlertDialog.Builder dialogBuilder;
@@ -49,12 +49,16 @@ public class DialogAdd {
 
     private final String errorMessage = "Please enter a valid To Do!";
     private Toast toastMessage;
+    private IAddTodoItem listener;
 
+    public interface IAddTodoItem {
+        void addTodoItem(ToDoItem toDoItem);
+    }
 
-    public DialogAdd(View v, AlertDialog.Builder dialogBuilder, ViewModel viewModel) {
+    public DialogAdd(View v, AlertDialog.Builder dialogBuilder, IAddTodoItem listener) {
         this.v = v;
         this.dialogBuilder = dialogBuilder;
-        this.viewModel = viewModel;
+        this.listener = listener;
     }
 
     public void dialog() {
@@ -99,7 +103,7 @@ public class DialogAdd {
                     inputTitle = titleInput.getText().toString();
                     inputTopic = topicInput.getText().toString();
 
-                    this.toDoItem = new ToDoItem(inputTitle, currentTime, inputTopic, 0);
+                    this.toDoItem = new ToDoItem(inputTitle, currentTime, inputTopic, false);
 
                     if (toDoItem.getTitle().equals("")) {
                         //if input has no title toast message will pop up
@@ -108,7 +112,8 @@ public class DialogAdd {
                     } else {
                         //saving input in viewmodel
                         //ToDoItem savedToDo = attach(inputTitle, currentTime, inputTopic, 0);
-                        viewModel.saveToDo(toDoItem);
+                        //viewModel.saveToDo(toDoItem);
+                        listener.addTodoItem(toDoItem);
                         dialog.dismiss();
                     }
                 });

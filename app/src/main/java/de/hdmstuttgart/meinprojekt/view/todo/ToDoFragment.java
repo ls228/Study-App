@@ -1,22 +1,30 @@
 package de.hdmstuttgart.meinprojekt.view.todo;
+
 import android.app.AlertDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.hdmstuttgart.meinprojekt.R;
+import de.hdmstuttgart.meinprojekt.model.ToDoItem;
 import de.hdmstuttgart.meinprojekt.view.Dialog.DialogAdd;
 import de.hdmstuttgart.meinprojekt.view.Dialog.DialogDelete;
 import de.hdmstuttgart.meinprojekt.view.Dialog.DialogDone;
@@ -47,6 +55,7 @@ public class ToDoFragment extends Fragment {
 
         // showing todos
         recyclerView = view.findViewById(R.id.view_todolist);
+        recyclerView.setBackground(new ColorDrawable(Color.TRANSPARENT));
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
@@ -56,28 +65,44 @@ public class ToDoFragment extends Fragment {
         try {
             viewModel = new ViewModelProvider(this).get(ViewModel.class);
 
+            Iclick teschClickiChilli123 = new Iclick() {
+                @Override
+                public void onClickDelete(ToDoItem toDoItem, int position) {
+                    viewModel.removeToDo(toDoItem);
+                    toDoAdapter.removeItem(position);
+                    Toast.makeText(getContext(), "Deleted successfully: " + toDoItem.getTitle(), Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onChecked(int id, boolean isChecked) {
+                    Log.d(tag, "LOOOOOL ME ID: " + id + " | checked: "+ isChecked);
+                    viewModel.updateStatus(isChecked, id);
+                    countAll = toDoAdapter.getList().size();
+                    long countChecked = toDoAdapter.getList().stream().filter(toDoItem -> toDoItem.getStatus()).count();
+                    if (countAll-1 == countChecked && countAll != 0 && isChecked) {
+                        doneAnimation();
+                    }
+
+                }
+            };
+
+            toDoAdapter = new ToDoAdapter(new ArrayList<>(), teschClickiChilli123);
+
+            recyclerView.setAdapter(toDoAdapter);
+            //teschdAdapterLol.submitList(new ArrayList<>());
+
             //On tap opening new dialog that allows to delete the to do
-            viewModel.getSavedToDos().observe(getViewLifecycleOwner(), list -> {
+            LiveData<List<ToDoItem>> toDoItems = viewModel.getSavedToDos();
+           // MutableLiveData<List<ToDoItem>> toDoItemsMut = viewModel.getSavedToDosMut();
+            toDoItems.observe(getViewLifecycleOwner(), list -> {
 
                 if (list == null) throw new NullPointerException();
                 Log.d(tag, "Count: " + list.size());
 
-                toDoAdapter = new ToDoAdapter(viewModel,
-                        list,
-                        (toDoItemPos, position) -> {
-                            dialogDelete = new DialogDelete(view, dialogBuilder, viewModel, toDoAdapter, list, position);
-                            dialogDelete.delete();
-                        });
-                recyclerView.setAdapter(toDoAdapter);
-                //int countAll
-                countAll = list.size();
-                long countChecked = list.stream().filter(toDoItem -> toDoItem.getStatus() == 1).count();
+                toDoAdapter.addList(list);
+                recyclerView.animate();
 
-                if (countAll == countChecked && countAll != 0) {
-                    dialogBuilder = new AlertDialog.Builder(getContext());
-                    dialogDone = new DialogDone(getView(), dialogBuilder);
-                    dialogDone.done();
-                }
+                toDoItems.removeObservers(getViewLifecycleOwner());
             });
 
             //fab button
@@ -85,7 +110,7 @@ public class ToDoFragment extends Fragment {
 
             //Floating button is opening add dialog on click
             fab.setOnClickListener(v -> {
-                        dialogAdd = new DialogAdd(v, dialogBuilder, viewModel);
+                        dialogAdd = new DialogAdd(v, dialogBuilder, addTodoItem);
                         dialogAdd.dialog();
                     }
             );
@@ -94,8 +119,11 @@ public class ToDoFragment extends Fragment {
             checkAll = view.findViewById(R.id.checkButton);
 
             checkAll.setOnClickListener(v -> {
-                    viewModel.statusOne();
+                toDoAdapter.checkAll();
+                viewModel.statusOne();
+                doneAnimation();
             });
+
 
 
         } catch (Exception e) {
@@ -105,5 +133,19 @@ public class ToDoFragment extends Fragment {
 
         return view;
     }
+
+    public void doneAnimation(){
+        dialogBuilder = new AlertDialog.Builder(getContext());
+        dialogDone = new DialogDone(getView(), dialogBuilder);
+        dialogDone.done();
+    }
+
+    private final DialogAdd.IAddTodoItem addTodoItem = new DialogAdd.IAddTodoItem() {
+        @Override
+        public void addTodoItem(ToDoItem toDoItem) {
+            toDoAdapter.addListItem(toDoItem);
+            viewModel.saveToDo(toDoItem);
+        }
+    };
 
 }

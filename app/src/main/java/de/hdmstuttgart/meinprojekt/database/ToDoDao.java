@@ -1,6 +1,7 @@
 package de.hdmstuttgart.meinprojekt.database;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -20,7 +21,7 @@ public interface ToDoDao {
     void insert(ToDoItem toDoItem);
 
     @Query("UPDATE todoitem SET status=:status WHERE uid=:id")
-    void updateStatus(Integer status, Integer id);
+    void updateStatus(boolean status, int id);
 
     @Query("UPDATE todoitem SET status=1")
     void statusOne();
