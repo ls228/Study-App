@@ -109,6 +109,4 @@ public class StudyTimer {
         mProgressBar.setProgress(0);
     }
 
-
-
 }

@@ -30,7 +30,7 @@ public class DialogDelete {
     private final View v;
     private final ViewModel viewModel;
     private final ToDoAdapter toDoAdapter;
-    private final List<ToDoItem> list;
+    private final List<ToDoItem> toDoItem;
     private final int position;
     private AlertDialog dialogEdit;
     private final AlertDialog.Builder dialogBuilder;
@@ -40,13 +40,13 @@ public class DialogDelete {
                         AlertDialog.Builder dialogBuilder,
                         ViewModel viewModel,
                         ToDoAdapter toDoAdapter,
-                        List<ToDoItem> list,
+                        List<ToDoItem> toDoItem,
                         int position) {
         this.v = v;
         this.dialogBuilder = dialogBuilder;
         this.viewModel = viewModel;
         this.toDoAdapter = toDoAdapter;
-        this.list = list;
+        this.toDoItem = toDoItem;
         this.position = position;
     }
 
@@ -69,7 +69,7 @@ public class DialogDelete {
 
         btnDelete.setOnClickListener(v -> {
             Log.d(tag, delete);
-            viewModel.removeToDo(list.get(position));
+            viewModel.removeToDo(toDoItem.get(position));
             toDoAdapter.notifyItemRemoved(position);
             toDoAdapter.notifyItemRangeChanged(position, 1);
             dialogEdit.dismiss();
