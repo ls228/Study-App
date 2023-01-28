@@ -110,9 +110,7 @@ public class DialogAdd {
                         toastMessage = Toast.makeText(v.getContext(), errorMessage, Toast.LENGTH_LONG);
                         toastMessage.show();
                     } else {
-                        //saving input in viewmodel
-                        //ToDoItem savedToDo = attach(inputTitle, currentTime, inputTopic, 0);
-                        //viewModel.saveToDo(toDoItem);
+
                         listener.addTodoItem(toDoItem);
                         dialog.dismiss();
                     }

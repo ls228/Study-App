@@ -16,18 +16,16 @@ public class ToDoRepository {
      */
 
     private final ToDoDao toDoDao;
-    private final LiveData<List<ToDoItem>> toDoLiveData;
 
 
     public ToDoRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
         toDoDao = db.toDoDao();
-        toDoLiveData = toDoDao.getAll();
 
     }
 
     public LiveData<List<ToDoItem>> getSavedToDos() {
-        return toDoLiveData;
+        return toDoDao.getAll();
     }
 
 

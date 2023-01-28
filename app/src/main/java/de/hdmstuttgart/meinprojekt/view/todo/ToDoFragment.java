@@ -1,6 +1,7 @@
 package de.hdmstuttgart.meinprojekt.view.todo;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -8,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -103,7 +106,10 @@ public class ToDoFragment extends Fragment {
                 Log.d(tag, "Count: " + list.size());
 
                 toDoAdapter.addList(list);
-                recyclerView.animate();
+
+                final LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(recyclerView.getContext(), R.anim.layout_animation);
+                recyclerView.setLayoutAnimation(controller);
+                recyclerView.scheduleLayoutAnimation();
 
                 toDoItems.removeObservers(getViewLifecycleOwner());
             });
@@ -150,6 +156,7 @@ public class ToDoFragment extends Fragment {
         public void addTodoItem(ToDoItem toDoItem) {
             toDoAdapter.addListItem(toDoItem);
             viewModel.saveToDo(toDoItem);
+            recyclerView.smoothScrollToPosition(0);
         }
     };
 
