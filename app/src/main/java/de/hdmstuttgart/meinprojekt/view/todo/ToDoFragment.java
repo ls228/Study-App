@@ -1,7 +1,6 @@
 package de.hdmstuttgart.meinprojekt.view.todo;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -125,7 +124,7 @@ public class ToDoFragment extends Fragment {
             );
 
 
-            checkAll = view.findViewById(R.id.checkButton);
+            checkAll = view.findViewById(R.id.checkAllButton);
 
             checkAll.setOnClickListener(v -> {
                 toDoAdapter.checkAll();
