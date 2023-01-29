@@ -7,17 +7,28 @@
     tools:context=".view.todo.ToDoFragment"
     android:background="@color/white">
 
+    <TextView
+        android:id="@+id/todocount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/view_todolist"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="All todos"
+        android:layout_margin="10dp"
+        />
+
 
     <Button
         android:id="@+id/checkButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Check all"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="10dp"
+        android:text="Check All"
+        android:textSize="13dp"
         android:background="@drawable/round_buttons"
-        android:layout_margin="7dp"/>
-
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/view_todolist"

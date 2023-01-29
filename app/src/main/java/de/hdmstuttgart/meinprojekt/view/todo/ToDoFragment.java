@@ -1,6 +1,7 @@
 package de.hdmstuttgart.meinprojekt.view.todo;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -8,7 +9,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -36,6 +40,8 @@ public class ToDoFragment extends Fragment {
 
     private ToDoAdapter toDoAdapter;
     private ViewModel viewModel;
+    private TextView todoCount;
+    private long countChecked;
 
     private DialogAdd dialogAdd;
     private DialogDelete dialogDelete;
@@ -75,11 +81,11 @@ public class ToDoFragment extends Fragment {
 
                 @Override
                 public void onChecked(int id, boolean isChecked) {
-                    Log.d(tag, "LOOOOOL ME ID: " + id + " | checked: "+ isChecked);
+                    Log.d(tag, "LOOOOOL ME ID: " + id + " | checked: " + isChecked);
                     viewModel.updateStatus(isChecked, id);
                     countAll = toDoAdapter.getList().size();
-                    long countChecked = toDoAdapter.getList().stream().filter(toDoItem -> toDoItem.getStatus()).count();
-                    if (countAll-1 == countChecked && countAll != 0 && isChecked) {
+                    countChecked = toDoAdapter.getList().stream().filter(toDoItem -> toDoItem.getStatus()).count();
+                    if (countAll - 1 == countChecked && countAll != 0 && isChecked) {
                         doneAnimation();
                     }
 
@@ -93,14 +99,17 @@ public class ToDoFragment extends Fragment {
 
             //On tap opening new dialog that allows to delete the to do
             LiveData<List<ToDoItem>> toDoItems = viewModel.getSavedToDos();
-           // MutableLiveData<List<ToDoItem>> toDoItemsMut = viewModel.getSavedToDosMut();
+            // MutableLiveData<List<ToDoItem>> toDoItemsMut = viewModel.getSavedToDosMut();
             toDoItems.observe(getViewLifecycleOwner(), list -> {
 
                 if (list == null) throw new NullPointerException();
                 Log.d(tag, "Count: " + list.size());
 
                 toDoAdapter.addList(list);
-                recyclerView.animate();
+
+                final LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(recyclerView.getContext(), R.anim.layout_animation);
+                recyclerView.setLayoutAnimation(controller);
+                recyclerView.scheduleLayoutAnimation();
 
                 toDoItems.removeObservers(getViewLifecycleOwner());
             });
@@ -124,6 +133,8 @@ public class ToDoFragment extends Fragment {
                 doneAnimation();
             });
 
+            //todoCount = view.findViewById(R.id.todocount);
+            //todoCount.setText("Your Todos: " + toDoAdapter.getList().stream().filter(toDoItem -> toDoItem.getStatus()).count() + " / " + toDoAdapter.getList().size());
 
 
         } catch (Exception e) {
@@ -134,7 +145,7 @@ public class ToDoFragment extends Fragment {
         return view;
     }
 
-    public void doneAnimation(){
+    public void doneAnimation() {
         dialogBuilder = new AlertDialog.Builder(getContext());
         dialogDone = new DialogDone(getView(), dialogBuilder);
         dialogDone.done();
@@ -145,6 +156,7 @@ public class ToDoFragment extends Fragment {
         public void addTodoItem(ToDoItem toDoItem) {
             toDoAdapter.addListItem(toDoItem);
             viewModel.saveToDo(toDoItem);
+            recyclerView.smoothScrollToPosition(0);
         }
     };
 
