@@ -35,12 +35,12 @@ import de.hdmstuttgart.meinprojekt.viewmodel.ViewModel;
 
 public class ToDoFragment extends Fragment {
 
-    private RecyclerView recyclerView;
+    public RecyclerView recyclerView;
 
-    private ToDoAdapter toDoAdapter;
+    public ToDoAdapter toDoAdapter;
     private ViewModel viewModel;
     private TextView todoCount;
-    private long countChecked;
+
 
     private DialogAdd dialogAdd;
     private DialogDelete dialogDelete;
@@ -49,6 +49,8 @@ public class ToDoFragment extends Fragment {
     private AlertDialog.Builder dialogBuilder;
     private Button checkAll;
     private int countAll;
+    private long countChecked;
+    boolean allChecked = false;
 
     private static final String tag = "ToDoFragment";
 
@@ -58,11 +60,15 @@ public class ToDoFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_todo, container, false);
 
+
+
         // showing todos
         recyclerView = view.findViewById(R.id.view_todolist);
         recyclerView.setBackground(new ColorDrawable(Color.TRANSPARENT));
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+
+        todoCount = view.findViewById(R.id.todocount);
 
         //enabling add and to do dialog
         dialogBuilder = new AlertDialog.Builder(getContext());
@@ -70,11 +76,13 @@ public class ToDoFragment extends Fragment {
         try {
             viewModel = new ViewModelProvider(this).get(ViewModel.class);
 
-            Iclick teschClickiChilli123 = new Iclick() {
+            IOnClick iOnClick = new IOnClick() {
                 @Override
                 public void onClickDelete(ToDoItem toDoItem, int position) {
+
                     viewModel.removeToDo(toDoItem);
                     toDoAdapter.removeItem(position);
+                    setCount();
                     Toast.makeText(getContext(), "Deleted successfully: " + toDoItem.getTitle(), Toast.LENGTH_SHORT).show();
                 }
 
@@ -82,23 +90,26 @@ public class ToDoFragment extends Fragment {
                 public void onChecked(int id, boolean isChecked) {
                     Log.d(tag, "LOOOOOL ME ID: " + id + " | checked: " + isChecked);
                     viewModel.updateStatus(isChecked, id);
-                    countAll = toDoAdapter.getList().size();
-                    countChecked = toDoAdapter.getList().stream().filter(toDoItem -> toDoItem.getStatus()).count();
-                    if (countAll - 1 == countChecked && countAll != 0 && isChecked) {
+                    setCount();
+
+
+
+                    if (countAll -1  == countChecked  && countAll != 0 && isChecked) {
                         doneAnimation();
+                        allChecked = true;
                     }
 
                 }
             };
 
-            toDoAdapter = new ToDoAdapter(new ArrayList<>(), teschClickiChilli123);
+            toDoAdapter = new ToDoAdapter(new ArrayList<>(), iOnClick);
 
             recyclerView.setAdapter(toDoAdapter);
-            //teschdAdapterLol.submitList(new ArrayList<>());
 
-            //On tap opening new dialog that allows to delete the to do
+            setCount();
+
             LiveData<List<ToDoItem>> toDoItems = viewModel.getSavedToDos();
-            // MutableLiveData<List<ToDoItem>> toDoItemsMut = viewModel.getSavedToDosMut();
+
             toDoItems.observe(getViewLifecycleOwner(), list -> {
 
                 if (list == null) throw new NullPointerException();
@@ -124,16 +135,17 @@ public class ToDoFragment extends Fragment {
             );
 
 
+
             checkAll = view.findViewById(R.id.checkAllButton);
 
             checkAll.setOnClickListener(v -> {
+                setCount();
                 toDoAdapter.checkAll();
                 viewModel.statusOne();
                 doneAnimation();
             });
 
-            //todoCount = view.findViewById(R.id.todocount);
-            //todoCount.setText("Your Todos: " + toDoAdapter.getList().stream().filter(toDoItem -> toDoItem.getStatus()).count() + " / " + toDoAdapter.getList().size());
+
 
 
         } catch (Exception e) {
@@ -142,6 +154,17 @@ public class ToDoFragment extends Fragment {
         }
 
         return view;
+    }
+
+
+    private void setCount(){
+        this.countAll = toDoAdapter.getList().size();
+        this.countChecked = toDoAdapter.getList().stream().filter(ToDoItem::getStatus).count();
+        long count = countChecked+1;
+        if(allChecked){
+            count = countChecked-1;
+        }
+        todoCount.setText("Your Todos: " + count + " / " + countAll);
     }
 
     public void doneAnimation() {
@@ -153,6 +176,7 @@ public class ToDoFragment extends Fragment {
     private final DialogAdd.IAddTodoItem addTodoItem = new DialogAdd.IAddTodoItem() {
         @Override
         public void addTodoItem(ToDoItem toDoItem) {
+            todoCount.setText("Your Todos: " + countChecked + " / " + countAll);
             toDoAdapter.addListItem(toDoItem);
             viewModel.saveToDo(toDoItem);
             recyclerView.smoothScrollToPosition(0);

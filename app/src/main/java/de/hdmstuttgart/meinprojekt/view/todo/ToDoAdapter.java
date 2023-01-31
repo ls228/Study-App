@@ -1,7 +1,6 @@
 package de.hdmstuttgart.meinprojekt.view.todo;
 
 
-import android.app.AlertDialog;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,7 +10,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,18 +18,16 @@ import java.util.List;
 
 import de.hdmstuttgart.meinprojekt.R;
 import de.hdmstuttgart.meinprojekt.model.ToDoItem;
-import de.hdmstuttgart.meinprojekt.view.Dialog.DialogDelete;
-import de.hdmstuttgart.meinprojekt.viewmodel.ViewModel;
 
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder> {
 
     private final List<ToDoItem> toDoItems;
-    Iclick listener;
+    IOnClick listener;
     private static final String tag = "ToDoAdapter";
     private boolean allChecked = false;
 
     //item
-    public ToDoAdapter(List<ToDoItem> todoitem, Iclick listener) {
+    public ToDoAdapter(List<ToDoItem> todoitem, IOnClick listener) {
         this.toDoItems = todoitem;
         this.listener = listener;
     }
@@ -53,6 +49,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
     }
 
     public void removeItem(int position) {
+
         toDoItems.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, getItemCount());
