@@ -1,4 +1,4 @@
-package de.hdmstuttgart.meinprojekt.view.Dialog;
+package de.hdmstuttgart.meinprojekt.view.dialog;
 
 import android.app.AlertDialog;
 import android.graphics.Color;
@@ -17,7 +17,6 @@ import java.util.Date;
 import de.hdmstuttgart.meinprojekt.R;
 import de.hdmstuttgart.meinprojekt.model.Converter;
 import de.hdmstuttgart.meinprojekt.model.ToDoItem;
-import de.hdmstuttgart.meinprojekt.viewmodel.ViewModel;
 
 public class DialogAdd {
 
@@ -47,7 +46,7 @@ public class DialogAdd {
 
     private final String errorMessage = "Please enter a valid To Do!";
     private Toast toastMessage;
-    private IAddTodoItem listener;
+    private final IAddTodoItem listener;
 
     public interface IAddTodoItem {
         void addTodoItem(ToDoItem toDoItem);
@@ -110,7 +109,6 @@ public class DialogAdd {
                         toastMessage = Toast.makeText(v.getContext(), errorMessage, Toast.LENGTH_LONG);
                         toastMessage.show();
                     } else {
-
                         listener.addTodoItem(toDoItem);
                         dialog.dismiss();
                     }

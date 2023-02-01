@@ -1,7 +1,6 @@
 package de.hdmstuttgart.meinprojekt.view.todo;
 
 
-import android.app.AlertDialog;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,9 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,18 +17,17 @@ import java.util.List;
 
 import de.hdmstuttgart.meinprojekt.R;
 import de.hdmstuttgart.meinprojekt.model.ToDoItem;
-import de.hdmstuttgart.meinprojekt.view.Dialog.DialogDelete;
-import de.hdmstuttgart.meinprojekt.viewmodel.ViewModel;
+import de.hdmstuttgart.meinprojekt.view.interfaces.IOnClick;
 
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder> {
 
     private final List<ToDoItem> toDoItems;
-    Iclick listener;
+    IOnClick listener;
     private static final String tag = "ToDoAdapter";
     private boolean allChecked = false;
 
     //item
-    public ToDoAdapter(List<ToDoItem> todoitem, Iclick listener) {
+    public ToDoAdapter(List<ToDoItem> todoitem, IOnClick listener) {
         this.toDoItems = todoitem;
         this.listener = listener;
     }
@@ -53,6 +49,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
     }
 
     public void removeItem(int position) {
+
         toDoItems.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, getItemCount());
@@ -91,23 +88,21 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
         holder.topicTextView.setText(toDoItem.getTopic());
         holder.checkBox.setOnCheckedChangeListener(null);
         holder.checkBox.setChecked(toDoItem.getStatus());
-        Log.d(tag, "Test: " + toDoItem.getTitle() + " | " + toDoItem.getStatus());
+        Log.d(tag, "Title/ Status: " + toDoItem.getTitle() + " | " + toDoItem.getStatus());
+
         holder.deleteButton.setOnClickListener(v -> listener.onClickDelete(toDoItem, position));
         int checkedColor = Color.rgb(252, 236, 207);
 
         holder.itemView.setBackgroundColor(toDoItem.getStatus() ? checkedColor : Color.WHITE);
 
-        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                listener.onChecked(id, isChecked);
-                toDoItem.setStatus(isChecked);
-                if (isChecked) {
-                    holder.itemView.setBackgroundColor(checkedColor);
-                } else {
-                    holder.itemView.setBackgroundColor(Color.WHITE);
-                    allChecked = false;
-                }
+        holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            listener.onChecked(id, isChecked);
+            toDoItem.setStatus(isChecked);
+            if (isChecked) {
+                holder.itemView.setBackgroundColor(checkedColor);
+            } else {
+                holder.itemView.setBackgroundColor(Color.WHITE);
+                allChecked = false;
             }
         });
 
@@ -122,7 +117,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
         return toDoItems.size();
     }
 
-    //getting the ids of views and checkbox
+    //getting the ids of views
     static class ToDoViewHolder extends RecyclerView.ViewHolder {
         TextView titleTextView;
         TextView dateTextView;

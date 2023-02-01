@@ -37,7 +37,7 @@
             android:layout_margin="10dp"
             android:fontFamily="sans-serif"
             android:hint="@string/title"
-            android:maxLength="18"/>
+            android:maxLength="25"/>
 
 
     </com.google.android.material.textfield.TextInputLayout>
