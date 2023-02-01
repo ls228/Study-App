@@ -1,5 +1,6 @@
 package de.hdmstuttgart.meinprojekt.view.todo;
 
+import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -48,9 +49,9 @@ public class ToDoFragment extends Fragment {
 
     private AlertDialog.Builder dialogBuilder;
     private Button checkAll;
-    private int countAll;
-    private long countChecked;
     boolean allChecked = false;
+    private int countAll;
+    private int countChecked;
 
     private static final String tag = "ToDoFragment";
 
@@ -59,7 +60,6 @@ public class ToDoFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_todo, container, false);
-
 
 
         // showing todos
@@ -82,7 +82,7 @@ public class ToDoFragment extends Fragment {
 
                     viewModel.removeToDo(toDoItem);
                     toDoAdapter.removeItem(position);
-                    setCount();
+                    //setCount();
                     Toast.makeText(getContext(), "Deleted successfully: " + toDoItem.getTitle(), Toast.LENGTH_SHORT).show();
                 }
 
@@ -90,11 +90,10 @@ public class ToDoFragment extends Fragment {
                 public void onChecked(int id, boolean isChecked) {
                     Log.d(tag, "LOOOOOL ME ID: " + id + " | checked: " + isChecked);
                     viewModel.updateStatus(isChecked, id);
-                    setCount();
+                    //setCount();
 
 
-
-                    if (countAll -1  == countChecked  && countAll != 0 && isChecked) {
+                    if (countAll - 1 == countChecked && countAll != 0 && isChecked) {
                         doneAnimation();
                         allChecked = true;
                     }
@@ -117,56 +116,64 @@ public class ToDoFragment extends Fragment {
 
                 toDoAdapter.addList(list);
 
-                final LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(recyclerView.getContext(), R.anim.layout_animation);
-                recyclerView.setLayoutAnimation(controller);
-                recyclerView.scheduleLayoutAnimation();
+                    final LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(recyclerView.getContext(), R.anim.layout_animation);
+                    recyclerView.setLayoutAnimation(controller);
+                    recyclerView.scheduleLayoutAnimation();
+
 
                 toDoItems.removeObservers(getViewLifecycleOwner());
+
             });
-
-            //fab button
-            FloatingActionButton fab = view.findViewById(R.id.fab);
-
-            //Floating button is opening add dialog on click
-            fab.setOnClickListener(v -> {
-                        dialogAdd = new DialogAdd(v, dialogBuilder, addTodoItem);
-                        dialogAdd.dialog();
-                    }
-            );
-
-
-
-            checkAll = view.findViewById(R.id.checkAllButton);
-
-            checkAll.setOnClickListener(v -> {
-                setCount();
-                toDoAdapter.checkAll();
-                viewModel.statusOne();
-                doneAnimation();
-            });
-
-
-
 
         } catch (Exception e) {
-            Log.e(tag, "onAttach: Exception: "
-                    + e.getMessage());
+            Log.e(tag,  "Error observing LiveData: " + e.getMessage());
         }
+
+        //fab button
+        FloatingActionButton fab = view.findViewById(R.id.fab);
+
+        //Floating button is opening add dialog on click
+        fab.setOnClickListener(v -> {
+                    dialogAdd = new DialogAdd(v, dialogBuilder, addTodoItem);
+                    dialogAdd.dialog();
+                }
+        );
+
+        //To check all todos at once
+        checkAll = view.findViewById(R.id.checkAllButton);
+
+        checkAll.setOnClickListener(v -> {
+            toDoAdapter.checkAll();
+            viewModel.statusOne();
+            doneAnimation();
+        });
+
 
         return view;
     }
 
+    //this Method is used to update the current count on the top
+    private void setCount() {
+        try {
+            viewModel.getSavedToDos().observe(getViewLifecycleOwner(), list -> {
+                if (list == null) throw new NullPointerException();
+                this.countAll = list.size();
+                Log.d(tag, "all todos: " + countAll);
 
-    private void setCount(){
-        this.countAll = toDoAdapter.getList().size();
-        this.countChecked = toDoAdapter.getList().stream().filter(ToDoItem::getStatus).count();
-        long count = countChecked+1;
-        if(allChecked){
-            count = countChecked-1;
+                this.countChecked = (int) list.stream().filter(ToDoItem::getStatus).count();
+                Log.d(tag, "checked: " + countChecked);
+
+                todoCount.setText("Your Todos: " + countChecked + " / " + countAll);
+
+                viewModel.getSavedToDos().removeObservers(getViewLifecycleOwner());
+            });
+        } catch (Exception e) {
+            Log.d(tag, "Error observing LiveData: " + e.getMessage());
         }
-        todoCount.setText("Your Todos: " + count + " / " + countAll);
+
     }
 
+    //this Animation shows a done icon
     public void doneAnimation() {
         dialogBuilder = new AlertDialog.Builder(getContext());
         dialogDone = new DialogDone(getView(), dialogBuilder);
@@ -176,7 +183,6 @@ public class ToDoFragment extends Fragment {
     private final DialogAdd.IAddTodoItem addTodoItem = new DialogAdd.IAddTodoItem() {
         @Override
         public void addTodoItem(ToDoItem toDoItem) {
-            todoCount.setText("Your Todos: " + countChecked + " / " + countAll);
             toDoAdapter.addListItem(toDoItem);
             viewModel.saveToDo(toDoItem);
             recyclerView.smoothScrollToPosition(0);
