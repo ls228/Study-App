@@ -41,6 +41,7 @@ import de.hdmstuttgart.meinprojekt.view.todo.ToDoFragment;
     @RunWith(AndroidJUnit4.class)
     public class ToDoFragmentEspressoTest {
 
+    private ToDoFragment toDoFragment = new ToDoFragment();
 
         @Rule
         public ActivityScenarioRule<MainActivity> activityScenarioRule
@@ -115,6 +116,14 @@ import de.hdmstuttgart.meinprojekt.view.todo.ToDoFragment;
             }
 
         }
+/*
+    @Test
+    public void countItems() {
+        int expectedCount = 2;
+        int actualCount = toDoFragment.toDoAdapter.getItemCount();
+
+        assertThat(actualCount, is(expectedCount));
+    }*/
 
     public static Matcher<View> hasChildCount(final int count) {
         return new BoundedMatcher<View, RecyclerView>(RecyclerView.class) {

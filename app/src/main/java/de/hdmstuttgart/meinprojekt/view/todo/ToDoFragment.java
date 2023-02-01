@@ -44,8 +44,8 @@ public class ToDoFragment extends Fragment {
     private AlertDialog.Builder dialogBuilder;
 
     public boolean allChecked = false;
-    private int countAll;
-    private int countChecked;
+    private int countAll = 0;
+    private int countChecked = 0;
 
     private static final String tag = "ToDoFragment";
 
@@ -73,7 +73,7 @@ public class ToDoFragment extends Fragment {
             IOnClick iOnClick = new IOnClick() {
                 @Override
                 public void onClickDelete(ToDoItem toDoItem, int position) {
-
+                    //setCount();
                     viewModel.removeToDo(toDoItem);
                     toDoAdapter.removeItem(position);
                     Toast.makeText(getContext(), "Deleted successfully: " + toDoItem.getTitle(), Toast.LENGTH_SHORT).show();
@@ -155,7 +155,8 @@ public class ToDoFragment extends Fragment {
 
                 todoCount.setText("Your Todos: " + countChecked + " / " + countAll);
 
-                viewModel.getSavedToDos().removeObservers(getViewLifecycleOwner());
+
+                //viewModel.getSavedToDos().removeObservers(getViewLifecycleOwner());
             });
         } catch (Exception e) {
             Log.d(tag, "Error observing LiveData: " + e.getMessage());

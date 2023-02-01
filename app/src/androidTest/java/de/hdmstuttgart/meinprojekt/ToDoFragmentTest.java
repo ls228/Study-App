@@ -24,7 +24,7 @@ public class ToDoFragmentTest {
 
     @Test
     public void countItems() {
-        int expectedCount = 2;
+        int expectedCount = 26;
         int actualCount = toDoFragment.toDoAdapter.getItemCount();
 
         assertThat(actualCount, is(expectedCount));
