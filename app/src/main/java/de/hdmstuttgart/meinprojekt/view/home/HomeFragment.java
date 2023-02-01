@@ -18,7 +18,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -26,11 +25,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import java.util.Locale;
-
 import de.hdmstuttgart.meinprojekt.R;
-import de.hdmstuttgart.meinprojekt.model.ToDoItem;
-import de.hdmstuttgart.meinprojekt.view.Dialog.DialogDone;
+import de.hdmstuttgart.meinprojekt.view.dialog.DialogDone;
+import de.hdmstuttgart.meinprojekt.view.interfaces.IOnFinish;
 import de.hdmstuttgart.meinprojekt.viewmodel.ViewModel;
 
 public class HomeFragment extends Fragment {
@@ -190,7 +187,7 @@ public class HomeFragment extends Fragment {
 
             });
         } catch (Exception e) {
-            Log.d("ToDoCounter", "Thrown exception: " + e.getMessage());
+            Log.d(tag, "Thrown exception: " + e.getMessage());
         }
     }
 

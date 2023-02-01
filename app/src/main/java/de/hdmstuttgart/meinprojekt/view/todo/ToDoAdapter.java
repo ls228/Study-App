@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +17,7 @@ import java.util.List;
 
 import de.hdmstuttgart.meinprojekt.R;
 import de.hdmstuttgart.meinprojekt.model.ToDoItem;
+import de.hdmstuttgart.meinprojekt.view.interfaces.IOnClick;
 
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder> {
 
@@ -88,23 +88,21 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
         holder.topicTextView.setText(toDoItem.getTopic());
         holder.checkBox.setOnCheckedChangeListener(null);
         holder.checkBox.setChecked(toDoItem.getStatus());
-        Log.d(tag, "Test: " + toDoItem.getTitle() + " | " + toDoItem.getStatus());
+        Log.d(tag, "Title/ Status: " + toDoItem.getTitle() + " | " + toDoItem.getStatus());
+
         holder.deleteButton.setOnClickListener(v -> listener.onClickDelete(toDoItem, position));
         int checkedColor = Color.rgb(252, 236, 207);
 
         holder.itemView.setBackgroundColor(toDoItem.getStatus() ? checkedColor : Color.WHITE);
 
-        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                listener.onChecked(id, isChecked);
-                toDoItem.setStatus(isChecked);
-                if (isChecked) {
-                    holder.itemView.setBackgroundColor(checkedColor);
-                } else {
-                    holder.itemView.setBackgroundColor(Color.WHITE);
-                    allChecked = false;
-                }
+        holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            listener.onChecked(id, isChecked);
+            toDoItem.setStatus(isChecked);
+            if (isChecked) {
+                holder.itemView.setBackgroundColor(checkedColor);
+            } else {
+                holder.itemView.setBackgroundColor(Color.WHITE);
+                allChecked = false;
             }
         });
 
@@ -119,7 +117,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
         return toDoItems.size();
     }
 
-    //getting the ids of views and checkbox
+    //getting the ids of views
     static class ToDoViewHolder extends RecyclerView.ViewHolder {
         TextView titleTextView;
         TextView dateTextView;

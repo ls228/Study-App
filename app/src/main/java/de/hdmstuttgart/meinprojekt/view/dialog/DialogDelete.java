@@ -1,7 +1,7 @@
-package de.hdmstuttgart.meinprojekt.view.Dialog;
+package de.hdmstuttgart.meinprojekt.view.dialog;
 
-import static de.hdmstuttgart.meinprojekt.view.Dialog.DialogAdd.dialogOpen;
-import static de.hdmstuttgart.meinprojekt.view.Dialog.DialogAdd.dialogClosed;
+import static de.hdmstuttgart.meinprojekt.view.dialog.DialogAdd.dialogOpen;
+import static de.hdmstuttgart.meinprojekt.view.dialog.DialogAdd.dialogClosed;
 
 import android.app.AlertDialog;
 import android.graphics.Color;

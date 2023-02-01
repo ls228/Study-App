@@ -10,6 +10,7 @@ import android.widget.TextView;
 import java.util.Locale;
 
 import de.hdmstuttgart.meinprojekt.R;
+import de.hdmstuttgart.meinprojekt.view.interfaces.IOnFinish;
 
 public class StudyTimer {
 
