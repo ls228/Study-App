@@ -46,8 +46,8 @@ public class ToDoFragment extends Fragment {
     private boolean justSwappedToFragment = true;
 
     public boolean allChecked = false;
-    private int countAll = 0;
-    private int countChecked = 0;
+    public int countAll;
+    private int countChecked;
 
     private static final String tag = "ToDoFragment";
 
@@ -81,7 +81,7 @@ public class ToDoFragment extends Fragment {
 
                 @Override
                 public void onChecked(int id, boolean isChecked) {
-                    Log.d(tag, "LOOOOOL ME ID: " + id + " | checked: " + isChecked);
+                    Log.d(tag, "ID: " + id + " | checked: " + isChecked);
                     viewModel.updateStatus(isChecked, id);
                     allChecked = true;
                     }
@@ -92,7 +92,6 @@ public class ToDoFragment extends Fragment {
             toDoAdapter.submitList(new ArrayList<>());
             recyclerView.setAdapter(toDoAdapter);
             recyclerView.setItemAnimator(null);
-
 
             setCount();
 

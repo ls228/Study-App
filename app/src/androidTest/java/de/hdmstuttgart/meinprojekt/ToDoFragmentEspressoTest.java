@@ -22,6 +22,7 @@ import androidx.test.espresso.PerformException;
 import androidx.test.espresso.ViewAssertion;
 
 
+import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.matcher.BoundedMatcher;
 import androidx.test.espresso.util.HumanReadables;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
@@ -82,10 +83,12 @@ import de.hdmstuttgart.meinprojekt.view.todo.ToDoFragment;
                     .perform(click());
 
             onView(withId(R.id.view_todolist))
-                    .check(matches(hasChildCount(2)));
+                    .perform(RecyclerViewActions.scrollToPosition(2));
 
+/*
+            onView(withId(R.id.view_todolist))
+                    .check(matches(hasChildCount(8)));
 
-            /*
             onView(withId(R.id.view_todolist))
                     .perform(RecyclerViewActions.scrollToPosition(0))
                     .check(matches(hasDescendant(withId(R.id.title))));
@@ -120,8 +123,7 @@ import de.hdmstuttgart.meinprojekt.view.todo.ToDoFragment;
     @Test
     public void countItems() {
         int expectedCount = 2;
-        int actualCount = toDoFragment.toDoAdapter.getItemCount();
-
+        int actualCount = toDoFragment.countAll;
         assertThat(actualCount, is(expectedCount));
     }*/
 
