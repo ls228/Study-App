@@ -137,7 +137,14 @@ public class ToDoFragment extends Fragment {
 
         checkAll.setOnClickListener(v -> {
             viewModel.statusOne();
-            doneAnimation();
+            if(countAll==countChecked){
+                Toast message = Toast.makeText(v.getContext(), "All To-Dos are already checked", Toast.LENGTH_LONG);
+                message.show();
+                Log.d(tag,allChecked + " check all clicked, all checked");
+            }else{
+                doneAnimation();
+            }
+
         });
 
         return view;
@@ -154,7 +161,7 @@ public class ToDoFragment extends Fragment {
                 this.countChecked = (int) list.stream().filter(ToDoItem::getStatus).count();
                 Log.d(tag, "checked: " + countChecked);
 
-                todoCount.setText("Your Todos: " + countChecked + " / " + countAll);
+                todoCount.setText("Your To-Dos: " + countChecked + " / " + countAll);
 
             });
         } catch (Exception e) {
@@ -177,7 +184,7 @@ public class ToDoFragment extends Fragment {
         }
     };
 
-    private boolean checkAllDone(List<ToDoItem> list) {
+    public boolean checkAllDone(List<ToDoItem> list) {
         countAll = list.size();
         countChecked = (int) list.stream().filter(ToDoItem::getStatus).count();
         return countAll == countChecked && countAll != 0 && allChecked;
