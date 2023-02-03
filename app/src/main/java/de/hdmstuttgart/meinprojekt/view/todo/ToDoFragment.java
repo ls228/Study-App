@@ -38,7 +38,7 @@ public class ToDoFragment extends Fragment {
     public RecyclerView recyclerView;
 
     //public ToDoAdapter toDoAdapter;
-    public ToDoAdapterV2 toDoAdapter;
+    public ToDoAdapter toDoAdapter;
     private ViewModel viewModel;
     private TextView todoCount;
     private DialogAdd dialogAdd;
@@ -88,7 +88,7 @@ public class ToDoFragment extends Fragment {
 
             };
 
-            toDoAdapter = new ToDoAdapterV2(new ToDoAdapterV2.TodoDiff(), iOnClick);
+            toDoAdapter = new ToDoAdapter(new ToDoAdapter.TodoDiff(), iOnClick);
             toDoAdapter.submitList(new ArrayList<>());
             recyclerView.setAdapter(toDoAdapter);
             recyclerView.setItemAnimator(null);
