@@ -42,7 +42,7 @@ import de.hdmstuttgart.meinprojekt.view.todo.ToDoFragment;
     @RunWith(AndroidJUnit4.class)
     public class ToDoFragmentEspressoTest {
 
-    private ToDoFragment toDoFragment = new ToDoFragment();
+    //private ToDoFragment toDoFragment = new ToDoFragment();
 
         @Rule
         public ActivityScenarioRule<MainActivity> activityScenarioRule
