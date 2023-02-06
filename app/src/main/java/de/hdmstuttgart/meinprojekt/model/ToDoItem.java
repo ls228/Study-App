@@ -48,10 +48,6 @@ public class ToDoItem {
         return status;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
     public int getId() {
         return uid;
     }

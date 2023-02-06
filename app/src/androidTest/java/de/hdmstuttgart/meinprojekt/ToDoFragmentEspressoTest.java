@@ -4,13 +4,11 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.core.internal.deps.guava.base.Preconditions.checkNotNull;
-import static androidx.test.espresso.matcher.ViewMatchers.hasChildCount;
-import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
+
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
+
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static java.util.regex.Pattern.matches;
+
 
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,8 +39,6 @@ import de.hdmstuttgart.meinprojekt.view.todo.ToDoFragment;
 @LargeTest
     @RunWith(AndroidJUnit4.class)
     public class ToDoFragmentEspressoTest {
-
-    //private ToDoFragment toDoFragment = new ToDoFragment();
 
         @Rule
         public ActivityScenarioRule<MainActivity> activityScenarioRule

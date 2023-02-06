@@ -36,8 +36,6 @@ import de.hdmstuttgart.meinprojekt.viewmodel.ViewModel;
 public class ToDoFragment extends Fragment {
 
     public RecyclerView recyclerView;
-
-    //public ToDoAdapter toDoAdapter;
     public ToDoAdapter toDoAdapter;
     private ViewModel viewModel;
     private TextView todoCount;
