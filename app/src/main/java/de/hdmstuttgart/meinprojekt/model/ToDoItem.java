@@ -15,7 +15,7 @@ public class ToDoItem {
     @ColumnInfo(name = "topic")
     private final String topic;
     @ColumnInfo(name = "status")
-    private boolean status;
+    private final boolean status;
     @PrimaryKey(autoGenerate = true)
     public int uid;
 

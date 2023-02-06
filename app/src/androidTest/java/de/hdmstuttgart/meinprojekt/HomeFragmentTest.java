@@ -12,7 +12,7 @@ import de.hdmstuttgart.meinprojekt.view.home.HomeFragment;
 @RunWith(AndroidJUnit4.class)
 public class HomeFragmentTest {
 
-    private HomeFragment homeFragment = new HomeFragment();
+    private final HomeFragment homeFragment = new HomeFragment();
 
     @Test
     public void testCalculateTime() {

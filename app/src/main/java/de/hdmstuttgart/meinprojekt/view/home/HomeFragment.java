@@ -91,7 +91,7 @@ public class HomeFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(ViewModel.class);
 
         bButtonStart.setOnClickListener(v -> {
-            if(!pauseBeforeStart){
+            if (!pauseBeforeStart) {
                 mhour = studyTimer.hourPicker.getValue();
                 mMinute = studyTimer.minutePicker.getValue();
                 Log.d(tag, "Hour: " + mhour + " Minute: " + mMinute);
@@ -102,7 +102,8 @@ public class HomeFragment extends Fragment {
                 studyTimer.mProgressBar.setMax(newTime);
 
 
-            Log.d(tag, "time left in millis: " + mTimeLeftInMillis);}
+                Log.d(tag, "time left in millis: " + mTimeLeftInMillis);
+            }
 
             if (mTimeLeftInMillis == 0) {
                 Toast toastMessage = Toast.makeText(requireContext(), "Please enter a positive number!", Toast.LENGTH_LONG);

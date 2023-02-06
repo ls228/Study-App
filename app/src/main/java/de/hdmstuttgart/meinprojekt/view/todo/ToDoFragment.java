@@ -82,7 +82,7 @@ public class ToDoFragment extends Fragment {
                     Log.d(tag, "ID: " + id + " | checked: " + isChecked);
                     viewModel.updateStatus(isChecked, id);
                     allChecked = true;
-                    }
+                }
 
             };
 
@@ -117,7 +117,7 @@ public class ToDoFragment extends Fragment {
 
 
         } catch (Exception e) {
-            Log.e(tag,  "Thrown exception: " + e.getMessage());
+            Log.e(tag, "Thrown exception: " + e.getMessage());
         }
 
         //fab button
@@ -135,11 +135,11 @@ public class ToDoFragment extends Fragment {
 
         checkAll.setOnClickListener(v -> {
             viewModel.statusOne();
-            if(countAll==countChecked){
+            if (countAll == countChecked) {
                 Toast message = Toast.makeText(v.getContext(), "All To-Dos are already checked", Toast.LENGTH_LONG);
                 message.show();
-                Log.d(tag,allChecked + " check all clicked, all checked");
-            }else{
+                Log.d(tag, allChecked + " check all clicked, all checked");
+            } else {
                 doneAnimation();
             }
 
