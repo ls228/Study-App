@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -37,6 +38,10 @@ public class HomeFragment extends Fragment {
     Button bButtonStart;
     Button bButtonPause;
     Button bButtonReset;
+
+    private TextView hourLetter;
+    private TextView minuteLetter;
+
     private boolean pauseBeforeStart = false;
 
     private long mStartTimeInMillis;
@@ -73,6 +78,8 @@ public class HomeFragment extends Fragment {
             HomeFragment.this.updateWatchInterface(RESET);
         };
 
+        hourLetter = view.findViewById(R.id.h);
+        minuteLetter = view.findViewById(R.id.m);
 
         studyTimer = new StudyTimer(view, onFinish);
 
@@ -214,6 +221,8 @@ public class HomeFragment extends Fragment {
                 studyTimer.minutePicker.setVisibility(View.INVISIBLE);
                 bButtonReset.setVisibility(View.INVISIBLE);
                 studyTimer.mCountDownText.setVisibility(View.VISIBLE);
+                minuteLetter.setVisibility(View.INVISIBLE);
+                hourLetter.setVisibility(View.INVISIBLE);
                 break;
             case PAUSE:
                 System.out.println("Pause Interface");
@@ -223,6 +232,8 @@ public class HomeFragment extends Fragment {
                 studyTimer.mCountDownText.setVisibility(View.VISIBLE);
                 studyTimer.minutePicker.setVisibility(View.INVISIBLE);
                 studyTimer.hourPicker.setVisibility(View.INVISIBLE);
+                minuteLetter.setVisibility(View.INVISIBLE);
+                hourLetter.setVisibility(View.INVISIBLE);
                 break;
             case RESET:
                 System.out.println("Reset Interface");
@@ -232,6 +243,8 @@ public class HomeFragment extends Fragment {
                 bButtonStart.setVisibility(View.VISIBLE);
                 bButtonPause.setVisibility(View.INVISIBLE);
                 bButtonReset.setVisibility(View.INVISIBLE);
+                minuteLetter.setVisibility(View.VISIBLE);
+                hourLetter.setVisibility(View.VISIBLE);
                 break;
         }
     }
