@@ -51,7 +51,7 @@ public class HomeFragment extends Fragment {
     private MediaPlayer media;
 
     private int newTime;
-    private int mhour = 0;
+    private int mHour = 0;
     private int mMinute = 0;
     private static final String tag = "HomeFragment";
 
@@ -71,7 +71,7 @@ public class HomeFragment extends Fragment {
         media = new MediaPlayer();
         media = MediaPlayer.create(this.getContext(), R.raw.ringtone);
 
-        //Opens interface to show done animation and reset the timer, to call it from different classes
+        //Opens interface to show done animation and reset the timer
         IOnFinish onFinish = () -> {
             media.start();
             doneAnimation();
@@ -92,10 +92,10 @@ public class HomeFragment extends Fragment {
 
         bButtonStart.setOnClickListener(v -> {
             if (!pauseBeforeStart) {
-                mhour = studyTimer.hourPicker.getValue();
+                mHour = studyTimer.hourPicker.getValue();
                 mMinute = studyTimer.minutePicker.getValue();
-                Log.d(tag, "Hour: " + mhour + " Minute: " + mMinute);
-                newTime = (int) calculateTime(mMinute, mhour);
+                Log.d(tag, "Hour: " + mHour + " Minute: " + mMinute);
+                newTime = (int) calculateTime(mMinute, mHour);
 
                 mTimeLeftInMillis = newTime;
                 Log.d(tag, "calculated time: " + newTime);
@@ -106,7 +106,7 @@ public class HomeFragment extends Fragment {
             }
 
             if (mTimeLeftInMillis == 0) {
-                Toast toastMessage = Toast.makeText(requireContext(), "Please enter a positive number!", Toast.LENGTH_LONG);
+                Toast toastMessage = Toast.makeText(requireContext(), "Please enter a positive number!", Toast.LENGTH_SHORT);
                 toastMessage.show();
             } else {
                 updateWatchInterface(RUNNING);
@@ -117,7 +117,7 @@ public class HomeFragment extends Fragment {
 
         bButtonReset.setOnClickListener(v -> {
             pauseBeforeStart = false;
-            mhour = 0;
+            mHour = 0;
             mMinute = 0;
             studyTimer.resetTimer();
             updateWatchInterface(RESET);
@@ -212,10 +212,8 @@ public class HomeFragment extends Fragment {
      * @param status Running, Reset or Pause
      */
     void updateWatchInterface(TimerStatus status) {
-        System.out.println("switch");
         switch (status) {
             case RUNNING:
-                System.out.println("Running Interface");
                 bButtonStart.setVisibility(View.INVISIBLE);
                 bButtonPause.setVisibility(View.VISIBLE);
                 studyTimer.hourPicker.setVisibility(View.INVISIBLE);
@@ -226,7 +224,6 @@ public class HomeFragment extends Fragment {
                 hourLetter.setVisibility(View.INVISIBLE);
                 break;
             case PAUSE:
-                System.out.println("Pause Interface");
                 bButtonStart.setVisibility(View.VISIBLE);
                 bButtonPause.setVisibility(View.INVISIBLE);
                 bButtonReset.setVisibility(View.VISIBLE);
@@ -237,7 +234,6 @@ public class HomeFragment extends Fragment {
                 hourLetter.setVisibility(View.INVISIBLE);
                 break;
             case RESET:
-                System.out.println("Reset Interface");
                 studyTimer.hourPicker.setVisibility(View.VISIBLE);
                 studyTimer.minutePicker.setVisibility(View.VISIBLE);
                 studyTimer.mCountDownText.setVisibility(View.INVISIBLE);

@@ -19,9 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
         de.hdmstuttgart.meinprojekt.databinding.ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+        
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_todo)
                 .build();

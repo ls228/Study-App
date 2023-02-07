@@ -16,9 +16,9 @@ public class CheckAllDoneTest {
 
     ToDoFragment toDoFragment = new ToDoFragment();
 
-    private final ToDoItem item1 = new ToDoItem("Learn IT-Security","02.02.2023","Chapter 1 and 2",true);
-    private final ToDoItem item2 = new ToDoItem("Learn IT-Security","02.02.2023","Chapter 1 and 2",false);
-    private final ToDoItem item3 = new ToDoItem("Learn IT-Security","02.02.2023","Chapter 1 and 2",true);
+    private final ToDoItem item1 = new ToDoItem("Learn IT-Security","02.02.2023","All summaries",true);
+    private final ToDoItem item2 = new ToDoItem("Learn Web Development","02.03.2023","Chapter 1 and 2",false);
+    private final ToDoItem item3 = new ToDoItem("Learn IT-Security","05.02.2023","Chapter 1 and 5",true);
 
     @Test
     public void testCheckAllDone_AllChecked() {

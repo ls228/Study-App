@@ -40,6 +40,7 @@ import org.junit.runner.RunWith;
             onView(withId(R.id.navigation_todo))
                     .perform(click());
 
+            //first input
             onView(withId(R.id.fab))
                     .perform(click());
 
@@ -52,7 +53,6 @@ import org.junit.runner.RunWith;
 
 
             //second input
-
             onView(withId(R.id.fab))
                     .perform(click());
 

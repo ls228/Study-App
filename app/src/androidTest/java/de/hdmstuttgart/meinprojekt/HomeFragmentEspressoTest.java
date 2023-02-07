@@ -97,8 +97,6 @@ import org.junit.runner.RunWith;
                 e.printStackTrace();
             }
 
-            //onView(withId(R.id.text_view_countdown)).check(matches(withText("1:09:55")));
-
             onView(withId(R.id.button_pause))
                     .perform(click());
 

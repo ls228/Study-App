@@ -20,22 +20,21 @@ import de.hdmstuttgart.meinprojekt.model.ToDoItem;
 
 public class DialogAdd {
 
-    public static final String dialogClosed = "onClick: closing dialog";
-    public static final String dialogOpen = "onClick: opening Edit dialog success";
-    private static final String input = "onClick: capturing input";
-    private final String tag = "DialogAdd";
     /**
      * This class is used when the users wants to add a new To do to the list
      * You can add title, a description and add or close dialog
      */
 
+    public static final String dialogClosed = "onClick: closing dialog";
+    public static final String dialogOpen = "onClick: opening Edit dialog success";
+    private static final String input = "onClick: capturing input";
+    private final String tag = "DialogAdd";
     private String inputTitle = "";
     private String inputTopic = "";
     private String currentTime;
     private Date time;
 
     private final View v;
-    //private final ViewModel viewModel;
 
     private ToDoItem toDoItem;
     private final AlertDialog.Builder dialogBuilder;
@@ -106,7 +105,7 @@ public class DialogAdd {
 
                     if (toDoItem.getTitle().equals("")) {
                         //if input has no title toast message will pop up
-                        toastMessage = Toast.makeText(v.getContext(), errorMessage, Toast.LENGTH_LONG);
+                        toastMessage = Toast.makeText(v.getContext(), errorMessage, Toast.LENGTH_SHORT);
                         toastMessage.show();
                     } else {
                         listener.addTodoItem(toDoItem);

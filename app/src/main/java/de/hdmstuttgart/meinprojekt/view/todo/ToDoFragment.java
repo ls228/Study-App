@@ -74,6 +74,8 @@ public class ToDoFragment extends Fragment {
                 @Override
                 public void onClickDelete(ToDoItem toDoItem, int position) {
                     viewModel.removeToDo(toDoItem);
+                    Toast toastMessage = Toast.makeText(requireContext(), "Item: "+toDoItem.getTitle() + " has been deleted!" , Toast.LENGTH_SHORT);
+                    toastMessage.show();
                     allChecked = false;
                 }
 
@@ -136,7 +138,7 @@ public class ToDoFragment extends Fragment {
         checkAll.setOnClickListener(v -> {
             viewModel.statusOne();
             if (countAll == countChecked) {
-                Toast message = Toast.makeText(v.getContext(), "All To-Dos are already checked", Toast.LENGTH_LONG);
+                Toast message = Toast.makeText(v.getContext(), "All To-Dos are already checked", Toast.LENGTH_SHORT);
                 message.show();
                 Log.d(tag, allChecked + " check all clicked, all checked");
             } else {

@@ -76,7 +76,7 @@ public class ToDoAdapter extends ListAdapter<ToDoItem, ToDoAdapter.ToDoViewHolde
         CheckBox checkBox;
         Button deleteButton;
 
-        //getting acces to the views by their id
+        //getting access to the views by their id
         public ToDoViewHolder(@NonNull View itemView) {
             super(itemView);
             titleTextView = itemView.findViewById(R.id.title);
