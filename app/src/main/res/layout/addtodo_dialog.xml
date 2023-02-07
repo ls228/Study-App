@@ -3,7 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="280dp"
+    android:layout_margin="10dp"
+    android:padding="10dp"
+    android:background="@drawable/round_dialog">
 
     <TextView
         android:id="@+id/titleheading"
@@ -11,14 +14,15 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:fontFamily="sans-serif"
-        android:text="Title:"
-        android:textSize="18dp"
+        android:text="@string/Title"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/titleinput"
-        android:layout_width="409dp"
+        android:id="@+id/til1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleheading"
@@ -27,10 +31,13 @@
         >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/titleinput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:fontFamily="sans-serif"
-            android:hint="title" />
+            android:hint="@string/title"
+            android:maxLength="25"/>
 
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -41,35 +48,62 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:fontFamily="sans-serif"
-        android:text="Topic:"
-        android:textSize="18dp"
+        android:text="@string/Topic"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleinput" />
+        app:layout_constraintTop_toBottomOf="@+id/til1" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout"
-        android:layout_width="409dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topicheading"
         app:layout_constraintVertical_bias="0.0">
-        >
+
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/textInputEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
-            android:hint="description" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="112dp"
-            android:layout_height="wrap_content"
-            android:text="Add"
-            />
-
+            android:layout_margin="10dp"
+            android:hint="@string/description"
+            android:maxLength="38"/>
     </com.google.android.material.textfield.TextInputLayout>
+
+
+    <Button
+        android:id="@+id/btnadd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/add"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_editor_absoluteX="0dp"
+        android:background="@drawable/round_buttons"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <Button
+        android:id="@+id/btncancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/cancel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/round_buttons"
+        android:bottomRightRadius="10dp"
+        android:bottomLeftRadius="10dp"
+        android:topLeftRadius="10dp"
+        android:topRightRadius="10dp"
+        />
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

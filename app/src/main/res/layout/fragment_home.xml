@@ -4,39 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.HomeFragment">
+    android:animateLayoutChanges="true"
+    tools:context=".view.home.HomeFragment">
 
     <TextView
-        android:id="@+id/text_home"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/edit_text_input"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/text_view_countdown"
-        android:layout_centerHorizontal="true"
-        android:hint="Minutes"
-        android:inputType="number"
-        android:maxLength="4" />
-
-    <Button
-        android:id="@+id/button_set"
+        android:id="@+id/h"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/edit_text_input"
-        android:layout_toEndOf="@+id/edit_text_input"
-        android:text="Set" />
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="h"
+    />
+
+    <TextView
+        android:id="@+id/m"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="m"
+        android:layout_marginStart="280dp"
+        android:layout_centerVertical="true"
+        />
 
     <TextView
         android:id="@+id/text_view_countdown"
@@ -44,27 +31,130 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="00:00"
+        android:text="@string/defaulttime"
         android:textColor="@android:color/black"
-        android:textSize="60sp" />
+        android:textSize="60sp"
+        android:visibility="invisible" />
 
     <Button
-        android:id="@+id/button_start_pause"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/button_start"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_below="@+id/text_view_countdown"
         android:layout_centerHorizontal="true"
-        android:text="start" />
+        android:layout_centerVertical="true"
+        android:layout_marginTop="80dp"
+        android:width="30dp"
+        android:height="30dp"
+        android:background="@drawable/ic_baseline_play_circle_24" />
+
+
+    <Button
+        android:id="@+id/button_pause"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_below="@+id/text_view_countdown"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="80dp"
+        android:width="30dp"
+        android:height="30dp"
+        android:background="@drawable/ic_baseline_pause_circle_24"
+        android:visibility="invisible"/>
 
     <Button
         android:id="@+id/button_reset"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_below="@+id/text_view_countdown"
-        android:layout_marginStart="11dp"
-        android:layout_toEndOf="@+id/button_start_pause"
-        android:text="reset"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="81dp"
+        android:layout_marginStart="90dp"
+        android:background="@drawable/ic_baseline_stop_circle_24"
         android:visibility="invisible"
         tools:visibility="visible" />
+
+
+    <NumberPicker
+        android:id="@+id/number_picker_h"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="129dp"
+        android:layout_marginEnd="210dp" />
+
+    <NumberPicker
+        android:id="@+id/number_picker_min"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="129dp" />
+
+
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/text_view_countdown"
+        android:layout_alignParentEnd="true"
+        android:layout_centerInParent="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="90dp">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="10dp"
+            android:src="@drawable/ic_baseline_playlist_add_check_24_beige"
+            app:layout_anchor="@+id/progress_bar_count_todo"
+            app:layout_anchorGravity="center"
+            android:contentDescription="@string/todo" />
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progress_bar_count_todo"
+            android:layout_width="409dp"
+            android:layout_height="188dp"
+            app:indicatorDirectionCircular="clockwise"
+            app:indicatorSize="150dp"
+
+            app:trackColor="@color/grey2"
+            app:trackCornerRadius="10dp"
+            app:trackThickness="15dp" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/text_view_countdown"
+        android:layout_alignParentStart="true"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="90dp">
+
+
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progress_bar"
+        android:layout_width="409dp"
+        android:layout_height="188dp"
+        app:indicatorDirectionCircular="clockwise"
+        app:indicatorSize="150dp"
+        app:trackColor="@color/grey2"
+        app:trackCornerRadius="10dp"
+        app:trackThickness="15dp" />
+
+    <ImageView
+        android:id="@+id/ivIconTimer"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:padding="10dp"
+        app:layout_anchor="@+id/progress_bar"
+        app:layout_anchorGravity="center"
+        android:src="@drawable/ic_outline_timer_24"
+        android:contentDescription="@string/todo" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </RelativeLayout>
