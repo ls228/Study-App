@@ -1,6 +1,6 @@
 # StudyApp
-* *Lisa Salzer ls228* 
-* *Lisa Kohls lk210*
+* *Lisa Salzer*
+* *Lisa Kohls*
 
 ## Categories
 * Data Storage
