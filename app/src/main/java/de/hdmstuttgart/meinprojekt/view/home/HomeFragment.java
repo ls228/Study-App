@@ -43,6 +43,7 @@ public class HomeFragment extends Fragment {
     private TextView minuteLetter;
 
     private boolean pauseBeforeStart = false;
+    //private boolean pauseOnFragmentChange = false;
 
     private long mStartTimeInMillis;
 
@@ -51,8 +52,8 @@ public class HomeFragment extends Fragment {
     private MediaPlayer media;
 
     private int newTime;
-    private int mHour = 0;
-    private int mMinute = 0;
+    private int mHour;
+    private int mMinute;
     private static final String tag = "HomeFragment";
 
 
@@ -127,6 +128,7 @@ public class HomeFragment extends Fragment {
             pauseBeforeStart = true;
             studyTimer.pauseTimer();
             updateWatchInterface(PAUSE);
+
         });
 
         return view;
@@ -268,17 +270,21 @@ public class HomeFragment extends Fragment {
         mTimeLeftInMillis = prefs.getLong("millisLeft", mStartTimeInMillis);
         mTimerRunning = prefs.getBoolean("timerRunning", false);
 
+
         studyTimer.mProgressBar.setMax(newTime);
         int progress = saveTimerProgressBar(newTime);
         studyTimer.mProgressBar.setProgress(progress);
 
         progressToDos();
 
-        studyTimer.updateCountDownText();
+        //studyTimer.updateCountDownText();
 
-        if (!mTimerRunning && mTimeLeftInMillis > 0) {
+        if (pauseBeforeStart) {
+
             updateWatchInterface(PAUSE);
-
+            String timeLeft = studyTimer.updateCountDownText();
+            studyTimer.mCountDownText.setText(timeLeft);
+            System.out.println("timer läuft nicht mehr aber es wurde pausiert vor fragment wechsel");
         } else {
             updateWatchInterface(RESET);
         }
@@ -290,6 +296,7 @@ public class HomeFragment extends Fragment {
             if (mTimeLeftInMillis < 0) {
                 mTimeLeftInMillis = 0;
                 mTimerRunning = false;
+                studyTimer.mProgressBar.setProgress(0);
                 studyTimer.updateCountDownText();
                 updateWatchInterface(RESET);
             } else {
@@ -297,6 +304,7 @@ public class HomeFragment extends Fragment {
                 updateWatchInterface(RUNNING);
             }
         }
+
     }
 
     /**
@@ -324,4 +332,3 @@ public class HomeFragment extends Fragment {
         super.onDestroy();
     }
 }
-
